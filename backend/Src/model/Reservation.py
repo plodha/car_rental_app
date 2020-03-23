@@ -1,4 +1,4 @@
-from Model import Location, Vehicle, Customer, Invoice
+from . import Location, Vehicle, Customer, Invoice
 
 class Reservation:
     # attributes:

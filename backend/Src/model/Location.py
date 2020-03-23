@@ -1,4 +1,4 @@
-from Model.Address import Address
+from . import Address
 
 class Location:
     # attributes:

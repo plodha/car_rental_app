@@ -1,4 +1,4 @@
-from Model.Reservation import Reservation
+from src.model import Reservation
 
 class Invoice:
     # attributes:
@@ -14,3 +14,4 @@ class Invoice:
     def __init__(self):
         self._id = 0
         self.reservation = Reservation()
+

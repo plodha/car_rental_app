@@ -1,4 +1,4 @@
-from Model.VehicleType import VehicleType
+from . import VehicleType
 
 
 class Vehicle:
