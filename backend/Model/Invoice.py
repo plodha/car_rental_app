@@ -1,3 +1,5 @@
+from Model.Reservation import Reservation
+
 class Invoice:
     # attributes:
     _id = 0
@@ -11,3 +13,4 @@ class Invoice:
     #constructor
     def __init__(self):
         self._id = 0
+        self.reservation = Reservation()

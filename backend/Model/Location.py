@@ -1,3 +1,5 @@
+from Model.Address import Address
+
 class Location:
     # attributes:
     _id = 0
@@ -9,3 +11,4 @@ class Location:
     # constructor
     def __init__(self):
         self._id = 0
+        self.address = Address()

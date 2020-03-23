@@ -1,3 +1,6 @@
+from Model.Address import Address
+
+
 class Customer:
     # attributes:
     name = ''
@@ -14,3 +17,5 @@ class Customer:
    #constructor
     def __init__(self):
         self.name = ''
+        self.address = Address()
+
