@@ -2,19 +2,19 @@ version: '3'
 
 services:
   
-  # traefik:
-  #   image: traefik:1.7
-  #   restart: always
-  #   ports:
-  #     - 80:80
-  #     - 443:443
-  #   networks:
-  #     - ms_network
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #     - ./traefik_letsencrypt/traefik.toml:/traefik.toml
-  #     - ./traefik_letsencrypt/acme.json:/acme.json
-  #   container_name: traefik
+  traefik:
+    image: traefik:1.7
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - ms_network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik_letsencrypt/traefik.toml:/traefik.toml
+      - ./traefik_letsencrypt/acme.json:/acme.json
+    container_name: traefik
 
   # flask:
   #   depends_on:
@@ -56,8 +56,8 @@ services:
   #     - "traefik.port=8030"
 
   db:
-    # depends_on:
-      # - "traefik"
+    depends_on:
+      - "traefik"
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -70,17 +70,17 @@ services:
       - mysql_home:/var/lib/mysql
     networks:
       - ms_network 
-    # labels:
-    #   - "traefik.docker.network=ms_network"
-    #   - "traefik.frontend.rule=Host:db.projects.wasaequreshi.com"
-    #   - "traefik.enable=true"
-    #   - "traefik.port=3306"
+    labels:
+      - "traefik.docker.network=ms_network"
+      - "traefik.frontend.rule=Host:db.msproject.wasaequreshi.com"
+      - "traefik.enable=true"
+      - "traefik.port=3306"
  
   adminer:
     build: ./adminer
     depends_on:
+      - "traefik"
       - "db"
-      # - "traefik"
     image: adminer
     restart: always
     links:
@@ -89,11 +89,11 @@ services:
       - "8010:8010"
     networks:
       - ms_network
-    # labels:
-    #   - "traefik.docker.network=ms_network"
-    #   - "traefik.frontend.rule=Host:adminer.projects.wasaequreshi.com"
-    #   - "traefik.enable=true"
-    #   - "traefik.port=8010"
+    labels:
+      - "traefik.docker.network=ms_network"
+      - "traefik.frontend.rule=Host:adminer.msproject.wasaequreshi.com"
+      - "traefik.enable=true"
+      - "traefik.port=8010"
 
 networks:
   ms_network:
