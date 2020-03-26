@@ -54,9 +54,9 @@ services:
   #     - "traefik.frontend.rule=Host:app.projects.wasaequreshi.com"
   #     - "traefik.enable=true"
   #     - "traefik.port=8030"
-  
+
   db:
-    depends_on:
+    # depends_on:
       # - "traefik"
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
