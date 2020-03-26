@@ -2,45 +2,85 @@ version: '3'
 
 services:
   
-  traefik:
-    image: traefik:1.7
-    restart: always
-    ports:
-      - 80:80
-      - 443:443
-    networks:
-      - esp_network
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik_letsencrypt/traefik.toml:/traefik.toml
-      - ./traefik_letsencrypt/acme.json:/acme.json
-    container_name: traefik
+  # traefik:
+  #   image: traefik:1.7
+  #   restart: always
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+  #   networks:
+  #     - ms_network
+  #   volumes:
+  #     - /var/run/docker.sock:/var/run/docker.sock
+  #     - ./traefik_letsencrypt/traefik.toml:/traefik.toml
+  #     - ./traefik_letsencrypt/acme.json:/acme.json
+  #   container_name: traefik
 
+  # flask:
+  #   depends_on:
+  #     - "traefik"
+  #   build: ./flask_server
+  # # web:
+  #   volumes:
+  #     - ./flask_server:/flask_server
+  #   ports:
+  #     - "8020:8020"
+  #   environment:
+  #     - FLASK_APP=main.py
+  #     - FLASK_DEBUG=1
+  #     - 'RUN=flask run --host=0.0.0.0 --port=8020'
+  #   command: flask run --host=0.0.0.0 --port=8020
+  #   networks:
+  #     - ms_network
+  #   labels:
+  #     - "traefik.docker.network=ms_network"
+  #     - "traefik.frontend.rule=Host:api.projects.wasaequreshi.com"
+  #     - "traefik.enable=true"
+  #     - "traefik.port=8020"
+
+  # angular-service: 
+  #   depends_on:
+  #     - "traefik"
+  #   container_name: esp-app 
+  #   build: ./esp-app
+  #   volumes: # Volume binding
+  #     - './esp-app:/app' 
+  #   ports: 
+  #     - '8030:8030' # Port mapping
+  #   networks:
+  #     - ms_network
+  #   labels:
+  #     - "traefik.docker.network=ms_network"
+  #     - "traefik.frontend.rule=Host:app.projects.wasaequreshi.com"
+  #     - "traefik.enable=true"
+  #     - "traefik.port=8030"
+  
   db:
     depends_on:
-      - "traefik"
+      # - "traefik"
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
     environment:
-      MYSQL_DATABASE: whiteboard
+      MYSQL_DATABASE: car_rental
       MYSQL_ROOT_PASSWORD: Sup3rS3cr3tPassw0rd
     ports:
       - "3306:3306"
     volumes:
       - mysql_home:/var/lib/mysql
     networks:
-      - esp_network 
-    labels:
-      - "traefik.docker.network=esp_network"
-      - "traefik.frontend.rule=Host:db.projects.wasaequreshi.com"
-      - "traefik.enable=true"
-      - "traefik.port=3306"
+      - ms_network 
+    # labels:
+    #   - "traefik.docker.network=ms_network"
+    #   - "traefik.frontend.rule=Host:db.projects.wasaequreshi.com"
+    #   - "traefik.enable=true"
+    #   - "traefik.port=3306"
  
   adminer:
     build: ./adminer
     depends_on:
-      - "traefik"
+      - "db"
+      # - "traefik"
     image: adminer
     restart: always
     links:
@@ -48,53 +88,15 @@ services:
     ports:
       - "8010:8010"
     networks:
-      - esp_network
-    labels:
-      - "traefik.docker.network=esp_network"
-      - "traefik.frontend.rule=Host:adminer.projects.wasaequreshi.com"
-      - "traefik.enable=true"
-      - "traefik.port=8010"
-  flask:
-    depends_on:
-      - "traefik"
-    build: ./flask_server
-  # web:
-    volumes:
-      - ./flask_server:/flask_server
-    ports:
-      - "8020:8020"
-    environment:
-      - FLASK_APP=main.py
-      - FLASK_DEBUG=1
-      - 'RUN=flask run --host=0.0.0.0 --port=8020'
-    command: flask run --host=0.0.0.0 --port=8020
-    networks:
-      - esp_network
-    labels:
-      - "traefik.docker.network=esp_network"
-      - "traefik.frontend.rule=Host:api.projects.wasaequreshi.com"
-      - "traefik.enable=true"
-      - "traefik.port=8020"
-
-  angular-service: 
-    depends_on:
-      - "traefik"
-    container_name: esp-app 
-    build: ./esp-app
-    volumes: # Volume binding
-      - './esp-app:/app' 
-    ports: 
-      - '8030:8030' # Port mapping
-    networks:
-      - esp_network
-    labels:
-      - "traefik.docker.network=esp_network"
-      - "traefik.frontend.rule=Host:app.projects.wasaequreshi.com"
-      - "traefik.enable=true"
-      - "traefik.port=8030"
+      - ms_network
+    # labels:
+    #   - "traefik.docker.network=ms_network"
+    #   - "traefik.frontend.rule=Host:adminer.projects.wasaequreshi.com"
+    #   - "traefik.enable=true"
+    #   - "traefik.port=8010"
 
 networks:
-  esp_network:
+  ms_network:
     external: true
 
 volumes:
