@@ -19,10 +19,10 @@ services:
   # flask:
   #   depends_on:
   #     - "traefik"
-  #   build: ./flask_server
+  #   build: ../backend
   # # web:
   #   volumes:
-  #     - ./flask_server:/flask_server
+  #     - ../backend:/backend
   #   ports:
   #     - "8020:8020"
   #   environment:
@@ -41,10 +41,10 @@ services:
   # angular-service: 
   #   depends_on:
   #     - "traefik"
-  #   container_name: esp-app 
-  #   build: ./esp-app
+  #   container_name: mn-app 
+  #   build: ../frontend
   #   volumes: # Volume binding
-  #     - './esp-app:/app' 
+  #     - ../frontend:/app
   #   ports: 
   #     - '8030:8030' # Port mapping
   #   networks:
