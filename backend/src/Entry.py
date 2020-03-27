@@ -1,3 +1,3 @@
-# entry file
+from flask import Flask
 
-print('Entry')
+app = Flask(__name__)
