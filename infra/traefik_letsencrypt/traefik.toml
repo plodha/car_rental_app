@@ -1,0 +1,33 @@
+debug = false
+logLevel = "ERROR"
+defaultEntryPoints = ["https","http"]
+
+[serversTransport]
+  maxIdleConnsPerHost = -1
+
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+  [entryPoints.https.tls]
+
+[retry]
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "msproject.wasaequreshi.com"
+watch = true
+exposedByDefault = false
+
+[acme]
+email = "wasae.qureshi@sjsu.edu"
+#caServer = "https://acme-v02.api.letsencrypt.org/directory"
+storage = "./acme.json"
+entryPoint = "https"
+onHostRule = true
+
+[acme.httpChallenge]
+entryPoint = "http"
