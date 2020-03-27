@@ -8,20 +8,20 @@
 		<version>2.2.6.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.example</groupId>
-	<artifactId>car-rent</artifactId>
+	<groupId>themeansquare</groupId>
+	<artifactId>car-rental-webapp</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>car-rent</name>
-	<description>Demo project for Spring Boot</description>
+	<name>car-rental-webapp</name>
+	<description>Can rental service - web application</description>
 
 	<properties>
-		<java.version>11</java.version>
+		<java.version>1.8</java.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
 		<dependency>
