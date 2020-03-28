@@ -72,7 +72,7 @@ services:
       - ms_network 
     labels:
       - "traefik.docker.network=ms_network"
-      - "traefik.frontend.rule=Host:db.msproject.wasaequreshi.com"
+      - "traefik.frontend.rule=Host:ms.db.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=3306"
  
@@ -91,7 +91,7 @@ services:
       - ms_network
     labels:
       - "traefik.docker.network=ms_network"
-      - "traefik.frontend.rule=Host:adminer.msproject.wasaequreshi.com"
+      - "traefik.frontend.rule=Host:ms.adminer.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=8010"
 
