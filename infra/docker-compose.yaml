@@ -16,12 +16,12 @@ services:
       - ./traefik_letsencrypt/acme.json:/acme.json
     container_name: traefik
 
-  flask:
+  java_spring:
     depends_on:
       - "traefik"
     build: ../backend
     ports:
-      - "8020:8080"
+      - "8020:8020"
     networks:
       - ms_network
     labels:
