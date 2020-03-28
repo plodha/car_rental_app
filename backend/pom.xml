@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>themeansquare</groupId>
-	<artifactId>car-rental-webapp</artifactId>
+	<artifactId>car-rental-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>car-rental-webapp</name>
-	<description>Can rental service - web application</description>
+	<name>car-rental-service</name>
+	<description>Can rental services - API</description>
 
 	<properties>
 		<java.version>1.8</java.version>
