@@ -16,27 +16,19 @@ services:
       - ./traefik_letsencrypt/acme.json:/acme.json
     container_name: traefik
 
-  # flask:
-  #   depends_on:
-  #     - "traefik"
-  #   build: ../backend
-  # # web:
-  #   volumes:
-  #     - ../backend:/backend
-  #   ports:
-  #     - "8020:8020"
-  #   environment:
-  #     - FLASK_APP=main.py
-  #     - FLASK_DEBUG=1
-  #     - 'RUN=flask run --host=0.0.0.0 --port=8020'
-  #   command: flask run --host=0.0.0.0 --port=8020
-  #   networks:
-  #     - ms_network
-  #   labels:
-  #     - "traefik.docker.network=ms_network"
-  #     - "traefik.frontend.rule=Host:api.projects.wasaequreshi.com"
-  #     - "traefik.enable=true"
-  #     - "traefik.port=8020"
+  java_spring:
+    depends_on:
+      - "traefik"
+    build: ../backend
+    ports:
+      - "8020:8020"
+    networks:
+      - ms_network
+    labels:
+      - "traefik.docker.network=ms_network"
+      - "traefik.frontend.rule=Host:ms.api.wasaequreshi.com"
+      - "traefik.enable=true"
+      - "traefik.port=8020"
 
   # angular-service: 
   #   depends_on:
@@ -51,7 +43,7 @@ services:
   #     - ms_network
   #   labels:
   #     - "traefik.docker.network=ms_network"
-  #     - "traefik.frontend.rule=Host:app.projects.wasaequreshi.com"
+  #     - "traefik.frontend.rule=Host:ms.app.wasaequreshi.com"
   #     - "traefik.enable=true"
   #     - "traefik.port=8030"
 
