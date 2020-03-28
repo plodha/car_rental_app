@@ -1,3 +1,0 @@
-# entry file
-
-print('Entry')
