@@ -43,7 +43,7 @@ services:
   #     - ms_network
   #   labels:
   #     - "traefik.docker.network=ms_network"
-  #     - "traefik.frontend.rule=Host:app.projects.wasaequreshi.com"
+  #     - "traefik.frontend.rule=Host:ms.app.wasaequreshi.com"
   #     - "traefik.enable=true"
   #     - "traefik.port=8030"
 
