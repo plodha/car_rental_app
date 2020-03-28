@@ -26,7 +26,7 @@ services:
       - ms_network
     labels:
       - "traefik.docker.network=ms_network"
-      - "traefik.frontend.rule=Host:ms.api.wasaequreshi.com"
+      - "traefik.frontend.rule=Host:api.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=8020"
 
@@ -43,7 +43,7 @@ services:
       - ms_network
     labels:
       - "traefik.docker.network=ms_network"
-      - "traefik.frontend.rule=Host:ms.app.wasaequreshi.com"
+      - "traefik.frontend.rule=Host:app.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=8030"
 
@@ -64,7 +64,7 @@ services:
       - ms_network 
     labels:
       - "traefik.docker.network=ms_network"
-      - "traefik.frontend.rule=Host:ms.db.wasaequreshi.com"
+      - "traefik.frontend.rule=Host:db.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=3306"
  
@@ -83,7 +83,7 @@ services:
       - ms_network
     labels:
       - "traefik.docker.network=ms_network"
-      - "traefik.frontend.rule=Host:ms.adminer.wasaequreshi.com"
+      - "traefik.frontend.rule=Host:adminer.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=8010"
 
