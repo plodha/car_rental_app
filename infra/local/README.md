@@ -5,8 +5,7 @@ This file will only run a MySQL server locally.
 
 - Please have docker and docker-compose installed. You can use this https://docs.docker.com/compose/install/ to get started.
 - You only need to run the following command once.
-
-	**docker network create ms_network**
+	- **docker network create ms_network**
 
 ### Credentials
 - Username: root
@@ -27,3 +26,12 @@ In 'local' directory, run:
 In 'local' directory, run: 
 
 **docker-compose down**
+
+### Post steps
+
+Please run the following to setup your Database with the correct metadata and data:
+
+- mysql -h 35.155.65.155 -u root -p
+    - Enter 'Sup3rS3cr3tPassw0rd' as password
+- use database car_rental;
+- source <path to car_rental.sql>
