@@ -34,4 +34,4 @@ Please run the following to setup your Database with the correct metadata and da
 - mysql -h 35.155.65.155 -u root -p
     - Enter 'Sup3rS3cr3tPassw0rd' as password
 - use database car_rental;
-- source <path to car_rental.sql>
+- source < path to car_rental.sql >
