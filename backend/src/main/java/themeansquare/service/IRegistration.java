@@ -1,12 +1,8 @@
 import java.util.HashMap;
 
-public class Registration {
+public interface IRegistration {
 
-    public boolean validateInput(HashMap<String, String> params) {
-        return true;
-    }
+    public boolean validateInput(HashMap<String, String> params);
 
-    public boolean insertUser() {
-        return true;
-    }
+    public boolean insertUser();
 }
