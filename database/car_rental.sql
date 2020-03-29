@@ -191,11 +191,21 @@ CREATE TABLE `Customer` (
 
 DROP TABLE IF EXISTS `Employee`;
 CREATE TABLE `Employee` (
+	`Id` INT NOT NULL AUTO_INCREMENT,
 	`Name` TEXT NOT NULL,
 	`Role` TEXT NOT NULL,
-	`Id` INT NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`Id`)
 );
+
+LOCK TABLES `Employee` WRITE;
+INSERT INTO `Employee` VALUES(101,'Pranav','KING');
+INSERT INTO `Employee` VALUES(102,'Wasae','Manager');
+INSERT INTO `Employee` VALUES(103,'Jeyasri','Manager');
+INSERT INTO `Employee` VALUES(104,'Subarna','Manager');
+INSERT INTO `Employee` VALUES(105,'Ronak','Manager');
+INSERT INTO `Employee` VALUES(106,'Manmeet','Manager');
+INSERT INTO `Employee` VALUES(107,'Vignesh','Manager');
+UNLOCK TABLES;
 
 
 --
