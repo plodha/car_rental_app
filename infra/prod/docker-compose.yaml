@@ -19,7 +19,7 @@ services:
   java_spring:
     depends_on:
       - "traefik"
-    build: ../backend
+    build: ../../backend
     ports:
       - "8020:8020"
     networks:
@@ -34,9 +34,9 @@ services:
     depends_on:
       - "traefik"
     container_name: mn-app 
-    build: ../frontend
+    build: ../../frontend
     volumes: # Volume binding
-      - ../frontend:/app
+      - ../../frontend:/app
     ports: 
       - '8030:8030' # Port mapping
     networks:
