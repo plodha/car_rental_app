@@ -1,7 +1,7 @@
 package themeansquare.service.internal;
 
-import java.util.HashMap;
 import themeansquare.service.IRegistration;
+import java.util.HashMap;
 
 public class Registration implements IRegistration {
 
