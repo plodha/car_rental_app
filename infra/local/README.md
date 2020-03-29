@@ -22,7 +22,7 @@ Use the same credentials as above and use localhost:3306 as the host.
 ### How to bring up services:
 In 'local' directory, run: 
 
-**docker-compose up -d **
+**docker-compose up -d**
 ### How to bring down services:
 In 'local' directory, run: 
 
