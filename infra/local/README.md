@@ -27,7 +27,7 @@ In 'local' directory, run:
 
 **docker-compose down**
 
-### Post steps
+### Post steps (If first time)
 
 Please run the following to setup your Database with the correct metadata and data:
 
