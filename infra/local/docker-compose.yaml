@@ -17,7 +17,7 @@ services:
       - ms_network 
  
   adminer:
-    build: ./adminer
+    build: ../prod/adminer
     depends_on:
      
       - "db"
