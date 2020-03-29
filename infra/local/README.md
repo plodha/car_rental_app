@@ -14,7 +14,7 @@ This file will only run a MySQL server locally.
 - Database: car_rental
 
 ### Adminer (GUI)
-Use the crednetials above and go to: localhost:8010.
+Use the credentials above and go to: localhost:8010.
 
 ### DB Connection Programatically
 Use the same credentials as above and use localhost:3306 as the host.
