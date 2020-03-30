@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: car_rental
 -- ------------------------------------------------------
--- Server version	8.0.19
+-- Server versio8.0.19
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -20,13 +20,7 @@
 --
 
 DROP TABLE IF EXISTS `Address`;
-CREATE TABLE `Address` (
-	`Id` INT NOT NULL AUTO_INCREMENT,
-	`Street` TEXT NOT NULL,
-	`City` TEXT NOT NULL,
-	`State` TEXT NOT NULL,
-	`ZipCode` INT(5) NOT NULL,
-	PRIMARY KEY (`Id`)
+CREATE TABLE `Address` (`Id` INT NOT NULL AUTO_INCREMENT,`Street` TEXT NOT NULL,`City` TEXT NOT NULL,`State` TEXT NOT NULL,`ZipCode` INT(5) NOT NULL,PRIMARY KEY (`Id`)
 );
 
 LOCK TABLES `Address` WRITE;
@@ -38,10 +32,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `VehicleType`;
-CREATE TABLE `VehicleType` (
-	`VehicleSize` INT NOT NULL,
-	`VehicleClass` VARCHAR(15) NOT NULL,
-	PRIMARY KEY (`VehicleClass`)
+CREATE TABLE `VehicleType` (`VehicleSize` INT NOT NULL,`VehicleClass` VARCHAR(15) NOT NULL,PRIMARY KEY (`VehicleClass`)
 );
 
 LOCK TABLES `VehicleType` WRITE;
@@ -63,16 +54,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `Vehicle`;
-CREATE TABLE `Vehicle` (
-	`LicensePlate` VARCHAR(7) NOT NULL,
-	`Model` TEXT NOT NULL,
-	`Make` TEXT NOT NULL,
-	`Year` INT NOT NULL,
-	`VehicleType` VARCHAR(15) NOT NULL,
-	`Location` INT NOT NULL,
-	`Status` BOOLEAN NOT NULL,
-	`VIN` TEXT NOT NULL,
-	PRIMARY KEY (`LicensePlate`)
+CREATE TABLE `Vehicle` (`LicensePlate` VARCHAR(7) NOT NULL,`Model` TEXT NOT NULL,`Make` TEXT NOT NULL,`Year` INT NOT NULL,`VehicleType` VARCHAR(15) NOT NULL,`Location` INT NOT NULL,`Status` BOOLEAN NOT NULL,`VIN` TEXT NOT NULL,PRIMARY KEY (`LicensePlate`)
 );
 
 LOCK TABLES `Vehicle` WRITE;
@@ -134,11 +116,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `Price`;
-CREATE TABLE `Price` (
-	`LateFee` INT NOT NULL,
-	`HourlyFee` INT NOT NULL,
-	`VehicleTypeId` INT NOT NULL,
-	PRIMARY KEY (`VehicleTypeId`)
+CREATE TABLE `Price` (`LateFee` INT NOT NULL,`HourlyFee` INT NOT NULL,`VehicleTypeId` INT NOT NULL,PRIMARY KEY (`VehicleTypeId`)
 );
 
 
@@ -147,13 +125,7 @@ CREATE TABLE `Price` (
 --
 
 DROP TABLE IF EXISTS `Location`;
-CREATE TABLE `Location` (
-	`ID` INT NOT NULL,
-	`Name` TEXT NOT NULL,
-	`VehicleCapacity` INT NOT NULL,
-	`Address` TEXT NOT NULL,
-	`ContactNumber` INT(10) NOT NULL,
-	PRIMARY KEY (`ID`)
+CREATE TABLE `Location` (`ID` INT NOT NULL,`Name` TEXT NOT NULL,`VehicleCapacity` INT NOT NULL,`Address` TEXT NOT NULL,`ContactNumber` INT(10) NOT NULL,PRIMARY KEY (`ID`)
 );
 
 LOCK TABLES `Location` WRITE;
@@ -171,18 +143,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `Customer`;
-CREATE TABLE `Customer` (
-	`Name` TEXT NOT NULL,
-	`LicenseNumber` INT NOT NULL,
-	`RegistrationDate` DATE NOT NULL,
-	`RegistrationEndDate` DATE NOT NULL,
-	`MembershipStatus` BOOLEAN NOT NULL,
-	`Verified` BOOLEAN NOT NULL,
-	`LicenseExpDate` DATE NOT NULL,
-	`Address` TEXT NOT NULL,
-	`Email` TEXT NOT NULL,
-	`Id` INT NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY (`Id`)
+CREATE TABLE `Customer` (`Name` TEXT NOT NULL,`LicenseNumber` INT NOT NULL,`RegistrationDate` DATE NOT NULL,`RegistrationEndDate` DATE NOT NULL,`MembershipStatus` BOOLEAN NOT NULL,`Verified` BOOLEAN NOT NULL,`LicenseExpDate` DATE NOT NULL,`Address` TEXT NOT NULL,`Email` TEXT NOT NULL,`Id` INT NOT NULL AUTO_INCREMENT,PRIMARY KEY (`Id`)
 );
 
 --
@@ -190,11 +151,7 @@ CREATE TABLE `Customer` (
 --
 
 DROP TABLE IF EXISTS `Employee`;
-CREATE TABLE `Employee` (
-	`Id` INT NOT NULL AUTO_INCREMENT,
-	`Name` TEXT NOT NULL,
-	`Role` TEXT NOT NULL,
-	PRIMARY KEY (`Id`)
+CREATE TABLE `Employee` (`Id` INT NOT NULL AUTO_INCREMENT,`Name` TEXT NOT NULL,`Role` TEXT NOT NULL,PRIMARY KEY (`Id`)
 );
 
 LOCK TABLES `Employee` WRITE;
@@ -213,16 +170,7 @@ UNLOCK TABLES;
 --
 
 DROP TABLE IF EXISTS `Reservation`;
-CREATE TABLE `Reservation` (
-	`Location` INT NOT NULL,
-	`Vehicle` INT NOT NULL,
-	`Customer` INT NOT NULL,
-	`EstimatePrice` DOUBLE NOT NULL,
-	`PickUpTime` DATETIME NOT NULL,
-	`EstimateDropOffTime` DATETIME NOT NULL,
-	`ActualDropOffTime` DATETIME,
-	`Invoice` INT NOT NULL,
-	PRIMARY KEY (`Invoice`)
+CREATE TABLE `Reservation` (`Location` INT NOT NULL,`Vehicle` INT NOT NULL,`Customer` INT NOT NULL,`EstimatePrice` DOUBLE NOT NULL,`PickUpTime` DATETIME NOT NULL,`EstimateDropOffTime` DATETIME NOT NULL,`ActualDropOffTime` DATETIME,`Invoice` INT NOT NULL,PRIMARY KEY (`Invoice`)
 );
 
 --
@@ -230,12 +178,7 @@ CREATE TABLE `Reservation` (
 --
 
 DROP TABLE IF EXISTS `User`;
-CREATE TABLE `User` (
-	`Username` VARCHAR(10) NOT NULL,
-	`Password` VARCHAR(10) NOT NULL,
-	`Id` INT NOT NULL,
-	`Role` TEXT NOT NULL,
-	PRIMARY KEY (`Id`)
+CREATE TABLE `User` (`Username` VARCHAR(10) NOT NULL,`Password` VARCHAR(10) NOT NULL,`Id` INT NOT NULL,`Role` TEXT NOT NULL,PRIMARY KEY (`Id`)
 );
 
 --
@@ -243,14 +186,7 @@ CREATE TABLE `User` (
 --
 
 DROP TABLE IF EXISTS `Invoice`;
-CREATE TABLE `Invoice` (
-	`EstimatedPrice` DOUBLE NOT NULL,
-	`VehicleStatus` INT,
-	`DamageFee` DOUBLE,
-	`LateFee` DOUBLE,
-	`TotalPrice` DOUBLE,
-	`Id` INT NOT NULL AUTO_INCREMENT,
-	PRIMARY KEY (`Id`)
+CREATE TABLE `Invoice` (`EstimatedPrice` DOUBLE NOT NULL,`VehicleStatus` INT,`DamageFee` DOUBLE,`LateFee` DOUBLE,`TotalPrice` DOUBLE,`Id` INT NOT NULL AUTO_INCREMENT,PRIMARY KEY (`Id`)
 );
 
 --
@@ -258,10 +194,5 @@ CREATE TABLE `Invoice` (
 --
 
 DROP TABLE IF EXISTS `Damage`;
-CREATE TABLE `Damage` (
-	`DamageType` TEXT NOT NULL,
-	`DamageFee` DOUBLE NOT NULL,
-	`VehicleTypeId` INT NOT NULL,
-	`DamageId` INT NOT NULL,
-	PRIMARY KEY (`DamageId`)
+CREATE TABLE `Damage` (`DamageType` TEXT NOT NULL,`DamageFee` DOUBLE NOT NULL,`VehicleTypeId` INT NOT NULL,`DamageId` INT NOT NULL,PRIMARY KEY (`DamageId`)
 );
