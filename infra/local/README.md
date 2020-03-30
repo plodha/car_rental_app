@@ -24,9 +24,9 @@ Please go here: https://dev.mysql.com/downloads/shell/
 
 ### 4. Setup DB with metadata and test data
 Please run the following to setup your Database with the correct metadata and data (only need to run the first time):
-- mysql -h < hostname (localhost for local or 35.155.65.155 for prod) > -u root -p
+- mysql -h < hostname ('0.0.0.0' for local or '35.155.65.155' for prod) > -u root -p
     - Enter 'Sup3rS3cr3tPassw0rd' as password
-- use database car_rental;
+- use car_rental;
 - source < path to car_rental.sql >
 
 And that's it! You're done! 
