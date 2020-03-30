@@ -18,7 +18,11 @@ In 'local' directory, run:
 
 **docker-compose up -d**
 
-### 3. Setup DB with metadata and test data
+### 3. Install MySQL CLI
+
+Please go here: https://dev.mysql.com/downloads/shell/
+
+### 4. Setup DB with metadata and test data
 Please run the following to setup your Database with the correct metadata and data (only need to run the first time):
 - mysql -h < hostname (localhost for local or 35.155.65.155 for prod) > -u root -p
     - Enter 'Sup3rS3cr3tPassw0rd' as password
@@ -27,11 +31,11 @@ Please run the following to setup your Database with the correct metadata and da
 
 And that's it! You're done! 
 
-### 4. When done for the day, save your laptop by bring down services:
+### 5. When done for the day, save your laptop by bring down services:
 In 'local' directory, run: 
 
 **docker-compose down**
 
-### 5. If you ever want to view DB from GUI (Adminer)
+### 6. If you ever want to view DB from GUI (Adminer)
 
 While the MySQL DB is running, go to localhost:8010 and use the credentials above to login
