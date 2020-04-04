@@ -1,7 +1,9 @@
-import java.util.HashMap;
+package themeansquare.service;
 
 public interface IRegistration {
 
-    public boolean validateInput(HashMap<String, String> params);
+    public String isValidParams();
     public boolean insertUser();
+    public boolean isValidEmail();
+    public boolean isUserNameTaken();
 }
