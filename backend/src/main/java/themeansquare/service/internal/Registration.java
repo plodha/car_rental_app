@@ -56,7 +56,7 @@ public class Registration implements IRegistration {
     public boolean isLicenseNumberValid() {
         
         String licenseNumber = params.get("licenseNumber");
-        String licenseNumberRegex = "[a-zA-Z]{2}\\d{6}";
+        String licenseNumberRegex = "[a-zA-Z]{1}\\d{7}";
         Pattern pattern = Pattern.compile(licenseNumberRegex);
         Matcher matcher = pattern.matcher(licenseNumber);
 
