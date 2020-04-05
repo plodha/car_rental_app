@@ -2,10 +2,8 @@ package themeansquare.carrentalservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.RestController;
 
-@SpringBootApplication(scanBasePackages = {"themeansquare.controller"})
-@RestController
+@SpringBootApplication(scanBasePackages = {"themeansquare.controller", "themeansquare.repository"})
 public class CarRentalServiceApplication {
 
 	public static void main(String[] args) {

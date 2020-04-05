@@ -1,10 +1,22 @@
 package themeansquare.controller;
-import themeansquare.service.IRegistration;
-import themeansquare.service.internal.Registration;
+
+
+
 import java.util.HashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+//import themeansquare.service.IRegistration;
+//import themeansquare.service.internal.Registration;
+
+import themeansquare.model.Address;
+import themeansquare.repository.AddressRepository;
+import themeansquare.service.IRegistration;
+import themeansquare.service.internal.Registration;
+
 
 /*
     Customer
@@ -20,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
     String email;
 */
 
-@RestController
+@RestController()
 public class RegistrationController {
 
 	@GetMapping("/register")
@@ -41,6 +53,20 @@ public class RegistrationController {
         String response = reg.isValidParams();
         
         return response;
+	}
+	
+	@Autowired
+	private AddressRepository addressRepository;
+	
+	@GetMapping("/testAddress")
+	public String testAddress() {
+		Address pranav = new Address();
+		pranav.setStreet("40744 Chiltern Drive");
+		pranav.setCity("Fremont");
+		pranav.setState("California");
+		pranav.setZipCode(94539);
+		addressRepository.save(pranav);
+		return "Test";
 	}
 
 }
