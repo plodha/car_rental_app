@@ -1,10 +1,13 @@
 package themeansquare.repository;
 
-import themeansquare.model.Address;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.stereotype.Repository;
 
-@Repository
+import themeansquare.model.Address;
+
+// This will be AUTO IMPLEMENTED by Spring into a Bean called userRepository
+// CRUD refers Create, Read, Update, Delete
+
+
 public interface AddressRepository extends CrudRepository<Address, Integer> {
 
 }
