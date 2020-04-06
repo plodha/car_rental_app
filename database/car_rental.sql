@@ -18,7 +18,7 @@
 --
 -- Address
 --
-
+-- use car_rental;
 DROP TABLE IF EXISTS `Address`;
 CREATE TABLE `Address` (`Id` INT NOT NULL AUTO_INCREMENT,`Street` TEXT NOT NULL,`City` TEXT NOT NULL,`State` TEXT NOT NULL,`ZipCode` INT(5) NOT NULL,PRIMARY KEY (`Id`));
 
