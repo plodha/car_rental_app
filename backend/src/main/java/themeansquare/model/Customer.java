@@ -58,7 +58,11 @@ public class Customer{
 	
 	@NotNull
 	@Temporal(TemporalType.DATE)
-    private Date MembershipEndDate;
+	private Date MembershipEndDate;
+	
+	@NotNull
+    @Column(columnDefinition = "TEXT")
+    private String Email;
 
 	public int getId() { return Id; }
 
@@ -95,6 +99,10 @@ public class Customer{
 	public Date getMembershipEndDate() { return MembershipEndDate; }
 
 	public void setMembershipEndDate(Date membershipEndDate) { MembershipEndDate = membershipEndDate; }
+
+	public String getEmail() { return Email; }
+
+	public void setEmail(String email) { Email = email; }
 	
     
 }

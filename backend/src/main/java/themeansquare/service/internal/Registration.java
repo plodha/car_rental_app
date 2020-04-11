@@ -1,5 +1,7 @@
 package themeansquare.service.internal;
 
+import themeansquare.model.User;
+import themeansquare.repository.UserRepository;
 import themeansquare.service.IRegistration;
 import java.util.HashMap;
 import java.util.regex.Matcher;
@@ -7,77 +9,58 @@ import java.util.regex.Pattern;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
+@Component
 public class Registration implements IRegistration {
 
-    HashMap<String, String> params;
+    @Autowired
+    private UserRepository userRepository;
 
-    public Registration(HashMap<String, String> params) {
-        this.params = params;    
+    private String username;
+    private String password;
+    private String firstName;
+    private String lastName;
+    private String address;
+    private String licenseNumber;
+    private String licenseExpDate;
+    private String email;
+
+    public Registration(String username, String password, String firstName, String lastName,
+    String address, String licenseNumber, String licenseExpDate, String email) {
+        this.username = username;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.licenseNumber = licenseNumber;
+        this.licenseExpDate = licenseExpDate;
+        this.email = email;
     }
 
-	public String isValidParams() {
-        HashMap<String, String> response = new HashMap<>();
-        response.put("isValidEmail", "false");
-        response.put("isUserNameTaken", "false");
-        response.put("isLicenseNumberValid", "false");
-        response.put("status", "400");
-
-        if (this.isValidEmail()) {
-            response.put("isValidEmail", "true");
-            if (this.isUserNameTaken()) {
-                response.put("isUserNameTaken", "true");
-                if (this.isLicenseNumberValid()) {
-                    response.put("isLicenseNumberValid", "true");
-                    response.put("status", "200");
-                    this.insertUser();
-                }
-            }
-        }
+    public String isValidParams() {
         
-        return this.convertMapToJson(response);
-    }
-
-    public boolean isValidEmail() {
-        String email = this.params.get("email");
-        String emailRegex = "^(.+)@(.+)$";
-        Pattern pattern = Pattern.compile(emailRegex);
-        Matcher matcher = pattern.matcher(email);
-        
-        return matcher.matches();
-    }
-
-    public boolean isUserNameTaken() {
-        String username = params.get("username");
-        // Make query call and return if it exists or not
-        return false;
-    }
-
-    public boolean isLicenseNumberValid() {
-        
-        String licenseNumber = params.get("licenseNumber");
-        String licenseNumberRegex = "[a-zA-Z]{1}\\d{7}";
-        Pattern pattern = Pattern.compile(licenseNumberRegex);
-        Matcher matcher = pattern.matcher(licenseNumber);
-
-        return matcher.matches();
+        return null;
     }
 
     public boolean insertUser() {
-        // Do SQL stuff here
-        return true;
+        User newUser = new User();
+        newUser.setUsername(this.username);
+        newUser.setPassword(this.password);
+        userRepository.save(newUser);
+
+        return false;
     }
 
-    public String convertMapToJson(HashMap<String, String> response) {
+    public boolean isValidEmail() {
+        
+        return false;
+    }
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        String jsonResponse;
-        try {
-            jsonResponse = objectMapper.writeValueAsString(response);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-            jsonResponse = "{\"Status\" : 400, \"error_message\" : \"convertMapToJson failed. Registration.java file\"}";
-        }
-
-        return jsonResponse;
+    public boolean isUserNameTaken() {
+        
+        return false;
     }
 }

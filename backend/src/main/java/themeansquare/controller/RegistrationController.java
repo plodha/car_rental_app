@@ -1,7 +1,12 @@
 package themeansquare.controller;
+
+import themeansquare.model.User;
+import themeansquare.repository.UserRepository;
 import themeansquare.service.IRegistration;
 import themeansquare.service.internal.Registration;
 import java.util.HashMap;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,23 +29,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationController {
 
 	@GetMapping("/register")
-    public String register(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password, 
-        @RequestParam(value = "licenseNumber") String licenseNumber, @RequestParam(value = "licenseExpDate") String licenseExpDate, 
-        @RequestParam(value = "address") String address, @RequestParam(value = "email") String email) {
+    public String register(
+        @RequestParam(value = "username") String username, 
+        @RequestParam(value = "password") String password, 
+        @RequestParam(value = "firstName") String firstName, 
+        @RequestParam(value = "lastName") String lastName,
+        @RequestParam(value = "address") String address, 
+        @RequestParam(value = "licenseNumber") String licenseNumber, 
+        @RequestParam(value = "licenseExpDate") String licenseExpDate, 
+        @RequestParam(value = "email") String email) {
         
-        HashMap<String, String> params = new HashMap<String, String>();
-        params.put("username", username);
-        params.put("password", password);
-        params.put("licenseNumber", licenseNumber);
-        params.put("licenseExpDate", licenseExpDate);
-        params.put("address", address);
-        params.put("email", email);
-
-        IRegistration reg = new Registration(params);
-
-        String response = reg.isValidParams();
+        IRegistration reg = new Registration(username, password, firstName, lastName,
+        address, licenseNumber, licenseExpDate, email);
         
-        return response;
+        reg.insertUser();
+
+        return "response";
 	}
 
 }
