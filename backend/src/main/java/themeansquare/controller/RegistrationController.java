@@ -1,6 +1,7 @@
 package themeansquare.controller;
 
 import themeansquare.model.User;
+import themeansquare.repository.CustomerRepository;
 import themeansquare.repository.UserRepository;
 import themeansquare.service.IRegistration;
 import themeansquare.service.internal.Registration;
@@ -28,6 +29,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class RegistrationController {
 
+    @Autowired
+    private UserRepository userRepository;
+    private CustomerRepository customerRepository;
+
 	@GetMapping("/register")
     public String register(
         @RequestParam(value = "username") String username, 
@@ -40,11 +45,10 @@ public class RegistrationController {
         @RequestParam(value = "email") String email) {
         
         IRegistration reg = new Registration(username, password, firstName, lastName,
-        address, licenseNumber, licenseExpDate, email);
-        
-        reg.insertUser();
+        address, licenseNumber, licenseExpDate, email, userRepository, customerRepository);
+        String response = reg.register();
 
-        return "response";
+        return response;
 	}
 
 }

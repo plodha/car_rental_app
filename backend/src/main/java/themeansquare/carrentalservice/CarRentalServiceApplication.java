@@ -7,8 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication(scanBasePackages = {"themeansquare.controller"})
-@ComponentScan(basePackages = {"themeansquare.service"})
-@EnableJpaRepositories("themeansquare.repository")
+@EnableJpaRepositories(basePackages = {"themeansquare.repository"})
 @EntityScan("themeansquare.model")
 public class CarRentalServiceApplication {
 
