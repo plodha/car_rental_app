@@ -1,6 +1,7 @@
 package themeansquare.controller;
 
 import themeansquare.model.User;
+import themeansquare.repository.AddressRepository;
 import themeansquare.repository.CustomerRepository;
 import themeansquare.repository.UserRepository;
 import themeansquare.service.IRegistration;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,20 +34,25 @@ public class RegistrationController {
     @Autowired
     private UserRepository userRepository;
     private CustomerRepository customerRepository;
-
-	@GetMapping("/register")
+    private AddressRepository addressRepository;
+    
+	@PostMapping("/register")
     public String register(
         @RequestParam(value = "username") String username, 
         @RequestParam(value = "password") String password, 
         @RequestParam(value = "firstName") String firstName, 
         @RequestParam(value = "lastName") String lastName,
-        @RequestParam(value = "address") String address, 
+        @RequestParam(value = "street") String street,
+        @RequestParam(value = "city") String city, 
+        @RequestParam(value = "state") String state, 
+        @RequestParam(value = "zipcode") String zipcode, 
         @RequestParam(value = "licenseNumber") String licenseNumber, 
         @RequestParam(value = "licenseExpDate") String licenseExpDate, 
-        @RequestParam(value = "email") String email) {
+        @RequestParam(value = "email") String email) throws Exception {
         
         IRegistration reg = new Registration(username, password, firstName, lastName,
-        address, licenseNumber, licenseExpDate, email, userRepository, customerRepository);
+        street, city, state, zipcode, licenseNumber, licenseExpDate, email, 
+        userRepository, customerRepository, addressRepository);
         String response = reg.register();
 
         return response;
