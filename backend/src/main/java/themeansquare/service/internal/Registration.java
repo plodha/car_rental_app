@@ -14,15 +14,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 public class Registration implements IRegistration {
 
@@ -67,7 +60,6 @@ public class Registration implements IRegistration {
     public String register() throws Exception {
         HashMap<String, String> response = new HashMap<>();
         response.put("isUserNameTaken", "true");
-        response.put("isEmailTaken", "true");
         response.put("status", "400");
 
         // Add check for user name
@@ -81,7 +73,7 @@ public class Registration implements IRegistration {
             
             customer.setLicenseNumber(licenseNumber);
             customer.setLicenseExpDate(licenseExpDateFormat);
-            
+            response.put("isEmailTaken", "true");
             // Add email check
             if (checkIfEmailExists()) {
                 response.remove("isEmailTaken");

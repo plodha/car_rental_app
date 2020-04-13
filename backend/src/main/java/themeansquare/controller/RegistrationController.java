@@ -33,7 +33,9 @@ public class RegistrationController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
     private CustomerRepository customerRepository;
+    @Autowired
     private AddressRepository addressRepository;
     
 	@PostMapping("/register")
