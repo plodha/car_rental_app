@@ -10,6 +10,7 @@ import themeansquare.service.IVehicleReg;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -45,6 +46,8 @@ public class VehicleReg implements IVehicleReg {
     int vehicleCapacity;
     //int address;  --foreign key to vehicleType ??
 
+    public VehicleReg(){}
+
     public VehicleReg( String vehicleClass, int vehicleSize , String licensePlate , String model,String make,
                        Boolean status, String vIN,int year,int contactNumber, String name, int vehicleCapacity,
                        VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository ) {
@@ -69,7 +72,7 @@ public class VehicleReg implements IVehicleReg {
     
 
     // validation logic for vehicle api
-    public String vehicleReg() throws Exception {
+    public String addVehicle() throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("isLicensePlateAvailable", "true");
@@ -162,6 +165,19 @@ public class VehicleReg implements IVehicleReg {
         }
 
         return true;
+    }
+
+    //for get api 
+    public Iterable<Vehicle> getVehicles() throws Exception {
+        
+        HashMap<String, String> response = new HashMap<>();
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        response.put("status", "400");
+        if(itr != null){
+            response.put("status", "200");
+            return  itr;
+        }
+        return null;
     }
 
     public String convertMapToJson(HashMap<String, String> response) {

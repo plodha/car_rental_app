@@ -10,11 +10,14 @@ import themeansquare.service.IVehicleReg;
 import themeansquare.service.internal.VehicleReg;
 
 import java.util.HashMap;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+
 
 /*
     //vehicle
@@ -48,8 +51,18 @@ public class VehicleRegController {
     @Autowired
     private LocationRepository locationRepository;
 
+    
+    @GetMapping("/vehicleReg")
+    public Iterable<Vehicle> getVehicles() throws Exception 
+    {
+        IVehicleReg reg = new VehicleReg();
+        //return reg.getVehicles();
+        return vehicleRepository.findAll();
+       
+    }
+
     @PostMapping("/vehicleReg")
-    public String register(
+    public String addVehicle(
         @RequestParam(value = "licensePlate") String licensePlate, 
         @RequestParam(value = "model") String model, 
         @RequestParam(value = "make") String make, 
@@ -65,7 +78,7 @@ public class VehicleRegController {
         IVehicleReg reg = new VehicleReg ( vehicleClass, vehicleSize , licensePlate , model,make, status, vIN,
                                           year, contactNumber, name, vehicleCapacity,
                                           vehicleRepository, vehicleTypeRepository, locationRepository);
-        String response = reg.vehicleReg();
+        String response = reg.addVehicle();
 
         return response;
 	}
