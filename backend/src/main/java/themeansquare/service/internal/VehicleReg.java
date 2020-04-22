@@ -180,6 +180,14 @@ public class VehicleReg implements IVehicleReg {
         return null;
     }
 
+    //delete api
+    public void delVehicle(Integer id) throws Exception {
+
+        HashMap<String, String> response = new HashMap<>();
+        vehicleRepository.deleteById(id);
+        response.put("status", "200");
+    }
+
     public String convertMapToJson(HashMap<String, String> response) {
 
         ObjectMapper objectMapper = new ObjectMapper();
