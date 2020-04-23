@@ -12,5 +12,5 @@ public interface IVehicleReg {
 
     public String delVehicle(Integer id) throws Exception;
 
-    public String updateVehicleById(Vehicle existVehicle, Vehicle vehicle) throws Exception;
+    public String updateVehicleById(Integer id, Vehicle vehicle) throws Exception; //Vehicle existVehicle, Vehicle vehicle
 }

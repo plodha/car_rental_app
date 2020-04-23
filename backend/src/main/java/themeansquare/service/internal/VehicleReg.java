@@ -11,6 +11,7 @@ import themeansquare.service.IVehicleReg;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -102,7 +103,7 @@ public class VehicleReg implements IVehicleReg {
                 
                 vehicle.setVIN(vIN);
                 VehicleType vehicleType = this.createVehicleType();
-                vehicle.setVehicleTypeId(vehicleType);
+                vehicle.setVehicleTypeId(vehicleType);  // to break circular relation
                 vehicle.setLocation(this.createLocation(vehicleType));
                 vehicleRepository.save(vehicle);
 
@@ -190,23 +191,65 @@ public class VehicleReg implements IVehicleReg {
         HashMap<String, String> response = new HashMap<>();
         vehicleRepository.deleteById(id);
         response.put("status", "200");
-        
+
         return this.convertMapToJson(response);
     }
 
     //for update api
-    public String updateVehicleById(Vehicle existVehicle, Vehicle vehicle) throws Exception {
+    public String updateVehicleById(Integer id, Vehicle vehicle) throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
-        response.put("status", "200");
+        response.put("status", "400");
 
-        existVehicle.setLicensePlate(vehicle.getLicensePlate());
-        existVehicle.setModel(vehicle.getModel());
-        existVehicle.setMake(vehicle.getMake());
-        existVehicle.setStatus(vehicle.isStatus());
-        existVehicle.setVIN(vehicle.getVIN());
-        existVehicle.setYear(vehicle.getYear());
-        vehicleRepository.save(existVehicle);
+        System.out.println("--------------3---------------");
+            System.out.println(vehicleRepository.findById(id).get().getModel());
+            System.out.println(vehicleRepository.findById(id).get());
+            System.out.println("--------method4---------------------");
+
+        Vehicle existVehicle = vehicleRepository.findById(id).get(); //
+        System.out.println("-----------------5------------");
+        if(existVehicle != null) {
+            
+            // if no new value, then update with the old value
+            //Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())
+            existVehicle.setLicensePlate(Optional.ofNullable(vehicle.getLicensePlate()).orElse(existVehicle.getLicensePlate()));
+            existVehicle.setModel(Optional.ofNullable(vehicle.getModel()).orElse(existVehicle.getModel()));
+            existVehicle.setMake(Optional.ofNullable(vehicle.getMake()).orElse(existVehicle.getMake()));
+            existVehicle.setStatus(Optional.ofNullable(vehicle.isStatus()).orElse(existVehicle.isStatus()));
+            existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
+            existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
+
+            //existVehicle.setVehicleTypeId(existVehicle.getVehicleTypeId());
+           // existVehicle.setLocation(existVehicle.getLocation());
+            System.out.println("--------------6---------------");
+
+            System.out.println(existVehicle.getVehicleTypeId().getId());
+            System.out.println(existVehicle.getVehicleTypeId().toString());
+
+            VehicleType existVehicleType = vehicleTypeRepository.findById(existVehicle.getVehicleTypeId().getId()).get();
+            VehicleType vehicleType = vehicle.getVehicleTypeId();
+            if (existVehicleType != null) {
+               // Optional.ofNullable(vehicle.getVehicleTypeId().getVehicleSize()).orElse(existVehicleType.getVehicleSize())
+                System.out.println("---------------6.1--------------");
+                //System.out.println(Optional.ofNullable(vehicleType.getVehicleClass()).orElse(existVehicleType.getVehicleClass()));
+                //System.out.println(Optional.ofNullable(vehicleType.getVehicleSize()).orElse(existVehicleType.getVehicleSize()));
+                existVehicleType.setVehicleClass(existVehicleType.getVehicleClass());
+                existVehicleType.setVehicleSize(existVehicleType.getVehicleSize());
+                System.out.println("---------------6.2--------------");
+                vehicleTypeRepository.save(existVehicleType);
+            }
+            
+
+            System.out.println("---------------7--------------");
+            System.out.println(existVehicle.getLocation().getId());
+            System.out.println(existVehicle.getLocation().toString());
+            locationRepository.save(existVehicle.getLocation());
+            System.out.println("---------------8--------------");
+            vehicleRepository.save(existVehicle);
+            System.out.println("---------------9--------------");
+            
+            response.put("status", "200");
+        }          
 
         return this.convertMapToJson(response);
     }

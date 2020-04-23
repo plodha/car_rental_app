@@ -100,26 +100,39 @@ public class VehicleRegController {
     }
 
     @PutMapping("/vehicleReg/{id}")
-    public ResponseEntity<?> updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
+    public String updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
+
+        System.out.println("---------------1--------------");
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository);
+        System.out.println("---------------2--------------");
+        String response = reg.updateVehicleById(id, vehicle);
+        System.out.println("---------------10--------------");
+        return response;
+            
+    }
+
+    @PutMapping("/vehicleReg1/{id}")
+    public ResponseEntity<?> updateVehicle1(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
 
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository);
         try {
            
-                Vehicle existVehicle = vehicleRepository.findById(id).get(); //
-                if(existVehicle != null) {
+            Vehicle existVehicle = vehicleRepository.findById(id).get(); //
+            if(existVehicle != null) {
 
-                    existVehicle.setLicensePlate(vehicle.getLicensePlate());
-                    existVehicle.setModel(vehicle.getModel());
-                    existVehicle.setMake(vehicle.getMake());
-                    existVehicle.setStatus(vehicle.isStatus());
-                    existVehicle.setVIN(vehicle.getVIN());
-                    existVehicle.setYear(vehicle.getYear());
-                    vehicleRepository.save(existVehicle);
-                    
-                    return new ResponseEntity<>(HttpStatus.OK);
-                }
-            
-            
+                existVehicle.setLicensePlate(vehicle.getLicensePlate());
+                existVehicle.setModel(vehicle.getModel());
+                existVehicle.setMake(vehicle.getMake());
+                existVehicle.setStatus(vehicle.isStatus());
+                existVehicle.setVIN(vehicle.getVIN());
+                existVehicle.setYear(vehicle.getYear());
+
+                vehicleRepository.save(existVehicle);
+                
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+        
+        
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
