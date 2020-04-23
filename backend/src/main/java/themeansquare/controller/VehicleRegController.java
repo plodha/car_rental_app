@@ -98,19 +98,31 @@ public class VehicleRegController {
         vehicleRepository.deleteById(id);
     }
 
-    //@PutMapping("/products/{id}")
-    @RequestMapping(method = RequestMethod.PUT, value = "/products/{id}")
+    @PutMapping("/vehicleReg/{id}")
     public ResponseEntity<?> updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
+        
         IVehicleReg reg = new VehicleReg();
-
         try {
-            Vehicle existVehicle = reg.getVehicleById(id);
-            vehicleRepository.save(vehicle);
-            return new ResponseEntity<>(HttpStatus.OK);
+           
+                Vehicle existVehicle = vehicleRepository.findById(id).get(); //
+                if(existVehicle != null) {
+
+                    existVehicle.setLicensePlate(vehicle.getLicensePlate());
+                    existVehicle.setModel(vehicle.getModel());
+                    existVehicle.setMake(vehicle.getMake());
+                    existVehicle.setStatus(vehicle.isStatus());
+                    existVehicle.setVIN(vehicle.getVIN());
+                    existVehicle.setYear(vehicle.getYear());
+                    vehicleRepository.save(existVehicle);
+                    
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+            
             
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }  
+        }
+        return null;
             
     }
     

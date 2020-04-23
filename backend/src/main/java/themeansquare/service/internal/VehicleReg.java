@@ -189,8 +189,20 @@ public class VehicleReg implements IVehicleReg {
     }
 
     //for update api
-    public Vehicle getVehicleById(Integer id) throws Exception {
-        return vehicleRepository.findById(id).get();
+    public String updateVehicleById(Vehicle existVehicle, Vehicle vehicle) throws Exception {
+
+        HashMap<String, String> response = new HashMap<>();
+        response.put("status", "200");
+
+        existVehicle.setLicensePlate(vehicle.getLicensePlate());
+        existVehicle.setModel(vehicle.getModel());
+        existVehicle.setMake(vehicle.getMake());
+        existVehicle.setStatus(vehicle.isStatus());
+        existVehicle.setVIN(vehicle.getVIN());
+        existVehicle.setYear(vehicle.getYear());
+        vehicleRepository.save(existVehicle);
+
+        return this.convertMapToJson(response);
     }
 
     public String convertMapToJson(HashMap<String, String> response) {
