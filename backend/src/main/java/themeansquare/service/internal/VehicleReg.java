@@ -46,7 +46,11 @@ public class VehicleReg implements IVehicleReg {
     int vehicleCapacity;
     //int address;  --foreign key to vehicleType ??
 
-    public VehicleReg(){}
+    public VehicleReg(VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository ) {
+        this.vehicleRepository = vehicleRepository;
+        this.vehicleTypeRepository = vehicleTypeRepository;
+        this.locationRepository = locationRepository;
+    }
 
     public VehicleReg( String vehicleClass, int vehicleSize , String licensePlate , String model,String make,
                        Boolean status, String vIN,int year,int contactNumber, String name, int vehicleCapacity,
@@ -181,11 +185,13 @@ public class VehicleReg implements IVehicleReg {
     }
 
     //delete api
-    public void delVehicle(Integer id) throws Exception {
+    public String delVehicle(Integer id) throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
         vehicleRepository.deleteById(id);
         response.put("status", "200");
+        
+        return this.convertMapToJson(response);
     }
 
     //for update api

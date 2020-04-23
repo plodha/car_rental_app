@@ -10,7 +10,7 @@ public interface IVehicleReg {
 
     public Iterable<Vehicle> getVehicles() throws Exception;
 
-    public void delVehicle(Integer id) throws Exception;
+    public String delVehicle(Integer id) throws Exception;
 
     public String updateVehicleById(Vehicle existVehicle, Vehicle vehicle) throws Exception;
 }

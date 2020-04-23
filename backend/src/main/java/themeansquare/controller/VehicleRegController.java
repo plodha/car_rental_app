@@ -86,22 +86,23 @@ public class VehicleRegController {
     
     @GetMapping("/vehicleReg")
     public Iterable<Vehicle> getVehicles() throws Exception {
-        IVehicleReg reg = new VehicleReg();
-        //return reg.getVehicles();
-        return vehicleRepository.findAll();
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository);
+        return reg.getVehicles();
+        //return vehicleRepository.findAll();
     }
 
     @DeleteMapping("/vehicleReg/{id}")
-    public void delVehicles(@PathVariable Integer id) throws Exception {
-        IVehicleReg reg = new VehicleReg();
-        //reg.delVehicle(id);
-        vehicleRepository.deleteById(id);
+    public String delVehicles(@PathVariable Integer id) throws Exception {
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository);
+        String response = reg.delVehicle(id);
+        //vehicleRepository.deleteById(id);
+        return response;
     }
 
     @PutMapping("/vehicleReg/{id}")
     public ResponseEntity<?> updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
-        
-        IVehicleReg reg = new VehicleReg();
+
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository);
         try {
            
                 Vehicle existVehicle = vehicleRepository.findById(id).get(); //
