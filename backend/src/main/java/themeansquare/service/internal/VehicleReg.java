@@ -188,6 +188,11 @@ public class VehicleReg implements IVehicleReg {
         response.put("status", "200");
     }
 
+    //for update api
+    public Vehicle getVehicleById(Integer id) throws Exception {
+        return vehicleRepository.findById(id).get();
+    }
+
     public String convertMapToJson(HashMap<String, String> response) {
 
         ObjectMapper objectMapper = new ObjectMapper();
