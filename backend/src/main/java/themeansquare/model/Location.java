@@ -27,7 +27,7 @@ public class Location{
 	@NotNull
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Address", referencedColumnName = "Id")
-	private VehicleType Address;
+	private Location Address;
 	
 	@NotNull
 	private int ContactNumber;
