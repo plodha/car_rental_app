@@ -19,33 +19,33 @@ services:
   java_spring:
     depends_on:
       - "traefik"
-    build: ../backend
+    build: ../../backend
     ports:
       - "8020:8020"
     networks:
       - ms_network
     labels:
       - "traefik.docker.network=ms_network"
-      - "traefik.frontend.rule=Host:ms.api.wasaequreshi.com"
+      - "traefik.frontend.rule=Host:api.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=8020"
 
-  # angular-service: 
-  #   depends_on:
-  #     - "traefik"
-  #   container_name: mn-app 
-  #   build: ../frontend
-  #   volumes: # Volume binding
-  #     - ../frontend:/app
-  #   ports: 
-  #     - '8030:8030' # Port mapping
-  #   networks:
-  #     - ms_network
-  #   labels:
-  #     - "traefik.docker.network=ms_network"
-  #     - "traefik.frontend.rule=Host:ms.app.wasaequreshi.com"
-  #     - "traefik.enable=true"
-  #     - "traefik.port=8030"
+  angular-service: 
+    depends_on:
+      - "traefik"
+    container_name: mn-app 
+    build: ../../frontend
+    volumes: # Volume binding
+      - ../../frontend:/app
+    ports: 
+      - '8030:8030' # Port mapping
+    networks:
+      - ms_network
+    labels:
+      - "traefik.docker.network=ms_network"
+      - "traefik.frontend.rule=Host:app.wasaequreshi.com"
+      - "traefik.enable=true"
+      - "traefik.port=8030"
 
   db:
     depends_on:
@@ -64,7 +64,7 @@ services:
       - ms_network 
     labels:
       - "traefik.docker.network=ms_network"
-      - "traefik.frontend.rule=Host:ms.db.wasaequreshi.com"
+      - "traefik.frontend.rule=Host:db.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=3306"
  
@@ -83,7 +83,7 @@ services:
       - ms_network
     labels:
       - "traefik.docker.network=ms_network"
-      - "traefik.frontend.rule=Host:ms.adminer.wasaequreshi.com"
+      - "traefik.frontend.rule=Host:adminer.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=8010"
 

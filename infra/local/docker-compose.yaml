@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  db:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_DATABASE: car_rental
+      MYSQL_ROOT_PASSWORD: Sup3rS3cr3tPassw0rd
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_home:/var/lib/mysql
+    networks:
+      - ms_network 
+ 
+  adminer:
+    build: ../prod/adminer
+    depends_on:
+     
+      - "db"
+    image: adminer
+    restart: always
+    links:
+      - db
+    ports:
+      - "8010:8010"
+    networks:
+      - ms_network
+
+networks:
+  ms_network:
+    external: true
+
+volumes:
+  mysql_home:

@@ -1,18 +1,97 @@
 package themeansquare.model;
 
 import java.time.LocalDateTime;  // Import the LocalDateTime class
-import java.time.format.DateTimeFormatter;  // Import the DateTimeFormatter class
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;  // Import the DateTimeFormatter class
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+@Entity
 public class Reservation{
-   
-    int _id ;
-    float estimatePrice ;
-    DateTimeFormatter pickupTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss") ;
-    DateTimeFormatter estimateDropoffTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss") ;
-    DateTimeFormatter actualDropoffTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss") ;
-    Location location ;
-    Vehicle vehicle ;
-    Customer customer ;
-    Invoice invoice ;
+	
+	@Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private int Id;
+	
+	@NotNull
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Customer", referencedColumnName = "Id")
+	private VehicleType Customer;
+	
+	@NotNull
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Vehicle", referencedColumnName = "Id")
+	private Vehicle Vehicle;
+	
+	@NotNull
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Location", referencedColumnName = "Id")
+	private Location Location;
+	
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date PickUpTime;
+	
+	@NotNull
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date EstimateDropOffTime;
+	
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date ActualDropOffTime;
+	
+	@NotNull
+	private double EstimatedPrice;
+	
+	@NotNull
+	@OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "Invoice", referencedColumnName = "Id")
+	private Invoice Invoice;
+
+	public int getId() { return Id; }
+
+	public void setId(int id) { Id = id; }
+
+	public VehicleType getCustomer() { return Customer; }
+
+	public void setCustomer(VehicleType customer) { Customer = customer; }
+
+	public Vehicle getVehicle() { return Vehicle; }
+
+	public void setVehicle(Vehicle vehicle) { Vehicle = vehicle; }
+
+	public Location getLocation() { return Location; }
+
+	public void setLocation(Location location) { Location = location; }
+
+	public Date getPickUpTime() { return PickUpTime; }
+
+	public void setPickUpTime(Date pickUpTime) { PickUpTime = pickUpTime; }
+
+	public Date getEstimateDropOffTime() { return EstimateDropOffTime; }
+
+	public void setEstimateDropOffTime(Date estimateDropOffTime) { EstimateDropOffTime = estimateDropOffTime; }
+
+	public Date getActualDropOffTime() { return ActualDropOffTime; }
+
+	public void setActualDropOffTime(Date actualDropOffTime) { ActualDropOffTime = actualDropOffTime; }
+
+	public double getEstimatedPrice() { return EstimatedPrice; }
+
+	public void setEstimatedPrice(double estimatedPrice) { EstimatedPrice = estimatedPrice; }
+
+	public Invoice getInvoice() { return Invoice; }
+
+	public void setInvoice(Invoice invoice) { Invoice = invoice; }
+	
+	
 }
     
