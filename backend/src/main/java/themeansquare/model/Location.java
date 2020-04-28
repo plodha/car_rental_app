@@ -27,7 +27,7 @@ public class Location{
 	@NotNull
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Address", referencedColumnName = "Id")
-	private VehicleType Address;
+	private Address address;
 	
 	@NotNull
 	private int ContactNumber;
@@ -44,9 +44,9 @@ public class Location{
 
 	public void setVehicleCapacity(int vehicleCapacity) { VehicleCapacity = vehicleCapacity; }
 
-	public VehicleType getAddress() { return Address; }
+	public @NotNull Address getAddress() { return address; }
 
-	public void setAddress(VehicleType address) { Address = address; }
+	public void setAddress(@NotNull Address address) { this.address = address; }
 
 	public int getContactNumber() { return ContactNumber; }
 

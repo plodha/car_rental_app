@@ -3,11 +3,12 @@ package themeansquare.controller;
 import themeansquare.model.Vehicle;
 import themeansquare.model.VehicleType;
 import themeansquare.model.Location;
+import themeansquare.service.IVehicleReg;
+import themeansquare.service.internal.VehicleReg;
 import themeansquare.repository.LocationRepository;
 import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.VehicleTypeRepository;
-import themeansquare.service.IVehicleReg;
-import themeansquare.service.internal.VehicleReg;
+import themeansquare.repository.AddressRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +61,8 @@ public class VehicleRegController {
     private VehicleTypeRepository vehicleTypeRepository;
     @Autowired
     private LocationRepository locationRepository;
+    @Autowired
+    private AddressRepository addressRepository;
 
     
     @PostMapping("/vehicleReg")
@@ -74,11 +77,15 @@ public class VehicleRegController {
         @RequestParam(value = "vehicleSize") int vehicleSize, 
         @RequestParam(value = "contactNumber") int contactNumber, 
         @RequestParam(value = "name") String name, 
-        @RequestParam(value = "vehicleCapacity") int vehicleCapacity) throws Exception {
+        @RequestParam(value = "vehicleCapacity") int vehicleCapacity,
+        @RequestParam(value = "street") String street,
+        @RequestParam(value = "city") String city, 
+        @RequestParam(value = "state") String state, 
+        @RequestParam(value = "zipcode") String zipcode) throws Exception {
         
         IVehicleReg reg = new VehicleReg ( vehicleClass, vehicleSize , licensePlate , model,make, status, vIN,
-                                          year, contactNumber, name, vehicleCapacity,
-                                          vehicleRepository, vehicleTypeRepository, locationRepository);
+                                          year, contactNumber, name, vehicleCapacity, street, city, state, zipcode,
+                                          vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         String response = reg.addVehicle();
 
         return response;
@@ -86,14 +93,14 @@ public class VehicleRegController {
     
     @GetMapping("/vehicleReg")
     public Iterable<Vehicle> getVehicles() throws Exception {
-        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository);
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         return reg.getVehicles();
         //return vehicleRepository.findAll();
     }
 
     @DeleteMapping("/vehicleReg/{id}")
     public String delVehicles(@PathVariable Integer id) throws Exception {
-        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository);
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         String response = reg.delVehicle(id);
         //vehicleRepository.deleteById(id);
         return response;
@@ -103,7 +110,7 @@ public class VehicleRegController {
     public String updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
 
         System.out.println("---------------1--------------");
-        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository);
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         System.out.println("---------------2--------------");
         String response = reg.updateVehicleById(id, vehicle);
         System.out.println("---------------10--------------");
@@ -114,7 +121,7 @@ public class VehicleRegController {
     @PutMapping("/vehicleReg1/{id}")
     public ResponseEntity<?> updateVehicle1(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
 
-        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository);
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         try {
            
             Vehicle existVehicle = vehicleRepository.findById(id).get(); //

@@ -1,12 +1,15 @@
 package themeansquare.service.internal;
 
+import themeansquare.service.IVehicleReg;
 import themeansquare.model.Vehicle;
 import themeansquare.model.VehicleType;
+import themeansquare.model.Address;
 import themeansquare.model.Location;
 import themeansquare.repository.LocationRepository;
 import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.VehicleTypeRepository;
-import themeansquare.service.IVehicleReg;
+import themeansquare.repository.AddressRepository;
+
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -25,37 +28,45 @@ public class VehicleReg implements IVehicleReg {
     private VehicleRepository vehicleRepository;
     private VehicleTypeRepository vehicleTypeRepository;
     private LocationRepository locationRepository;
+    private AddressRepository addressRepository;
     
     ///// arrtibutes
     //vehicle
-    String licensePlate;	
-    String model;
-    String make;		
-    Boolean status;	
-    String vIN;
-    int year; //
+    private String licensePlate;	
+    private String model;
+    private String make;		
+    private Boolean status;	
+    private String vIN;
+    private int year; //
     //int location; --foreign key to Location
     //int vehicleType; --foreign key to vehicleType
 
     //vehicleType
-    String vehicleClass;
-    int vehicleSize;
+    private String vehicleClass;
+    private int vehicleSize;
 
     //Location
-    int contactNumber;
-    String name;	
-    int vehicleCapacity;
-    //int address;  --foreign key to vehicleType ??
+    private int contactNumber;
+    private String name;	
+    private int vehicleCapacity;
+    
+    //Address
+    private String street;
+    private String city;
+    private String state;
+    private String zipcode;
 
-    public VehicleReg(VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository ) {
+    public VehicleReg(VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository ) {
         this.vehicleRepository = vehicleRepository;
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
+        this.addressRepository = addressRepository;
     }
 
     public VehicleReg( String vehicleClass, int vehicleSize , String licensePlate , String model,String make,
                        Boolean status, String vIN,int year,int contactNumber, String name, int vehicleCapacity,
-                       VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository ) {
+                       String street, String city,String state, String zipcode,
+                       VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
 
         this.vehicleClass = vehicleClass;
         this.vehicleSize = vehicleSize;
@@ -68,9 +79,14 @@ public class VehicleReg implements IVehicleReg {
         this.contactNumber = contactNumber;
         this.name = name;
         this.vehicleCapacity = vehicleCapacity;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipcode = zipcode;
         this.vehicleRepository = vehicleRepository;
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
+        this.addressRepository = addressRepository;
 
     }
 
@@ -102,9 +118,9 @@ public class VehicleReg implements IVehicleReg {
                 response.remove("isVINAvailable");
                 
                 vehicle.setVIN(vIN);
-                VehicleType vehicleType = this.createVehicleType();
-                vehicle.setVehicleTypeId(vehicleType);  // to break circular relation
-                vehicle.setLocation(this.createLocation(vehicleType));
+               // VehicleType vehicleType = this.createVehicleType();
+                vehicle.setVehicleTypeId(this.createVehicleType());  // to break circular relation
+                vehicle.setLocation(this.createLocation());
                 vehicleRepository.save(vehicle);
 
                 response.put("status", "200");
@@ -123,16 +139,27 @@ public class VehicleReg implements IVehicleReg {
         return vehicleType;
     }
 
-    public Location createLocation(VehicleType vehicleType) {
+    public Location createLocation( ) {
         Location location = new Location();
 
         location.setContactNumber(contactNumber);
         location.setName(name);
         location.setVehicleCapacity(vehicleCapacity);
-        location.setAddress(vehicleType);
+        location.setAddress(this.createAddress());
         locationRepository.save(location);
 
         return location;
+    }
+
+    private Address createAddress() {
+        Address address = new Address();
+        address.setCity(this.city);
+        address.setState(this.state);
+        address.setStreet(this.street);
+        address.setZipCode(Integer.parseInt(this.zipcode));
+        addressRepository.save(address);
+
+        return address;
     }
 
     //look for existing license plate
@@ -222,7 +249,8 @@ public class VehicleReg implements IVehicleReg {
             //existVehicle.setVehicleTypeId(existVehicle.getVehicleTypeId());
            // existVehicle.setLocation(existVehicle.getLocation());
             System.out.println("--------------6---------------");
-
+            
+            System.out.println("vehicle.getVIN()" + vehicle.getVIN());
             System.out.println(existVehicle.getVehicleTypeId().getId());
             System.out.println(existVehicle.getVehicleTypeId().toString());
 
