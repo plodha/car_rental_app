@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
-  "version": 1, 
+  "version": 1,
   "newProjectRoot": "projects",
   "projects": {
     "rental-car-app": {
@@ -28,7 +28,9 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "src/styles.scss",
+              "src/app.css"
             ],
             "scripts": []
           },
@@ -92,7 +94,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+
+              "src/app.css",
+
             ],
             "scripts": []
           }
@@ -123,6 +128,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "rental-car-app"
 }
