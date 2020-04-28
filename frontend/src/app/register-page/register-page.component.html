@@ -1,1 +1,101 @@
-<p>register-page works!</p>
+<div class="example-container mat-elevation-z8">
+  <div class="container">
+    <div class='title'>
+    <h1>Car Rental System</h1>
+    </div>
+  </div>
+  <div class="example-loading-shade"
+        *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <!-- <div class="button-row">
+    <a mat-flat-button color="primary" [routerLink]="['/cases']"><mat-icon>list</mat-icon></a>
+  </div> -->
+  <mat-card class="example-card">
+    <form [formGroup]="registerForm" (ngSubmit)="onFormSubmit()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Firstname Lastname" formControlName="name"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('name').valid && registerForm.get('name').touched">Please enter Name</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Date of birth</mat-label>
+        <input matInput [matDatepicker]="picker" placeholder="Date of Birth"  formControlName="dateofbirth">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+
+        <mat-error>
+          <span *ngIf="!registerForm.get('dateofbirth').valid && registerForm.get('dateofbirth').touched">Please enter Date of birth</span>
+        </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Address</mat-label>
+        <input matInput placeholder="Address" formControlName="address"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('address').valid && registerForm.get('address').touched">Please enter Address</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>City</mat-label>
+        <input matInput placeholder="City" formControlName="city"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('city').valid && registerForm.get('city').touched">Please enter City</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>State</mat-label>
+        <input matInput placeholder="State" formControlName="state"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('state').valid && registerForm.get('state').touched">Please enter State</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Zip Code</mat-label>
+        <input matInput placeholder="Zip Code" formControlName="zipcode"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('zipcode').valid && registerForm.get('zipcode').touched">Please enter Zip <code></code></span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" formControlName="email"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('email').valid && registerForm.get('email').touched">Please enter Email Address</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>License Number</mat-label>
+        <input matInput placeholder="license number" formControlName="licensenumber"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('licensenumber').valid && registerForm.get('licensenumber').touched">Please enter License number</span>
+        </mat-error>
+      </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>License Expiry date</mat-label>
+      <input matInput [matDatepicker]="licensepicker" placeholder="license expiry date"  formControlName="licenseExpiryDate">
+      <mat-datepicker-toggle matSuffix [for]="licensepicker"></mat-datepicker-toggle>
+      <mat-datepicker #licensepicker></mat-datepicker>
+      <mat-error>
+        <span *ngIf="!registerForm.get('licenseExpiryDate').valid && registerForm.get('licenseExpiryDate').touched">Please enter License Expiration Date</span>
+      </mat-error>
+    </mat-form-field>
+
+
+      <div class="button-row">
+        <button type="submit" [disabled]="!registerForm.valid" mat-flat-button color="primary">Register</button>
+      </div>
+    </form>
+  </mat-card>
+</div>
