@@ -1,6 +1,7 @@
 package themeansquare.service;
 
 import themeansquare.model.Vehicle;
+import themeansquare.model.VehicleType;
 
 import java.util.List;
 

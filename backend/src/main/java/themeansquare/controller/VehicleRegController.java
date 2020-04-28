@@ -112,7 +112,7 @@ public class VehicleRegController {
         System.out.println("---------------1--------------");
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         System.out.println("---------------2--------------");
-        String response = reg.updateVehicleById(id, vehicle);
+        String response = reg.updateVehicleById(id, vehicle );
         System.out.println("---------------10--------------");
         return response;
             

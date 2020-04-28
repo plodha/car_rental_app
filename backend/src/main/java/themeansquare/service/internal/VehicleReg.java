@@ -259,18 +259,36 @@ public class VehicleReg implements IVehicleReg {
             if (existVehicleType != null) {
                // Optional.ofNullable(vehicle.getVehicleTypeId().getVehicleSize()).orElse(existVehicleType.getVehicleSize())
                 System.out.println("---------------6.1--------------");
-                //System.out.println(Optional.ofNullable(vehicleType.getVehicleClass()).orElse(existVehicleType.getVehicleClass()));
-                //System.out.println(Optional.ofNullable(vehicleType.getVehicleSize()).orElse(existVehicleType.getVehicleSize()));
-                existVehicleType.setVehicleClass(existVehicleType.getVehicleClass());
-                existVehicleType.setVehicleSize(existVehicleType.getVehicleSize());
+                existVehicleType.setVehicleClass(Optional.ofNullable(vehicleType.getVehicleClass()).orElse(existVehicleType.getVehicleClass()));
+                existVehicleType.setVehicleSize(Optional.ofNullable(vehicleType.getVehicleSize()).orElse(existVehicleType.getVehicleSize()));
                 System.out.println("---------------6.2--------------");
                 vehicleTypeRepository.save(existVehicleType);
             }
-            
-
             System.out.println("---------------7--------------");
-            System.out.println(existVehicle.getLocation().getId());
-            System.out.println(existVehicle.getLocation().toString());
+            
+       
+            int id_loc = existVehicle.getLocation().getId();
+           // System.out.println("loc.findById(id_loc).get() " + loc.findById(id_loc).get().getId());
+            Location existLocation = locationRepository.findById(id_loc).get();
+            Location location = vehicle.getLocation();
+            // Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber())
+           // System.out.println("existLocation.getVehicleCapacity() "+ existLocation.getVehicleCapacity());
+            System.out.println("---------------7.1--------------");
+           // System.out.println("location.getVehicleCapacity() "+ location.getVehicleCapacity());
+            existLocation.setContactNumber(Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber()));
+            System.out.println("---------------7.2--------------");
+            existLocation.setName(Optional.ofNullable(location.getName()).orElse(existLocation.getName()));
+            existLocation.setVehicleCapacity(Optional.ofNullable(location.getVehicleCapacity()).orElse(existLocation.getVehicleCapacity()));
+            
+            Address existAddress = addressRepository.findById(existLocation.getAddress().getId()).get();
+            Address address = vehicle.getLocation().getAddress();
+            // Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber())
+            existAddress.setCity(Optional.ofNullable(address.getCity()).orElse(existAddress.getCity()));
+            existAddress.setState(Optional.ofNullable(address.getState()).orElse(existAddress.getState()));
+            existAddress.setStreet(Optional.ofNullable(address.getStreet()).orElse(existAddress.getStreet()));
+            existAddress.setZipCode(Optional.ofNullable(address.getZipCode()).orElse(existAddress.getZipCode()));
+
+            addressRepository.save(existVehicle.getLocation().getAddress());
             locationRepository.save(existVehicle.getLocation());
             System.out.println("---------------8--------------");
             vehicleRepository.save(existVehicle);
@@ -281,6 +299,10 @@ public class VehicleReg implements IVehicleReg {
 
         return this.convertMapToJson(response);
     }
+
+    // public Location getLocationById (int id) {
+    //     Location location = LocationRepository.findById(id).get();
+    // }
 
     public String convertMapToJson(HashMap<String, String> response) {
 
