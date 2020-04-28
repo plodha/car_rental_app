@@ -13,6 +13,7 @@ import themeansquare.repository.AddressRepository;
 import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -65,7 +66,7 @@ public class VehicleRegController {
     private AddressRepository addressRepository;
 
     
-    @PostMapping("/vehicleReg")
+    @PostMapping("/vehicle")
     public String addVehicle (
         @RequestParam(value = "licensePlate") String licensePlate, 
         @RequestParam(value = "model") String model, 
@@ -91,60 +92,37 @@ public class VehicleRegController {
         return response;
     }
     
-    @GetMapping("/vehicleReg")
+    @GetMapping("/vehicle")
     public Iterable<Vehicle> getVehicles() throws Exception {
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         return reg.getVehicles();
         //return vehicleRepository.findAll();
     }
 
-    @DeleteMapping("/vehicleReg/{id}")
+    @GetMapping(value = "/vehicle/{id}")
+    public Optional<Vehicle> getVehicleById(@PathVariable Integer id) throws Exception {
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+        return reg.getVehicleById(id);
+    }
+
+    @DeleteMapping("/vehicle/{id}")
     public String delVehicles(@PathVariable Integer id) throws Exception {
+
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         String response = reg.delVehicle(id);
         //vehicleRepository.deleteById(id);
         return response;
     }
 
-    @PutMapping("/vehicleReg/{id}")
+    @PutMapping("/vehicle/{id}")
     public String updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
 
-        System.out.println("---------------1--------------");
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
-        System.out.println("---------------2--------------");
         String response = reg.updateVehicleById(id, vehicle );
-        System.out.println("---------------10--------------");
         return response;
             
     }
 
-    @PutMapping("/vehicleReg1/{id}")
-    public ResponseEntity<?> updateVehicle1(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
 
-        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
-        try {
-           
-            Vehicle existVehicle = vehicleRepository.findById(id).get(); //
-            if(existVehicle != null) {
-
-                existVehicle.setLicensePlate(vehicle.getLicensePlate());
-                existVehicle.setModel(vehicle.getModel());
-                existVehicle.setMake(vehicle.getMake());
-                existVehicle.setStatus(vehicle.isStatus());
-                existVehicle.setVIN(vehicle.getVIN());
-                existVehicle.setYear(vehicle.getYear());
-
-                vehicleRepository.save(existVehicle);
-                
-                return new ResponseEntity<>(HttpStatus.OK);
-            }
-        
-        
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return null;
-            
-    }
     
 }

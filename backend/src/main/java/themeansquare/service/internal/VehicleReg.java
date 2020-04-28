@@ -199,7 +199,7 @@ public class VehicleReg implements IVehicleReg {
         return true;
     }
 
-    //for get api 
+    //get-all api 
     public Iterable<Vehicle> getVehicles() throws Exception {
         
         HashMap<String, String> response = new HashMap<>();
@@ -212,13 +212,22 @@ public class VehicleReg implements IVehicleReg {
         return null;
     }
 
+    //get by id api
+    public Optional<Vehicle> getVehicleById(Integer id) throws Exception {
+
+        return vehicleRepository.findById(id);
+    }
+
     //delete api
     public String delVehicle(Integer id) throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
-        vehicleRepository.deleteById(id);
-        response.put("status", "200");
+        response.put("status", "400");
 
+        if (vehicleRepository.existsById(id)) {
+            vehicleRepository.deleteById(id);
+            response.put("status", "200");
+        }
         return this.convertMapToJson(response);
     }
 
@@ -227,16 +236,9 @@ public class VehicleReg implements IVehicleReg {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
-
-        System.out.println("--------------3---------------");
-            System.out.println(vehicleRepository.findById(id).get().getModel());
-            System.out.println(vehicleRepository.findById(id).get());
-            System.out.println("--------method4---------------------");
-
         Vehicle existVehicle = vehicleRepository.findById(id).get(); //
-        System.out.println("-----------------5------------");
         if(existVehicle != null) {
-            
+            System.out.println("vehicle.getVIN() "+vehicle.getVIN());
             // if no new value, then update with the old value
             //Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())
             existVehicle.setLicensePlate(Optional.ofNullable(vehicle.getLicensePlate()).orElse(existVehicle.getLicensePlate()));
@@ -246,63 +248,64 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
 
-            //existVehicle.setVehicleTypeId(existVehicle.getVehicleTypeId());
-           // existVehicle.setLocation(existVehicle.getLocation());
-            System.out.println("--------------6---------------");
             
-            System.out.println("vehicle.getVIN()" + vehicle.getVIN());
-            System.out.println(existVehicle.getVehicleTypeId().getId());
-            System.out.println(existVehicle.getVehicleTypeId().toString());
-
-            VehicleType existVehicleType = vehicleTypeRepository.findById(existVehicle.getVehicleTypeId().getId()).get();
-            VehicleType vehicleType = vehicle.getVehicleTypeId();
-            if (existVehicleType != null) {
-               // Optional.ofNullable(vehicle.getVehicleTypeId().getVehicleSize()).orElse(existVehicleType.getVehicleSize())
-                System.out.println("---------------6.1--------------");
-                existVehicleType.setVehicleClass(Optional.ofNullable(vehicleType.getVehicleClass()).orElse(existVehicleType.getVehicleClass()));
-                existVehicleType.setVehicleSize(Optional.ofNullable(vehicleType.getVehicleSize()).orElse(existVehicleType.getVehicleSize()));
-                System.out.println("---------------6.2--------------");
-                vehicleTypeRepository.save(existVehicleType);
-            }
-            System.out.println("---------------7--------------");
-            
+            int vehicleTypeId = existVehicle.getVehicleTypeId().getId();
+            vehicleTypeRepository.save(this.updateVehicleTypeById(vehicleTypeId, vehicle));
        
-            int id_loc = existVehicle.getLocation().getId();
-           // System.out.println("loc.findById(id_loc).get() " + loc.findById(id_loc).get().getId());
-            Location existLocation = locationRepository.findById(id_loc).get();
-            Location location = vehicle.getLocation();
-            // Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber())
-           // System.out.println("existLocation.getVehicleCapacity() "+ existLocation.getVehicleCapacity());
-            System.out.println("---------------7.1--------------");
-           // System.out.println("location.getVehicleCapacity() "+ location.getVehicleCapacity());
-            existLocation.setContactNumber(Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber()));
-            System.out.println("---------------7.2--------------");
-            existLocation.setName(Optional.ofNullable(location.getName()).orElse(existLocation.getName()));
-            existLocation.setVehicleCapacity(Optional.ofNullable(location.getVehicleCapacity()).orElse(existLocation.getVehicleCapacity()));
-            
-            Address existAddress = addressRepository.findById(existLocation.getAddress().getId()).get();
-            Address address = vehicle.getLocation().getAddress();
-            // Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber())
-            existAddress.setCity(Optional.ofNullable(address.getCity()).orElse(existAddress.getCity()));
-            existAddress.setState(Optional.ofNullable(address.getState()).orElse(existAddress.getState()));
-            existAddress.setStreet(Optional.ofNullable(address.getStreet()).orElse(existAddress.getStreet()));
-            existAddress.setZipCode(Optional.ofNullable(address.getZipCode()).orElse(existAddress.getZipCode()));
-
-            addressRepository.save(existVehicle.getLocation().getAddress());
-            locationRepository.save(existVehicle.getLocation());
-            System.out.println("---------------8--------------");
+            int locationId = existVehicle.getLocation().getId();
+            locationRepository.save(this.updateLocationById(locationId, vehicle));
             vehicleRepository.save(existVehicle);
-            System.out.println("---------------9--------------");
-            
+
             response.put("status", "200");
         }          
 
         return this.convertMapToJson(response);
     }
 
-    // public Location getLocationById (int id) {
-    //     Location location = LocationRepository.findById(id).get();
-    // }
+    public VehicleType updateVehicleTypeById (int id, Vehicle vehicle) {
+        VehicleType existVehicleType = vehicleTypeRepository.findById(id).get();
+        VehicleType vehicleType = vehicle.getVehicleTypeId();
+
+        if (existVehicleType != null) {
+               // Optional.ofNullable(vehicle.getVehicleTypeId().getVehicleSize()).orElse(existVehicleType.getVehicleSize())
+                existVehicleType.setVehicleClass(Optional.ofNullable(vehicleType.getVehicleClass()).orElse(existVehicleType.getVehicleClass()));
+                existVehicleType.setVehicleSize(Optional.ofNullable(vehicleType.getVehicleSize()).orElse(existVehicleType.getVehicleSize()));
+                
+        }
+        return existVehicleType;
+    }
+
+    public Location updateLocationById (int locationId, Vehicle vehicle) {
+
+        Location existLocation = locationRepository.findById(locationId).get();
+        Location location = vehicle.getLocation();
+
+        if(existLocation != null) {
+            existLocation.setContactNumber(Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber()));
+            existLocation.setName(Optional.ofNullable(location.getName()).orElse(existLocation.getName()));
+            existLocation.setVehicleCapacity(Optional.ofNullable(location.getVehicleCapacity()).orElse(existLocation.getVehicleCapacity()));
+        
+            int addressId = existLocation.getAddress().getId();
+            addressRepository.save(this.updateAddressById (addressId, vehicle));
+        }
+        //addressRepository.save(existVehicle.getLocation().getAddress());
+        return existLocation;
+    }
+
+    public Address updateAddressById (int addressId, Vehicle vehicle) { 
+
+        Address existAddress = addressRepository.findById(addressId).get();
+        Address address = vehicle.getLocation().getAddress();
+
+        if(existAddress != null) {
+            // Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber())
+            existAddress.setCity(Optional.ofNullable(address.getCity()).orElse(existAddress.getCity()));
+            existAddress.setState(Optional.ofNullable(address.getState()).orElse(existAddress.getState()));
+            existAddress.setStreet(Optional.ofNullable(address.getStreet()).orElse(existAddress.getStreet()));
+            existAddress.setZipCode(Optional.ofNullable(address.getZipCode()).orElse(existAddress.getZipCode()));
+        }
+        return existAddress;
+    }
 
     public String convertMapToJson(HashMap<String, String> response) {
 
