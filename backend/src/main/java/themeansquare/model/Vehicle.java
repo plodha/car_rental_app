@@ -18,6 +18,7 @@ public class Vehicle {
     private int Id;
 	
 	@NotNull
+    //@Column(columnDefinition = "TEXT")
     private String VIN;
 	
 	@NotNull
