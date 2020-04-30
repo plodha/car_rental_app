@@ -4,17 +4,11 @@ import themeansquare.service.ILocationReg;
 import themeansquare.model.Address;
 import themeansquare.model.Location;
 import themeansquare.repository.LocationRepository;
-import themeansquare.repository.VehicleRepository;
-import themeansquare.repository.VehicleTypeRepository;
 import themeansquare.repository.AddressRepository;
 
 
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -54,8 +48,8 @@ public class LocationReg implements ILocationReg {
         this.addressRepository = addressRepository;
     }
 
-    // validation logic for vehicle api
-    public String addVehicle() throws Exception {
+    // validation logic for location api
+    public String addLocation() throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
         //response.put("isLicensePlateAvailable", "true");
@@ -120,30 +114,34 @@ public class LocationReg implements ILocationReg {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
-        Vehicle existVehicle = vehicleRepository.findById(id).get(); //
-        if(existVehicle != null) {
-            System.out.println("vehicle.getVIN() "+vehicle.getVIN());
-            // if no new value, then update with the old value
-            //Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())
-            existVehicle.setLicensePlate(Optional.ofNullable(vehicle.getLicensePlate()).orElse(existVehicle.getLicensePlate()));
-            existVehicle.setModel(Optional.ofNullable(vehicle.getModel()).orElse(existVehicle.getModel()));
-            existVehicle.setMake(Optional.ofNullable(vehicle.getMake()).orElse(existVehicle.getMake()));
-            existVehicle.setStatus(Optional.ofNullable(vehicle.isStatus()).orElse(existVehicle.isStatus()));
-            existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
-            existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
+        Location existLocation = locationRepository.findById(id).get();
 
-            
-            int vehicleTypeId = existVehicle.getVehicleTypeId().getId();
-            vehicleTypeRepository.save(this.updateVehicleTypeById(vehicleTypeId, vehicle));
-       
-            int locationId = existVehicle.getLocation().getId();
-            locationRepository.save(this.updateLocationById(locationId, vehicle));
-            vehicleRepository.save(existVehicle);
-
+        if(existLocation != null) {
+            existLocation.setContactNumber(Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber()));
+            existLocation.setName(Optional.ofNullable(location.getName()).orElse(existLocation.getName()));
+            existLocation.setVehicleCapacity(Optional.ofNullable(location.getVehicleCapacity()).orElse(existLocation.getVehicleCapacity()));
+        
+            int addressId = existLocation.getAddress().getId();
+            addressRepository.save(this.updateAddressById (addressId, location));
+            locationRepository.save(existLocation);
             response.put("status", "200");
-        }          
-
+        }
         return this.convertMapToJson(response);
+    }
+
+    public Address updateAddressById (int addressId, Location location) { 
+
+        Address existAddress = addressRepository.findById(addressId).get();
+        Address address = location.getAddress();
+
+        if(existAddress != null) {
+            // Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber())
+            existAddress.setCity(Optional.ofNullable(address.getCity()).orElse(existAddress.getCity()));
+            existAddress.setState(Optional.ofNullable(address.getState()).orElse(existAddress.getState()));
+            existAddress.setStreet(Optional.ofNullable(address.getStreet()).orElse(existAddress.getStreet()));
+            existAddress.setZipCode(Optional.ofNullable(address.getZipCode()).orElse(existAddress.getZipCode()));
+        }
+        return existAddress;
     }
 
     public String convertMapToJson(HashMap<String, String> response) {
