@@ -95,9 +95,7 @@
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-
-              "src/app.css",
-
+              "src/app.css"
             ],
             "scripts": []
           }
@@ -130,5 +128,8 @@
       }
     }
   },
-  "defaultProject": "rental-car-app"
+  "defaultProject": "rental-car-app",
+  "cli": {
+    "analytics": "13fb285d-c9ce-4506-ae22-934c233ace40"
+  }
 }
