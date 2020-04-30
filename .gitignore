@@ -1,5 +1,5 @@
 # Created by https://www.gitignore.io
-/frontend/node_modules/
+/frontend/node_modules/*
 ### OSX ###
 .DS_Store
 .AppleDouble
