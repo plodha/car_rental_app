@@ -14,8 +14,7 @@ export class ApiService {
 
   registrationAPI(username, password, firstName, lastName, licenseNumber, licenseExpDate, email, street, city, state, zipcode) {
     
-    var results;
-    var end_point = "registration";
+    var end_point = "register";
     
     var params = new HttpParams()
       .set('username', username)
@@ -30,9 +29,7 @@ export class ApiService {
       .set('state', state)
       .set('zipcode', zipcode);
     
-    this.http.post(this.api_url + end_point, params).subscribe(res => {results = res});
-
-    return results;
+    return this.http.post(this.api_url + end_point, params);
 
   }
 }

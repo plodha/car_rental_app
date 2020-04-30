@@ -1,3 +1,4 @@
+cp ~/application.properties ../../backend/src/main/resources/application.properties
 cd ../../backend
 mvn clean install -DskipTests
 cd ../infra/prod
