@@ -13,10 +13,7 @@ import themeansquare.repository.AddressRepository;
 
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -103,9 +100,6 @@ public class VehicleReg implements IVehicleReg {
         if (checkIfLicensePlateExists()) {
             response.remove("isLicensePlateAvailable");
             Vehicle vehicle = new Vehicle();
-            
-            //this.vehicleClass = vehicleClass;
-            //this.vehicleSize = vehicleSize;
             vehicle.setLicensePlate(licensePlate);
             vehicle.setModel(model);
             vehicle.setMake(make);
@@ -116,9 +110,7 @@ public class VehicleReg implements IVehicleReg {
             // Add VIN check
             if (checkIfVINExists()) {
                 response.remove("isVINAvailable");
-                
                 vehicle.setVIN(vIN);
-               // VehicleType vehicleType = this.createVehicleType();
                 vehicle.setVehicleTypeId(this.createVehicleType());  // to break circular relation
                 vehicle.setLocation(this.createLocation());
                 vehicleRepository.save(vehicle);
@@ -164,38 +156,30 @@ public class VehicleReg implements IVehicleReg {
 
     //look for existing license plate
     public boolean checkIfLicensePlateExists() {
-
         Iterable<Vehicle> itr = vehicleRepository.findAll();
-        
         Iterator it = itr.iterator();
         
         while (it.hasNext()) {
             Vehicle vehicle = (Vehicle) it.next();
-            System.out.println(vehicle.getLicensePlate());
-            
+            System.out.println(vehicle.getLicensePlate()); 
             if (vehicle.getLicensePlate().equals(this.licensePlate)) {
                 return false;
             }
         }
-
         return true;
     }
 
     public boolean checkIfVINExists() {
-
         Iterable<Vehicle> itr = vehicleRepository.findAll();
-        
         Iterator it = itr.iterator();
         
         while (it.hasNext()) {
             Vehicle vehicle = (Vehicle) it.next();
-            System.out.println(vehicle.getVIN());
-            
+            System.out.println(vehicle.getVIN()); 
             if (vehicle.getVIN().equals(this.vIN)) {
                 return false;
             }
         }
-
         return true;
     }
 
