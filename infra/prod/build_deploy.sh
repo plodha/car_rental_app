@@ -1,5 +1,5 @@
 cd ../../backend
-mvn clean install
+mvn clean install -DskipTests
 cd ../infra/prod
 cp ~/acme.json traefik_letsencrypt/acme.json
 chmod 600 traefik_letsencrypt/acme.json
