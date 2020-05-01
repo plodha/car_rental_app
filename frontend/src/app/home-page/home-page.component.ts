@@ -26,13 +26,4 @@ export class HomePageComponent implements OnInit {
     console.log(this.registrationValid.status)
   }
 
-  registration() {
-    console.log("Start");
-    var test = this.api.registrationAPI("wqureshi1", "notsecure", "Wasae", "Qureshi", "747324", "05/23/1994", "43454", "random street", "random city", "ca", "94086").subscribe(
-      res => {
-        this.registrationValid = res;
-        this.update()
-      }
-    );
-  }
 }
