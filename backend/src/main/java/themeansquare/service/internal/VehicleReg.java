@@ -278,7 +278,7 @@ public class VehicleReg implements IVehicleReg {
     }
 
     //for update api
-    public String updateVehicleById(Integer id, Vehicle vehicle) throws Exception {
+    public String updateVehicleById(Integer id, Integer vehicleTypeId, Integer locationId, Vehicle vehicle) throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
@@ -294,8 +294,20 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
 
-            vehicleTypeRepository.save(existVehicle.getVehicleTypeId());
-            locationRepository.save(existVehicle.getLocation());
+         
+            response.put("LocationIdNotAvailable", "true");
+            if (locationRepository.existsById(locationId)) {
+                Location location = locationRepository.findById(locationId).get();
+                existVehicle.setLocation(location);
+                response.remove("LocationIdNotAvailable");
+                
+                response.put("VehicleTypeNotAvailable", "true");
+                if (vehicleTypeRepository.existsById(vehicleTypeId)) {
+                    VehicleType vehicleType = vehicleTypeRepository.findById(vehicleTypeId).get();
+                    existVehicle.setVehicleTypeId(vehicleType); 
+                    response.remove("VehicleTypeNotAvailable");
+                }
+            }
             vehicleRepository.save(existVehicle);
 
             response.put("status", "200");

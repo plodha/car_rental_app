@@ -104,11 +104,20 @@ public class VehicleRegController {
         return response;
     }
 
-    @PutMapping("/vehicle/{id}")
-    public String updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
+    @PutMapping("/vehicle/{id}/{vehicleTypeId}/{locationId}")
+    public String updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id, @PathVariable Integer vehicleTypeId, @PathVariable Integer locationId) throws Exception {
 
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
-        String response = reg.updateVehicleById(id, vehicle );
+        String response = reg.updateVehicleById(id, vehicleTypeId, locationId, vehicle );
+        return response;
+            
+    }
+
+    @PutMapping("/vehicle/old/{id}")
+    public String updateVehicleOld(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
+
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+        String response = reg.updateVehicleByIdOld(id, vehicle );
         return response;
             
     }
