@@ -157,3 +157,6 @@ fabric.properties
 
 #Virtual-env
 backend/car-rent/
+
+### VS Code ###
+.vscode/
