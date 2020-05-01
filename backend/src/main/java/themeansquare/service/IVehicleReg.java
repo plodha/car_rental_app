@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IVehicleReg {
 
     public String addVehicle() throws Exception;
-
+    public String addVehicleOld() throws Exception;
     public Iterable<Vehicle> getVehicles() throws Exception;
 
     public Optional<Vehicle> getVehicleById(Integer id) throws Exception;
