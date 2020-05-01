@@ -3,19 +3,24 @@ package themeansquare.service.internal;
 import themeansquare.service.ILocationReg;
 import themeansquare.model.Address;
 import themeansquare.model.Location;
+import themeansquare.model.Vehicle;
 import themeansquare.repository.LocationRepository;
+import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.AddressRepository;
 
-
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 public class LocationReg implements ILocationReg {
 
     private LocationRepository locationRepository;
     private AddressRepository addressRepository;
+    private VehicleRepository vehicleRepository;
     
     //Location
     private int contactNumber;
@@ -28,14 +33,15 @@ public class LocationReg implements ILocationReg {
     private String state;
     private String zipcode;
 
-    public LocationReg( LocationRepository locationRepository, AddressRepository addressRepository ) {
+    public LocationReg( LocationRepository locationRepository, AddressRepository addressRepository,VehicleRepository vehicleRepository ) {
         this.locationRepository = locationRepository;
         this.addressRepository = addressRepository;
+        this.vehicleRepository = vehicleRepository;
     }
 
     public LocationReg(int contactNumber, String name, int vehicleCapacity,
                        String street, String city,String state, String zipcode,
-                       LocationRepository locationRepository, AddressRepository addressRepository) {
+                       LocationRepository locationRepository, AddressRepository addressRepository, VehicleRepository vehicleRepository) {
 
         this.contactNumber = contactNumber;
         this.name = name;
@@ -46,24 +52,29 @@ public class LocationReg implements ILocationReg {
         this.zipcode = zipcode;
         this.locationRepository = locationRepository;
         this.addressRepository = addressRepository;
+        this.vehicleRepository = vehicleRepository;
     }
 
     // validation logic for location api
     public String addLocation() throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
-        //response.put("isLicensePlateAvailable", "true");
+        response.put("IfLocationAvailable", "true");
         response.put("status", "400");
 
-        Location location = new Location();
+        //validation to check unique rental location
+        if(checkIfLocationExists()){
+            response.remove("IfLocationAvailable");
+            Location location = new Location();
+            location.setContactNumber(contactNumber);
+            location.setName(name);
+            location.setVehicleCapacity(vehicleCapacity);
+            location.setAddress(this.createAddress());
+            locationRepository.save(location);
 
-        location.setContactNumber(contactNumber);
-        location.setName(name);
-        location.setVehicleCapacity(vehicleCapacity);
-        location.setAddress(this.createAddress());
-        locationRepository.save(location);
-
-        response.put("status", "200");
+            response.put("status", "200");
+        }
+        
         return this.convertMapToJson(response);
     }
 
@@ -76,6 +87,20 @@ public class LocationReg implements ILocationReg {
         addressRepository.save(address);
 
         return address;
+    }
+
+    public boolean checkIfLocationExists() {
+        Iterable<Location> itr = locationRepository.findAll();
+        Iterator it = itr.iterator();
+        
+        while (it.hasNext()) {
+            Location location = (Location) it.next();
+            System.out.println(location.getName()); 
+            if (location.getName().equals(this.name)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     //get-all api 
@@ -101,6 +126,22 @@ public class LocationReg implements ILocationReg {
     public String delLocation(Integer id) throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        Iterator it = itr.iterator();
+
+        // delete all the vehicles of that location first
+        System.out.println("1");
+        while (it.hasNext()) {
+            Vehicle vehicle = (Vehicle) it.next();
+            System.out.println("2");
+            System.out.println("vehicle.getId() "+vehicle.getId()); 
+            System.out.println("id.intValue() " + id.intValue());
+            if( vehicle.getLocation().getId() == id.intValue()) {
+                System.out.println("3");
+                vehicleRepository.deleteById(vehicle.getId());
+            }
+        }
+        // after that delete the location
         response.put("status", "400");
         if (locationRepository.existsById(id)) {
             locationRepository.deleteById(id);
@@ -114,9 +155,9 @@ public class LocationReg implements ILocationReg {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
-        Location existLocation = locationRepository.findById(id).get();
-
-        if(existLocation != null) {
+        
+        if (locationRepository.existsById(id)) {
+            Location existLocation = locationRepository.findById(id).get();
             existLocation.setContactNumber(Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber()));
             existLocation.setName(Optional.ofNullable(location.getName()).orElse(existLocation.getName()));
             existLocation.setVehicleCapacity(Optional.ofNullable(location.getVehicleCapacity()).orElse(existLocation.getVehicleCapacity()));
@@ -130,17 +171,16 @@ public class LocationReg implements ILocationReg {
     }
 
     public Address updateAddressById (int addressId, Location location) { 
-
-        Address existAddress = addressRepository.findById(addressId).get();
         Address address = location.getAddress();
-
-        if(existAddress != null) {
-            // Optional.ofNullable(location.getContactNumber()).orElse(existLocation.getContactNumber())
+        Address existAddress = null;
+        if(addressRepository.existsById(addressId)) {
+            existAddress = addressRepository.findById(addressId).get();
             existAddress.setCity(Optional.ofNullable(address.getCity()).orElse(existAddress.getCity()));
             existAddress.setState(Optional.ofNullable(address.getState()).orElse(existAddress.getState()));
             existAddress.setStreet(Optional.ofNullable(address.getStreet()).orElse(existAddress.getStreet()));
             existAddress.setZipCode(Optional.ofNullable(address.getZipCode()).orElse(existAddress.getZipCode()));
         }
+        
         return existAddress;
     }
 
