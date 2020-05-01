@@ -35,6 +35,8 @@ public class VehicleReg implements IVehicleReg {
     private Boolean status;	
     private String vIN;
     private int year; //
+    private int locationId;
+    private int vehicleTypeId;
     //int location; --foreign key to Location
     //int vehicleType; --foreign key to vehicleType
 
@@ -87,10 +89,70 @@ public class VehicleReg implements IVehicleReg {
 
     }
 
-    
+    public VehicleReg(  String licensePlate , String model,String make,
+                       Boolean status, String vIN,int year,int locationId, int vehicleTypeId,
+                       VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
 
+        this.licensePlate = licensePlate;
+        this.model = model;
+        this.make = make;
+        this.status = status;
+        this.vIN = vIN;
+        this.year = year;
+        this.locationId =locationId; 
+        this.vehicleTypeId = vehicleTypeId;
+        this.vehicleRepository = vehicleRepository;
+        this.vehicleTypeRepository = vehicleTypeRepository;
+        this.locationRepository = locationRepository;
+        this.addressRepository = addressRepository;
+
+    }
+    
     // validation logic for vehicle api
     public String addVehicle() throws Exception {
+
+        HashMap<String, String> response = new HashMap<>();
+        response.put("isLicensePlateAvailable", "true");
+        response.put("status", "400");
+
+        // Add check unique license plate
+        if (checkIfLicensePlateExists()) {
+            response.remove("isLicensePlateAvailable");
+            Vehicle vehicle = new Vehicle();
+            vehicle.setLicensePlate(licensePlate);
+            vehicle.setModel(model);
+            vehicle.setMake(make);
+            vehicle.setStatus(status);
+            vehicle.setYear(year);
+            response.put("isVINAvailable", "true");
+
+            // Add VIN check
+            if (checkIfVINExists()) {
+                response.remove("isVINAvailable");
+                vehicle.setVIN(vIN);
+
+                response.put("LocationIdNotAvailable", "true");
+                if (locationRepository.existsById(this.locationId)) {
+                    Location location = locationRepository.findById(this.locationId).get();
+                    vehicle.setLocation(location);
+                    response.remove("LocationIdNotAvailable");
+                    
+                    response.put("VehicleTypeNotAvailable", "true");
+                    if (vehicleTypeRepository.existsById(this.vehicleTypeId)) {
+                        VehicleType vehicleType = vehicleTypeRepository.findById(this.vehicleTypeId).get();
+                        vehicle.setVehicleTypeId(vehicleType); 
+                        response.remove("VehicleTypeNotAvailable");
+                    }
+                }
+                vehicleRepository.save(vehicle);
+                response.put("status", "200");
+            }
+        }
+        return this.convertMapToJson(response);
+    }
+
+    // validation logic for vehicle api
+    public String addVehicleOld() throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("isLicensePlateAvailable", "true");
@@ -216,7 +278,46 @@ public class VehicleReg implements IVehicleReg {
     }
 
     //for update api
-    public String updateVehicleById(Integer id, Vehicle vehicle) throws Exception {
+    public String updateVehicleById(Integer id, Integer vehicleTypeId, Integer locationId, Vehicle vehicle) throws Exception {
+
+        HashMap<String, String> response = new HashMap<>();
+        response.put("status", "400");
+        Vehicle existVehicle = vehicleRepository.findById(id).get(); //
+        if(existVehicle != null) {
+            System.out.println("vehicle.getVIN() "+vehicle.getVIN());
+            // if no new value, then update with the old value
+            //Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())
+            existVehicle.setLicensePlate(Optional.ofNullable(vehicle.getLicensePlate()).orElse(existVehicle.getLicensePlate()));
+            existVehicle.setModel(Optional.ofNullable(vehicle.getModel()).orElse(existVehicle.getModel()));
+            existVehicle.setMake(Optional.ofNullable(vehicle.getMake()).orElse(existVehicle.getMake()));
+            existVehicle.setStatus(Optional.ofNullable(vehicle.isStatus()).orElse(existVehicle.isStatus()));
+            existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
+            existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
+
+         
+            response.put("LocationIdNotAvailable", "true");
+            if (locationRepository.existsById(locationId)) {
+                Location location = locationRepository.findById(locationId).get();
+                existVehicle.setLocation(location);
+                response.remove("LocationIdNotAvailable");
+                
+                response.put("VehicleTypeNotAvailable", "true");
+                if (vehicleTypeRepository.existsById(vehicleTypeId)) {
+                    VehicleType vehicleType = vehicleTypeRepository.findById(vehicleTypeId).get();
+                    existVehicle.setVehicleTypeId(vehicleType); 
+                    response.remove("VehicleTypeNotAvailable");
+                }
+            }
+            vehicleRepository.save(existVehicle);
+
+            response.put("status", "200");
+        }          
+
+        return this.convertMapToJson(response);
+    }
+
+    //for update api
+    public String updateVehicleByIdOld(Integer id, Vehicle vehicle) throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");

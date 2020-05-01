@@ -65,7 +65,6 @@ public class VehicleRegController {
     @Autowired
     private AddressRepository addressRepository;
 
-    
     @PostMapping("/vehicle")
     public String addVehicle (
         @RequestParam(value = "licensePlate") String licensePlate, 
@@ -74,24 +73,15 @@ public class VehicleRegController {
         @RequestParam(value = "status") Boolean status,
         @RequestParam(value = "vIN") String vIN,
         @RequestParam(value = "year") int year, 
-        @RequestParam(value = "vehicleClass") String vehicleClass, 
-        @RequestParam(value = "vehicleSize") int vehicleSize, 
-        @RequestParam(value = "contactNumber") int contactNumber, 
-        @RequestParam(value = "name") String name, 
-        @RequestParam(value = "vehicleCapacity") int vehicleCapacity,
-        @RequestParam(value = "street") String street,
-        @RequestParam(value = "city") String city, 
-        @RequestParam(value = "state") String state, 
-        @RequestParam(value = "zipcode") String zipcode) throws Exception {
+        @RequestParam(value = "vehicleTypeId") int vehicleTypeId,
+        @RequestParam(value = "locationId") int locationId) throws Exception {
         
-        IVehicleReg reg = new VehicleReg ( vehicleClass, vehicleSize , licensePlate , model,make, status, vIN,
-                                          year, contactNumber, name, vehicleCapacity, street, city, state, zipcode,
+        IVehicleReg reg = new VehicleReg ( licensePlate , model,make, status, vIN, year, locationId, vehicleTypeId,
                                           vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         String response = reg.addVehicle();
-
         return response;
     }
-    
+
     @GetMapping("/vehicle")
     public Iterable<Vehicle> getVehicles() throws Exception {
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
@@ -114,13 +104,47 @@ public class VehicleRegController {
         return response;
     }
 
-    @PutMapping("/vehicle/{id}")
-    public String updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
+    @PutMapping("/vehicle/{id}/{vehicleTypeId}/{locationId}")
+    public String updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id, @PathVariable Integer vehicleTypeId, @PathVariable Integer locationId) throws Exception {
 
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
-        String response = reg.updateVehicleById(id, vehicle );
+        String response = reg.updateVehicleById(id, vehicleTypeId, locationId, vehicle );
         return response;
             
+    }
+
+    @PutMapping("/vehicle/old/{id}")
+    public String updateVehicleOld(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
+
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+        String response = reg.updateVehicleByIdOld(id, vehicle );
+        return response;
+            
+    }
+
+    @PostMapping("/vehicle/old")
+    public String addVehicleOld (
+        @RequestParam(value = "licensePlate") String licensePlate, 
+        @RequestParam(value = "model") String model, 
+        @RequestParam(value = "make") String make, 
+        @RequestParam(value = "status") Boolean status,
+        @RequestParam(value = "vIN") String vIN,
+        @RequestParam(value = "year") int year, 
+        @RequestParam(value = "vehicleClass") String vehicleClass, 
+        @RequestParam(value = "vehicleSize") int vehicleSize, 
+        @RequestParam(value = "contactNumber") int contactNumber, 
+        @RequestParam(value = "name") String name, 
+        @RequestParam(value = "vehicleCapacity") int vehicleCapacity,
+        @RequestParam(value = "street") String street,
+        @RequestParam(value = "city") String city, 
+        @RequestParam(value = "state") String state, 
+        @RequestParam(value = "zipcode") String zipcode) throws Exception {
+        
+        IVehicleReg reg = new VehicleReg ( vehicleClass, vehicleSize , licensePlate , model,make, status, vIN,
+                                          year, contactNumber, name, vehicleCapacity, street, city, state, zipcode,
+                                          vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+        String response = reg.addVehicleOld();
+        return response;
     }
 
 
