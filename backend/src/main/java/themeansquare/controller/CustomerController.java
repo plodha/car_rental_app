@@ -53,6 +53,26 @@ public class CustomerController {
      * @return
      */
 
+    @PostMapping("/getAllCustomers")
+    public String getAllCustomers(@RequestBody User user) {
+        IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
+        
+        return userAuth.isValidCredentials(user);
+    }
+    
+    @PostMapping("/updateCustomer")
+    public String updateCustomer(@RequestBody User user) {
+        IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
+        
+        return userAuth.isValidCredentials(user);
+    }
+
+    @PostMapping("/removeCustomer")
+    public String removeCustomer(@RequestBody User user) {
+        IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
+        
+        return userAuth.isValidCredentials(user);
+    }
 
 }
 
