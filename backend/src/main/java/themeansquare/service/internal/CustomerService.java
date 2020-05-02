@@ -11,26 +11,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Optional;
 
 import themeansquare.model.Customer;
+import themeansquare.repository.AddressRepository;
 import themeansquare.repository.CustomerRepository;
 import themeansquare.repository.EmployeeRepository;
 import themeansquare.repository.UserRepository;
 import themeansquare.service.ICustomer;
+import themeansquare.service.IRegistration;
 
 public class CustomerService implements ICustomer {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired 
-    private EmployeeRepository employeeRepository;
-    @Autowired 
+    private UserRepository userRepository; 
+    private EmployeeRepository employeeRepository; 
     private CustomerRepository customerRepository;
-
+    private AddressRepository addressRepository; 
 
 	public CustomerService(UserRepository userRepository, EmployeeRepository employeeRepository,
-			CustomerRepository customerRepository) {
+			CustomerRepository customerRepository, AddressRepository addressRepository) {
                 this .userRepository = userRepository;
                 this.employeeRepository = employeeRepository;
                 this.customerRepository = customerRepository;
+                this.addressRepository = addressRepository;
 	}
 
     @Override
@@ -112,17 +112,37 @@ public class CustomerService implements ICustomer {
     @Override
     public String updateCustomer(Customer customer) {
         
+        HashMap<String, String> response = new HashMap<String, String>();
+
+        Registration registrationService = new Registration(this.userRepository, this.customerRepository, this.addressRepository);
         Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
         Customer inDBCustomer = optionalCustomer.get();
+        
         if (!inDBCustomer.getUserId().getUsername().equals(customer.getUserId().getUsername())) {
+            
             String username = customer.getUserId().getUsername();
-        }
-
-        if (!inDBCustomer.getEmail().equals(customer.getEmail())) {
-            String email = customer.getEmail();
+            if (registrationService.checkIfUserExists(username)) {
+                
+                response.put("status", "400");
+                response.put("message", "Username is taken");
+                return convertMapToJson(response);
+            }
+            
         }
         
-        return "";
+        if (!inDBCustomer.getEmail().equals(customer.getEmail())) {
+            String email = customer.getEmail();
+            if (registrationService.checkIfEmailExists(email)) {
+
+                response.put("status", "400");
+                response.put("message", "Email is taken");
+                return convertMapToJson(response);
+            }
+        }
+        
+        customerRepository.save(customer);
+        response.put("status", "200");
+        return convertMapToJson(response);
     }
     
 }

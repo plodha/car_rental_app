@@ -38,7 +38,7 @@ public class Registration implements IRegistration {
         response.put("status", "400");
 
         // Add check for user name
-        if (checkIfUserExists(newCustomer.getUserId().getUsername())) {
+        if (!checkIfUserExists(newCustomer.getUserId().getUsername())) {
             response.remove("message");
             Customer customer = new Customer();
             // Date licenseExpDateFormat = new SimpleDateFormat("MM/dd/yyyy").parse(licenseExpDate);
@@ -50,7 +50,7 @@ public class Registration implements IRegistration {
             customer.setLicenseExpDate(newCustomer.getLicenseExpDate());
             response.put("message", "email is taken");
             // Add email check
-            if (checkIfEmailExists(newCustomer.getEmail())) {
+            if (!checkIfEmailExists(newCustomer.getEmail())) {
                 response.remove("message");
                 customer.setEmail(newCustomer.getEmail());
 
@@ -118,11 +118,11 @@ public class Registration implements IRegistration {
             System.out.println(tempCustomer.getEmail());
             
             if (tempCustomer.getEmail().equals(email)) {
-                return false;
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
     public boolean checkIfUserExists(String username)  {
@@ -136,11 +136,11 @@ public class Registration implements IRegistration {
             System.out.println(user.getUsername());
             
             if (user.getUsername().equals(username)) {
-                return false;
+                return true;
             }
         }
         
-        return true;
+        return false;
     }
 
     public boolean isValidEmail() {

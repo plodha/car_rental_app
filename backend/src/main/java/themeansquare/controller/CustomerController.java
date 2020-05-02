@@ -49,7 +49,8 @@ public class CustomerController {
     private EmployeeRepository employeeRepository;
     @Autowired 
     private CustomerRepository customerRepository;
-
+    @Autowired
+    private AddressRepository addressRepository;
     /**
         Use case:
             As an admin, I want to get all the users and be able to do some actions on them.
@@ -76,7 +77,7 @@ public class CustomerController {
 
     @GetMapping("/getAllCustomers")
     public String getAllCustomers() {
-        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository);
+        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
         
         return customerService.getAllCustomers();
     }
@@ -118,7 +119,7 @@ public class CustomerController {
     
     @GetMapping("/getCustomerInfo")
     public Customer getCustomerInfo(@RequestParam(value = "userId") String userId) {
-        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository);
+        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
         
         return customerService.getCustomerInfo(userId);
     }
@@ -139,7 +140,7 @@ public class CustomerController {
     @PutMapping("/updateCustomer")
     public String updateCustomer(@RequestBody Customer customer) {
         
-        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository);        
+        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);        
         
         return customerService.updateCustomer(customer);
     }
