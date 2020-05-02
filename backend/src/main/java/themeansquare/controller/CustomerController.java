@@ -5,6 +5,10 @@ import themeansquare.repository.AddressRepository;
 import themeansquare.repository.CustomerRepository;
 import themeansquare.repository.EmployeeRepository;
 import themeansquare.repository.UserRepository;
+import themeansquare.service.ICustomer;
+import themeansquare.service.IRegistration;
+import themeansquare.service.IUser;
+import themeansquare.service.internal.Customer;
 import themeansquare.service.IRegistration;
 import themeansquare.service.IUser;
 import themeansquare.service.internal.Registration;
@@ -54,10 +58,10 @@ public class CustomerController {
      */
 
     @PostMapping("/getAllCustomers")
-    public String getAllCustomers(@RequestBody User user) {
-        IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
+    public String getAllCustomers() {
+        ICustomer customer = new Customer(userRepository, employeeRepository, customerRepository);
         
-        return userAuth.isValidCredentials(user);
+        return customer.getAllCustomers();
     }
     
     @PostMapping("/updateCustomer")
