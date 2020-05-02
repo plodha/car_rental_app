@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
@@ -23,7 +24,8 @@ public class Price{
 	private double hourlyPrice;
 	
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
+	// @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "VehicleType", referencedColumnName = "Id")
 	private VehicleType VehicleTypeId;
 	

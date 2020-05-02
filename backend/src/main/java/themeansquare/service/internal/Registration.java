@@ -62,6 +62,11 @@ public class Registration implements IRegistration {
                 customer.setUserId(this.createUser(newCustomer.getUserId().getUsername(), newCustomer.getUserId().getPassword()));
                 
                 customer.setAddress(this.createAddress(newCustomer.getAddress().getCity(), newCustomer.getAddress().getState(), newCustomer.getAddress().getStreet(), newCustomer.getAddress().getZipCode()));
+                
+                customer.setCreditCard(newCustomer.getCreditCard());
+                customer.setCVV(newCustomer.getCVV());
+                customer.setCreditCardExpDate(newCustomer.getCreditCardExpDate());
+
                 customerRepository.save(customer);
                 response.put("username", newCustomer.getUserId().getUsername());
                 response.put("role", "Customer");
