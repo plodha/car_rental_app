@@ -61,7 +61,7 @@ public class UserAuthController {
                 response.put("message", "Some message on why it failed");
      */
 
-    @PostMapping("/auth")
+    @GetMapping("/auth")
     public String auth(@RequestBody User user) {
         IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
         

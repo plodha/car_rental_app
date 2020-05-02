@@ -20,6 +20,7 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,7 +73,7 @@ public class CustomerController {
                 No failures, empty will return empty with 200
      */
 
-    @PostMapping("/getAllCustomers")
+    @GetMapping("/getAllCustomers")
     public String getAllCustomers() {
         ICustomer customer = new CustomerService(userRepository, employeeRepository, customerRepository);
         
@@ -114,14 +115,25 @@ public class CustomerController {
                 No failures possible
      */
     
-    @PostMapping("/getCustomerInfo")
+    @GetMapping("/getCustomerInfo")
     public Customer getCustomerInfo(@RequestParam(value = "userId") String userId) {
         ICustomer customer = new CustomerService(userRepository, employeeRepository, customerRepository);
         
         return customer.getCustomerInfo(userId);
     }
+    
+     /**
+        Use case:
+            As an admin or user I want to get my profile information
+        
+        Response:
+            Success
+            
+            Failure:
+                No failures possible
+     */
 
-    @PostMapping("/updateCustomer")
+    @PutMapping("/updateCustomer")
     public String updateCustomer(@RequestBody User user) {
         IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
         
