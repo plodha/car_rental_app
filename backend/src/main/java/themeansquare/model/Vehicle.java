@@ -47,6 +47,9 @@ public class Vehicle {
 	
 	@NotNull
 	private boolean Status;
+	
+	@NotNull
+	private String vehicleCondition;
 
 	public int getId() { return Id; }
 
@@ -83,6 +86,10 @@ public class Vehicle {
 	public boolean isStatus() { return Status; }
 
 	public void setStatus(boolean status) { Status = status; }
+	
+	public String getVehicleCondition() { return vehicleCondition; }
+
+	public void setVehicleCondition(String vehicleCondition) { this.vehicleCondition = vehicleCondition; }
 	
 }
     
