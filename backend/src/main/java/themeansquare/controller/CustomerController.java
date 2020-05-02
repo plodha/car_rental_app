@@ -8,7 +8,7 @@ import themeansquare.repository.UserRepository;
 import themeansquare.service.ICustomer;
 import themeansquare.service.IRegistration;
 import themeansquare.service.IUser;
-import themeansquare.service.internal.Customer;
+import themeansquare.service.internal.CustomerService;
 import themeansquare.service.IRegistration;
 import themeansquare.service.IUser;
 import themeansquare.service.internal.Registration;
@@ -47,19 +47,11 @@ public class CustomerController {
     @Autowired 
     private CustomerRepository customerRepository;
 
-    /**
-     * 
-        {
-            "username" : "wqureshi",
-            "password" : "password"
-        }
-     * @param user
-     * @return
-     */
+    
 
     @PostMapping("/getAllCustomers")
     public String getAllCustomers() {
-        ICustomer customer = new Customer(userRepository, employeeRepository, customerRepository);
+        ICustomer customer = new CustomerService(userRepository, employeeRepository, customerRepository);
         
         return customer.getAllCustomers();
     }

@@ -38,6 +38,21 @@ public class RegistrationController {
     @Autowired
     private AddressRepository addressRepository;
     
+    /**
+        Use case:
+            This is used by the user to create a registration. After success, they will be rerouted to login.
+        
+        Response:
+            Success:
+                response.put("username", this.username);
+                response.put("role", "Customer");
+                response.put("id", customer.getUserId().getId() + "");
+                response.put("status", "200");
+            Failure:
+                response.put("message", "username is taken");
+                response.put("status", "400");
+     */
+    
 	@PostMapping("/register")
     public String register(
         @RequestParam(value = "username") String username, 
