@@ -1,5 +1,6 @@
 package themeansquare.controller;
 
+import themeansquare.model.Customer;
 import themeansquare.model.User;
 import themeansquare.repository.AddressRepository;
 import themeansquare.repository.CustomerRepository;
@@ -47,7 +48,29 @@ public class CustomerController {
     @Autowired 
     private CustomerRepository customerRepository;
 
-    
+    /**
+        Use case:
+            As an admin, I want to get all the users and be able to do some actions on them.
+        
+        Response:
+            Success:
+                {
+                    results : [
+                        {
+
+                        }
+                    ]
+                    status : [
+                        {
+                            status : 
+                        }
+                    ]
+                }
+                
+                For status, just index to zero, there will only be one item in there
+            Failure:
+                No failures, empty will return empty with 200
+     */
 
     @PostMapping("/getAllCustomers")
     public String getAllCustomers() {
@@ -56,6 +79,48 @@ public class CustomerController {
         return customer.getAllCustomers();
     }
     
+    /**
+        Use case:
+            As an admin or user I want to get my profile information
+        
+        Response:
+            Success:
+                {
+                    "address": {
+                        "id": 1,
+                        "state": "ca",
+                        "city": "random city",
+                        "street": "random street",
+                        "zipCode": 94086
+                    },
+                    "id": 1,
+                    "userId": {
+                        "id": 1,
+                        "password": "notsecure",
+                        "username": "wqureshi1"
+                    },
+                    "firstName": "Wasae",
+                    "lastName": "Qureshi",
+                    "licenseNumber": "747324",
+                    "licenseExpDate": "1994-05-22",
+                    "membershipStartDate": "2020-05-01",
+                    "membershipEndDate": "2021-05-01",
+                    "email": "different@gmail.com"
+                    
+                }
+            
+            Use status from http request
+            Failure:
+                No failures possible
+     */
+    
+    @PostMapping("/getCustomerInfo")
+    public Customer getCustomerInfo(@RequestParam(value = "userId") String userId) {
+        ICustomer customer = new CustomerService(userRepository, employeeRepository, customerRepository);
+        
+        return customer.getCustomerInfo(userId);
+    }
+
     @PostMapping("/updateCustomer")
     public String updateCustomer(@RequestBody User user) {
         IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
