@@ -18,6 +18,7 @@ public class CarRentalServiceApplication {
 		SpringApplication.run(CarRentalServiceApplication.class, args);
 	}
 
+	///comment the below block for local development
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 			return new WebMvcConfigurer() {

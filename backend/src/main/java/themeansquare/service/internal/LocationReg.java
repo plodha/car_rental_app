@@ -130,14 +130,11 @@ public class LocationReg implements ILocationReg {
         Iterator it = itr.iterator();
 
         // delete all the vehicles of that location first
-        System.out.println("1");
         while (it.hasNext()) {
             Vehicle vehicle = (Vehicle) it.next();
-            System.out.println("2");
             System.out.println("vehicle.getId() "+vehicle.getId()); 
             System.out.println("id.intValue() " + id.intValue());
             if( vehicle.getLocation().getId() == id.intValue()) {
-                System.out.println("3");
                 vehicleRepository.deleteById(vehicle.getId());
             }
         }
