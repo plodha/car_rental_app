@@ -18,15 +18,16 @@ public class CarRentalServiceApplication {
 		SpringApplication.run(CarRentalServiceApplication.class, args);
 	}
 
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-			return new WebMvcConfigurer() {
-					@Override
-					public void addCorsMappings(CorsRegistry registry) {
-							registry.addMapping("/**").allowedOrigins("*");
-					}
-			};
-	}
+	///comment the below block for local development
+	// @Bean
+	// public WebMvcConfigurer corsConfigurer() {
+	// 		return new WebMvcConfigurer() {
+	// 				@Override
+	// 				public void addCorsMappings(CorsRegistry registry) {
+	// 						registry.addMapping("/**").allowedOrigins("*");
+	// 				}
+	// 		};
+	// }
 }
 
 
