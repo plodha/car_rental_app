@@ -87,9 +87,12 @@ public class UserAuth implements IUser {
             if (user.getUsername().equals(userCheck.getUsername())) {
                 if (user.getPassword().equals(userCheck.getPassword()))
                 {
+
                     response.put("status", "200");
                     response.remove("message");
                     response.put("role", getRole(user.getId()));
+                    response.put("username", user.getUsername());
+                    response.put("id", user.getId() + "");
                     return convertMapToJson(response);
                 }
                 else 
