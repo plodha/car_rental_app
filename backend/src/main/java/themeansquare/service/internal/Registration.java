@@ -59,12 +59,12 @@ public class Registration implements IRegistration {
     // Create design pattern for this validation check
     public String register() throws Exception {
         HashMap<String, String> response = new HashMap<>();
-        response.put("isUserNameTaken", "true");
+        response.put("message", "username is taken");
         response.put("status", "400");
 
         // Add check for user name
         if (checkIfUserExists()) {
-            response.remove("isUserNameTaken");
+            response.remove("message");
             Customer customer = new Customer();
             Date licenseExpDateFormat = new SimpleDateFormat("MM/dd/yyyy").parse(licenseExpDate);
 
@@ -73,10 +73,10 @@ public class Registration implements IRegistration {
             
             customer.setLicenseNumber(licenseNumber);
             customer.setLicenseExpDate(licenseExpDateFormat);
-            response.put("isEmailTaken", "true");
+            response.put("message", "email is taken");
             // Add email check
             if (checkIfEmailExists()) {
-                response.remove("isEmailTaken");
+                response.remove("message");
                 customer.setEmail(email);
 
                 Date startMembership = getStartMembershipDate();
@@ -88,7 +88,9 @@ public class Registration implements IRegistration {
                 
                 customer.setAddress(this.createAddress());
                 customerRepository.save(customer);
-
+                response.put("username", this.username);
+                response.put("role", "Customer");
+                response.put("id", customer.getUserId().getId() + "");
                 response.put("status", "200");
             }
         }
