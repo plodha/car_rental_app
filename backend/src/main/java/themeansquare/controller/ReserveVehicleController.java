@@ -57,13 +57,14 @@ public class ReserveVehicleController {
             @RequestParam(value = "estimateDropOffTime") String estimateDropOffTime, 
             @RequestParam(value = "estimatedPrice") Double estimatedPrice,
             @RequestParam(value = "pickUpTime") String pickUpTime, 
+            @RequestParam(value = "customerId") int customerId,
             @RequestParam(value = "vehicleId") int vehicleId,
             @RequestParam(value = "vehicleTypeId") int vehicleTypeId,
             @RequestParam(value = "locationId") int locationId,
             @RequestParam(value = "status") Boolean status) throws Exception {
 
         IReservation reserve = new ReserveVehicle(actualDropOffTime, estimateDropOffTime, estimatedPrice, pickUpTime, status,
-                                              vehicleId,vehicleTypeId, locationId,
+                                                customerId,vehicleId,vehicleTypeId, locationId,
                                               customerRepository, locationRepository,vehicleRepository, invoiceRepository);
         String response = reserve.addReservation();
         return response;

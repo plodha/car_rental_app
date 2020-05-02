@@ -31,12 +31,13 @@ public class ReserveVehicle implements IReservation {
     private Double estimatedPrice;
     private String pickUpTime;
     private Boolean status;
+    private int customerId;
     private int vehicleId;
     private int locationId;
     private int vehicleTypeId;
 
     public ReserveVehicle(String actualDropOffTime, String estimateDropOffTime,Double estimatedPrice,String pickUpTime, Boolean status,
-                          int vehicleId, int vehicleTypeId, int locationId, 
+                          int customerId, int vehicleId, int vehicleTypeId, int locationId, 
                           CustomerRepository customerRepository, LocationRepository locationRepository,
                           VehicleRepository vehicleRepository, InvoiceRepository invoiceRepository) {
 
@@ -45,6 +46,7 @@ public class ReserveVehicle implements IReservation {
         this.estimatedPrice = estimatedPrice;
         this.pickUpTime = pickUpTime;
         this.status = status;
+        this.customerId = customerId;
         this.vehicleId = vehicleId; 
         this.vehicleTypeId = vehicleTypeId; 
         this.locationId = locationId;
