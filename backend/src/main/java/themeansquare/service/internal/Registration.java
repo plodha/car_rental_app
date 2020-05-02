@@ -64,7 +64,7 @@ public class Registration implements IRegistration {
 
         // Add check for user name
         if (checkIfUserExists()) {
-            response.remove("isUserNameTaken");
+            response.remove("message");
             Customer customer = new Customer();
             Date licenseExpDateFormat = new SimpleDateFormat("MM/dd/yyyy").parse(licenseExpDate);
 
@@ -73,10 +73,10 @@ public class Registration implements IRegistration {
             
             customer.setLicenseNumber(licenseNumber);
             customer.setLicenseExpDate(licenseExpDateFormat);
-            response.put("isEmailTaken", "true");
+            response.put("message", "email is taken");
             // Add email check
             if (checkIfEmailExists()) {
-                response.remove("isEmailTaken");
+                response.remove("message");
                 customer.setEmail(email);
 
                 Date startMembership = getStartMembershipDate();
