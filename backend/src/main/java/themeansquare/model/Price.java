@@ -26,6 +26,17 @@ public class Price{
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "VehicleType", referencedColumnName = "Id")
 	private VehicleType VehicleTypeId;
+	
+	@NotNull
+	private String hourlyRange;
+
+	public double getHourlyPrice() {return hourlyPrice; }
+
+	public void setHourlyPrice(double hourlyPrice) { this.hourlyPrice = hourlyPrice; }
+
+	public String getHourlyRange() { return hourlyRange; }
+
+	public void setHourlyRange(String hourlyRange) { this.hourlyRange = hourlyRange; }
 
 	public int getId() { return Id; }
 
@@ -35,13 +46,11 @@ public class Price{
 
 	public void setLateFee(double lateFee) { LateFee = lateFee; }
 
-	public double getLicensePlate() { return hourlyPrice; }
-
-	public void setLicensePlate(double hourlyPrice) { this.hourlyPrice = hourlyPrice; }
-
 	public VehicleType getVehicleTypeId() { return VehicleTypeId; }
 
 	public void setVehicleTypeId(VehicleType vehicleTypeId) { VehicleTypeId = vehicleTypeId; }
+	
+	
 	
 }
     

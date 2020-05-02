@@ -63,6 +63,13 @@ public class Customer{
 	@NotNull
     @Column(columnDefinition = "TEXT")
     private String Email;
+	
+	@NotNull
+	private String creditCard;
+
+	public String getCreditCard() { return creditCard; }
+
+	public void setCreditCard(String creditCard) {this.creditCard = creditCard; }
 
 	public int getId() { return Id; }
 

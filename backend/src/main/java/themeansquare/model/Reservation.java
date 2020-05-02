@@ -59,6 +59,13 @@ public class Reservation{
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Invoice", referencedColumnName = "Id")
 	private Invoice Invoice;
+	
+	@NotNull
+	private boolean status;
+
+	public boolean isStatus() {return status; }
+
+	public void setStatus(boolean status) { this.status = status; }
 
 	public int getId() { return Id; }
 
