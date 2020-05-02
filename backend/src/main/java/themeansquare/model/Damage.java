@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
@@ -18,7 +19,7 @@ public class Damage{
     private int Id;
 	
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
     @JoinColumn(name = "VehicleType", referencedColumnName = "Id")
 	private VehicleType VehicleTypeId;
 	
