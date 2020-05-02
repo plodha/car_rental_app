@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Reservation{
@@ -23,17 +24,20 @@ public class Reservation{
     private int Id;
 	
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	//@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
     @JoinColumn(name = "Customer", referencedColumnName = "Id")
-	private VehicleType Customer;
+	private Customer Customer;
 	
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	//@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
     @JoinColumn(name = "Vehicle", referencedColumnName = "Id")
 	private Vehicle Vehicle;
 	
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	//@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
     @JoinColumn(name = "Location", referencedColumnName = "Id")
 	private Location Location;
 	
@@ -60,9 +64,9 @@ public class Reservation{
 
 	public void setId(int id) { Id = id; }
 
-	public VehicleType getCustomer() { return Customer; }
+	public Customer getCustomer() { return Customer; }
 
-	public void setCustomer(VehicleType customer) { Customer = customer; }
+	public void setCustomer(Customer customer) { Customer = customer; }
 
 	public Vehicle getVehicle() { return Vehicle; }
 
