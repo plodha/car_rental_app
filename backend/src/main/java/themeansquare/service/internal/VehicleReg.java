@@ -10,12 +10,15 @@ import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.VehicleTypeRepository;
 import themeansquare.repository.AddressRepository;
 
-
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jdk.nashorn.internal.objects.annotations.Where;
 
 
 
@@ -262,6 +265,48 @@ public class VehicleReg implements IVehicleReg {
     public Optional<Vehicle> getVehicleById(Integer id) throws Exception {
 
         return vehicleRepository.findById(id);
+    }
+
+    //get available vehicle for a vehicleType Id
+    public Iterable<Vehicle> getVehicleByVehicleType(Integer vehicleTypeId) throws Exception {
+
+        // Optional<Vehicle> vec = vehicleRepository.findById(id)
+        //                                          .filter(vehicle -> (vehicle.getVehicleTypeId().getId() == vehicleTypeId.intValue()) && vehicle.isStatus());
+        
+        // if(vec.isPresent()){
+        //     return vec;
+        // }
+        // return vec.empty();
+
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Vehicle tempVehicle = (Vehicle) iter.next();
+            if((tempVehicle.getVehicleTypeId().getId() != vehicleTypeId.intValue()) && !tempVehicle.isStatus()) {
+                System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
+                iter.remove();
+            }
+        }
+
+        return  itr;
+    }
+
+    //get available vehicle for a location
+    public Iterable<Vehicle> getVehicleByLocation(Integer locationId) throws Exception {
+
+        //Optional<Vehicle> vec = vehicleRepository.findAll();
+                                                // .filter(vehicle -> (vehicle.getLocation().getId() == locationId.intValue()) && vehicle.isStatus());
+      
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Vehicle tempVehicle = (Vehicle) iter.next();
+            if((tempVehicle.getLocation().getId() != locationId.intValue()) && !tempVehicle.isStatus()) {
+                System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
+                iter.remove();
+            }
+        }
+        return itr;
     }
 
     //delete api

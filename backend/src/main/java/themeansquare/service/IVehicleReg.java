@@ -3,7 +3,9 @@ package themeansquare.service;
 import themeansquare.model.Vehicle;
 import themeansquare.model.VehicleType;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 
 public interface IVehicleReg {
@@ -13,6 +15,8 @@ public interface IVehicleReg {
     public Iterable<Vehicle> getVehicles() throws Exception;
 
     public Optional<Vehicle> getVehicleById(Integer id) throws Exception;
+    public Iterable<Vehicle> getVehicleByVehicleType(Integer vehicleTypeId) throws Exception;
+    public Iterable<Vehicle> getVehicleByLocation( Integer locationId) throws Exception;
 
     public String delVehicle(Integer id) throws Exception;
 

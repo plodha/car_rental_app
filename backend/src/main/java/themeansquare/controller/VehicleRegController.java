@@ -12,8 +12,10 @@ import themeansquare.repository.AddressRepository;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.Iterator;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,8 +30,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-
 
 /*
     //vehicle
@@ -66,33 +66,47 @@ public class VehicleRegController {
     private AddressRepository addressRepository;
 
     @PostMapping("/vehicle")
-    public String addVehicle (
-        @RequestParam(value = "licensePlate") String licensePlate, 
-        @RequestParam(value = "model") String model, 
-        @RequestParam(value = "make") String make, 
-        @RequestParam(value = "status") Boolean status,
-        @RequestParam(value = "vIN") String vIN,
-        @RequestParam(value = "year") int year, 
-        @RequestParam(value = "vehicleTypeId") int vehicleTypeId,
-        @RequestParam(value = "locationId") int locationId) throws Exception {
-        
-        IVehicleReg reg = new VehicleReg ( licensePlate , model,make, status, vIN, year, locationId, vehicleTypeId,
-                                          vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+    public String addVehicle(@RequestParam(value = "licensePlate") String licensePlate,
+            @RequestParam(value = "model") String model, @RequestParam(value = "make") String make,
+            @RequestParam(value = "status") Boolean status, @RequestParam(value = "vIN") String vIN,
+            @RequestParam(value = "year") int year, @RequestParam(value = "vehicleTypeId") int vehicleTypeId,
+            @RequestParam(value = "locationId") int locationId) throws Exception {
+
+        IVehicleReg reg = new VehicleReg(licensePlate, model, make, status, vIN, year, locationId, vehicleTypeId,
+                vehicleRepository, vehicleTypeRepository, locationRepository, addressRepository);
         String response = reg.addVehicle();
         return response;
     }
 
+    // get all vehicles
     @GetMapping("/vehicle")
     public Iterable<Vehicle> getVehicles() throws Exception {
-        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,
+                addressRepository);
         return reg.getVehicles();
-        //return vehicleRepository.findAll();
+        // return vehicleRepository.findAll();
     }
 
+    // get vehicle with a fixed vehicle id
     @GetMapping(value = "/vehicle/{id}")
     public Optional<Vehicle> getVehicleById(@PathVariable Integer id) throws Exception {
-        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,
+                addressRepository);
         return reg.getVehicleById(id);
+    }
+
+    // get available vehicle for a vehicleType Id
+    @GetMapping(value = "/vehiclebyvehicletype/{vehicleTypeId}")
+    public Iterable<Vehicle> getVehicleByVehicleType(@PathVariable Integer vehicleTypeId) throws Exception {
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+        return reg.getVehicleByVehicleType(vehicleTypeId);
+    }
+
+    // get available vehicle for a location
+    @GetMapping(value = "/vehiclebylocation/{locationId}")
+    public Iterable<Vehicle> getVehicleByLocation(@PathVariable Integer locationId) throws Exception {
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+        return reg.getVehicleByLocation(locationId);
     }
 
     @DeleteMapping("/vehicle/{id}")
@@ -104,8 +118,9 @@ public class VehicleRegController {
         return response;
     }
 
+    //update vehicle with fixed vehicleType and location
     @PutMapping("/vehicle/{id}/{vehicleTypeId}/{locationId}")
-    public String updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id, @PathVariable Integer vehicleTypeId, @PathVariable Integer locationId) throws Exception {
+    public String updateVehicleWith_LocationVehicleType(@RequestBody Vehicle vehicle, @PathVariable Integer id, @PathVariable Integer vehicleTypeId, @PathVariable Integer locationId) throws Exception {
 
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         String response = reg.updateVehicleById(id, vehicleTypeId, locationId, vehicle );
@@ -113,8 +128,9 @@ public class VehicleRegController {
             
     }
 
-    @PutMapping("/vehicle/old/{id}")
-    public String updateVehicleOld(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
+    //update a vehicle
+    @PutMapping("/vehicle/{id}")
+    public String updateVehicle(@RequestBody Vehicle vehicle, @PathVariable Integer id) throws Exception {
 
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         String response = reg.updateVehicleByIdOld(id, vehicle );
