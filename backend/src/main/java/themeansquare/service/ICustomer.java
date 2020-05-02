@@ -7,5 +7,7 @@ public interface ICustomer {
 	String getAllCustomers();
 
 	Customer getCustomerInfo(String userId);
+
+	String updateCustomer(Customer customer);
     
 }

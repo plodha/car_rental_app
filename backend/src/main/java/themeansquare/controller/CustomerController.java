@@ -18,6 +18,7 @@ import themeansquare.service.internal.UserAuth;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -75,9 +76,9 @@ public class CustomerController {
 
     @GetMapping("/getAllCustomers")
     public String getAllCustomers() {
-        ICustomer customer = new CustomerService(userRepository, employeeRepository, customerRepository);
+        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository);
         
-        return customer.getAllCustomers();
+        return customerService.getAllCustomers();
     }
     
     /**
@@ -117,30 +118,33 @@ public class CustomerController {
     
     @GetMapping("/getCustomerInfo")
     public Customer getCustomerInfo(@RequestParam(value = "userId") String userId) {
-        ICustomer customer = new CustomerService(userRepository, employeeRepository, customerRepository);
+        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository);
         
-        return customer.getCustomerInfo(userId);
+        return customerService.getCustomerInfo(userId);
     }
     
      /**
         Use case:
-            As an admin or user I want to get my profile information
+            As a user, I can update my information.
+            You can only call this if you called getCustomerInfo before
+            You will need to return same params as before and updated values
         
         Response:
             Success
-            
+
             Failure:
                 No failures possible
      */
 
     @PutMapping("/updateCustomer")
-    public String updateCustomer(@RequestBody User user) {
-        IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
+    public String updateCustomer(@RequestBody Customer customer) {
         
-        return userAuth.isValidCredentials(user);
+        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository);        
+        
+        return customerService.updateCustomer(customer);
     }
 
-    @PostMapping("/removeCustomer")
+    @DeleteMapping("/removeCustomer")
     public String removeCustomer(@RequestBody User user) {
         IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
         

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import java.util.Optional;
 
 import themeansquare.model.Customer;
 import themeansquare.repository.CustomerRepository;
@@ -98,7 +99,7 @@ public class CustomerService implements ICustomer {
         Iterator custIt = custItr.iterator();
         
         while (custIt.hasNext()) {
-            HashMap<String, String> temp = new HashMap<>();
+            
             Customer customer = (Customer) custIt.next();
             if (customer.getUserId().getId() == Integer.parseInt(userId)) {
                 return customer;
@@ -106,6 +107,22 @@ public class CustomerService implements ICustomer {
         }
 
         return null;
+    }
+
+    @Override
+    public String updateCustomer(Customer customer) {
+        
+        Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
+        Customer inDBCustomer = optionalCustomer.get();
+        if (!inDBCustomer.getUserId().getUsername().equals(customer.getUserId().getUsername())) {
+            String username = customer.getUserId().getUsername();
+        }
+
+        if (!inDBCustomer.getEmail().equals(customer.getEmail())) {
+            String email = customer.getEmail();
+        }
+        
+        return "";
     }
     
 }
