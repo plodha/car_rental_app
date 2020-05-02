@@ -45,16 +45,13 @@ public class MembershipController {
     
     /**
         Use case:
-            This is used by the user to create a registration. After success, they will be rerouted to login.
+           User and admin can cancel membership
         
         Response:
             Success:
-                response.put("username", this.username);
-                response.put("role", "Customer");
-                response.put("id", customer.getUserId().getId() + "");
-                response.put("status", "200");
+                 response.put("status", "200");
             Failure:
-                response.put("message", "username is taken");
+               response.put("message", "No user :(");
                 response.put("status", "400");
      */
     
