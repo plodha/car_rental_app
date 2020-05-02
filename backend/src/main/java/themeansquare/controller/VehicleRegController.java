@@ -39,6 +39,7 @@ import org.springframework.web.bind.annotation.RestController;
     Boolean status;	
     String vIN;
     int year; //
+    int String vehicleCondition;
     int location;
     int vehicleType;
 
@@ -64,15 +65,16 @@ public class VehicleRegController {
     private LocationRepository locationRepository;
     @Autowired
     private AddressRepository addressRepository;
-
+   
     @PostMapping("/vehicle")
     public String addVehicle(@RequestParam(value = "licensePlate") String licensePlate,
             @RequestParam(value = "model") String model, @RequestParam(value = "make") String make,
             @RequestParam(value = "status") Boolean status, @RequestParam(value = "vIN") String vIN,
             @RequestParam(value = "year") int year, @RequestParam(value = "vehicleTypeId") int vehicleTypeId,
+            @RequestParam(value = "vehicleCondition") String vehicleCondition,
             @RequestParam(value = "locationId") int locationId) throws Exception {
 
-        IVehicleReg reg = new VehicleReg(licensePlate, model, make, status, vIN, year, locationId, vehicleTypeId,
+        IVehicleReg reg = new VehicleReg(licensePlate, model, make, status, vIN, year, vehicleCondition,locationId, vehicleTypeId,
                 vehicleRepository, vehicleTypeRepository, locationRepository, addressRepository);
         String response = reg.addVehicle();
         return response;
@@ -146,6 +148,7 @@ public class VehicleRegController {
         @RequestParam(value = "status") Boolean status,
         @RequestParam(value = "vIN") String vIN,
         @RequestParam(value = "year") int year, 
+        @RequestParam(value = "vehicleCondition") String vehicleCondition,
         @RequestParam(value = "vehicleClass") String vehicleClass, 
         @RequestParam(value = "vehicleSize") int vehicleSize, 
         @RequestParam(value = "contactNumber") int contactNumber, 
@@ -157,7 +160,7 @@ public class VehicleRegController {
         @RequestParam(value = "zipcode") String zipcode) throws Exception {
         
         IVehicleReg reg = new VehicleReg ( vehicleClass, vehicleSize , licensePlate , model,make, status, vIN,
-                                          year, contactNumber, name, vehicleCapacity, street, city, state, zipcode,
+                                          year, vehicleCondition,contactNumber, name, vehicleCapacity, street, city, state, zipcode,
                                           vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         String response = reg.addVehicleOld();
         return response;

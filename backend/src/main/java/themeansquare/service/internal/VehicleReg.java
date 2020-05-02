@@ -38,8 +38,10 @@ public class VehicleReg implements IVehicleReg {
     private Boolean status;	
     private String vIN;
     private int year; //
+    private String vehicleCondition;
     private int locationId;
     private int vehicleTypeId;
+
     //int location; --foreign key to Location
     //int vehicleType; --foreign key to vehicleType
 
@@ -65,8 +67,27 @@ public class VehicleReg implements IVehicleReg {
         this.addressRepository = addressRepository;
     }
 
+    public VehicleReg(  String licensePlate , String model,String make,
+    Boolean status, String vIN,int year, String vehicleCondition,int locationId, int vehicleTypeId,
+    VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
+
+        this.licensePlate = licensePlate;
+        this.model = model;
+        this.make = make;
+        this.status = status;
+        this.vIN = vIN;
+        this.year = year;
+        this.vehicleCondition = vehicleCondition;
+        this.locationId =locationId; 
+        this.vehicleTypeId = vehicleTypeId;
+        this.vehicleRepository = vehicleRepository;
+        this.vehicleTypeRepository = vehicleTypeRepository;
+        this.locationRepository = locationRepository;
+        this.addressRepository = addressRepository;
+
+    }
     public VehicleReg( String vehicleClass, int vehicleSize , String licensePlate , String model,String make,
-                       Boolean status, String vIN,int year,int contactNumber, String name, int vehicleCapacity,
+                       Boolean status, String vIN,int year, String vehicleCondition, int contactNumber, String name, int vehicleCapacity,
                        String street, String city,String state, String zipcode,
                        VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
 
@@ -78,6 +99,7 @@ public class VehicleReg implements IVehicleReg {
         this.status = status;
         this.vIN = vIN;
         this.year = year;
+        this.vehicleCondition = vehicleCondition;
         this.contactNumber = contactNumber;
         this.name = name;
         this.vehicleCapacity = vehicleCapacity;
@@ -92,24 +114,7 @@ public class VehicleReg implements IVehicleReg {
 
     }
 
-    public VehicleReg(  String licensePlate , String model,String make,
-                       Boolean status, String vIN,int year,int locationId, int vehicleTypeId,
-                       VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
-
-        this.licensePlate = licensePlate;
-        this.model = model;
-        this.make = make;
-        this.status = status;
-        this.vIN = vIN;
-        this.year = year;
-        this.locationId =locationId; 
-        this.vehicleTypeId = vehicleTypeId;
-        this.vehicleRepository = vehicleRepository;
-        this.vehicleTypeRepository = vehicleTypeRepository;
-        this.locationRepository = locationRepository;
-        this.addressRepository = addressRepository;
-
-    }
+   
     
     // validation logic for vehicle api
     public String addVehicle() throws Exception {
@@ -127,6 +132,7 @@ public class VehicleReg implements IVehicleReg {
             vehicle.setMake(make);
             vehicle.setStatus(status);
             vehicle.setYear(year);
+            vehicle.setVehicleCondition(vehicleCondition);
             response.put("isVINAvailable", "true");
 
             // Add VIN check
@@ -170,6 +176,7 @@ public class VehicleReg implements IVehicleReg {
             vehicle.setMake(make);
             vehicle.setStatus(status);
             vehicle.setYear(year);
+            vehicle.setVehicleCondition(vehicleCondition);
             response.put("isVINAvailable", "true");
 
             // Add VIN check
@@ -338,6 +345,8 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setStatus(Optional.ofNullable(vehicle.isStatus()).orElse(existVehicle.isStatus()));
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
+            existVehicle.setVehicleCondition(Optional.ofNullable(vehicle.getVehicleCondition()).orElse(existVehicle.getVehicleCondition()));
+            
 
          
             response.put("LocationIdNotAvailable", "true");
@@ -377,6 +386,7 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setStatus(Optional.ofNullable(vehicle.isStatus()).orElse(existVehicle.isStatus()));
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
+            existVehicle.setVehicleCondition(Optional.ofNullable(vehicle.getVehicleCondition()).orElse(existVehicle.getVehicleCondition()));
 
             
             int vehicleTypeId = existVehicle.getVehicleTypeId().getId();
