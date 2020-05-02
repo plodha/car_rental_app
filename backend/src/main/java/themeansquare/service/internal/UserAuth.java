@@ -18,11 +18,8 @@ import themeansquare.service.IUser;
 
 public class UserAuth implements IUser {
 
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired 
-    private EmployeeRepository employeeRepository;
-    @Autowired 
+    private UserRepository userRepository; 
+    private EmployeeRepository employeeRepository; 
     private CustomerRepository customerRepository;
 
 
