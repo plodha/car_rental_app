@@ -66,6 +66,21 @@ public class Customer{
 	
 	@NotNull
 	private String creditCard;
+	
+	@NotNull
+	@Temporal(TemporalType.DATE)
+	private Date creditCardExpDate;
+	
+	@NotNull
+	private String CVV;
+	
+	public Date getCreditCardExpDate() { return creditCardExpDate; }
+
+	public void setCreditCardExpDate(Date creditCardExpDate) { this.creditCardExpDate = creditCardExpDate; }
+
+	public String getCVV() {return CVV; }
+
+	public void setCVV(String cVV) {CVV = cVV; }
 
 	public String getCreditCard() { return creditCard; }
 
