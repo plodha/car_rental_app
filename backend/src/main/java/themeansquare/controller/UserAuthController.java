@@ -3,14 +3,19 @@ package themeansquare.controller;
 import themeansquare.model.User;
 import themeansquare.repository.AddressRepository;
 import themeansquare.repository.CustomerRepository;
+import themeansquare.repository.EmployeeRepository;
 import themeansquare.repository.UserRepository;
 import themeansquare.service.IRegistration;
+import themeansquare.service.IUser;
 import themeansquare.service.internal.Registration;
+import themeansquare.service.internal.UserAuth;
+
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,36 +34,31 @@ import org.springframework.web.bind.annotation.RestController;
 */
 
 @RestController
-public class RegistrationController {
+public class UserAuthController {
 
     @Autowired
     private UserRepository userRepository;
-    @Autowired
+    @Autowired 
+    private EmployeeRepository employeeRepository;
+    @Autowired 
     private CustomerRepository customerRepository;
-    @Autowired
-    private AddressRepository addressRepository;
-    
-	@PostMapping("/register")
-    public String register(
-        @RequestParam(value = "username") String username, 
-        @RequestParam(value = "password") String password, 
-        @RequestParam(value = "firstName") String firstName, 
-        @RequestParam(value = "lastName") String lastName,
-        @RequestParam(value = "street") String street,
-        @RequestParam(value = "city") String city, 
-        @RequestParam(value = "state") String state, 
-        @RequestParam(value = "zipcode") String zipcode, 
-        @RequestParam(value = "licenseNumber") String licenseNumber, 
-        @RequestParam(value = "licenseExpDate") String licenseExpDate, 
-        @RequestParam(value = "email") String email) throws Exception {
-        
-        IRegistration reg = new Registration(username, password, firstName, lastName,
-        street, city, state, zipcode, licenseNumber, licenseExpDate, email, 
-        userRepository, customerRepository, addressRepository);
-        String response = reg.register();
 
-        return response;
-	}
+    /**
+     * 
+        {
+            "username" : "wqureshi",
+            "password" : "password"
+        }
+     * @param user
+     * @return
+     */
+
+    @PostMapping("/auth")
+    public String auth(@RequestBody User user) {
+        IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
+        
+        return userAuth.isValidCredentials(user);
+    }
 
 }
 
