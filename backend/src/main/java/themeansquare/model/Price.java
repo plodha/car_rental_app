@@ -20,7 +20,7 @@ public class Price{
 	private double LateFee;
 	
 	@NotNull
-	private double LicensePlate;
+	private double hourlyPrice;
 	
 	@NotNull
 	@OneToOne(cascade = CascadeType.ALL)
@@ -35,9 +35,9 @@ public class Price{
 
 	public void setLateFee(double lateFee) { LateFee = lateFee; }
 
-	public double getLicensePlate() { return LicensePlate; }
+	public double getLicensePlate() { return hourlyPrice; }
 
-	public void setLicensePlate(double licensePlate) { LicensePlate = licensePlate; }
+	public void setLicensePlate(double hourlyPrice) { this.hourlyPrice = hourlyPrice; }
 
 	public VehicleType getVehicleTypeId() { return VehicleTypeId; }
 
