@@ -10,12 +10,15 @@ import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.VehicleTypeRepository;
 import themeansquare.repository.AddressRepository;
 
-
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 import java.util.Optional;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import jdk.nashorn.internal.objects.annotations.Where;
 
 
 
@@ -35,8 +38,10 @@ public class VehicleReg implements IVehicleReg {
     private Boolean status;	
     private String vIN;
     private int year; //
+    private String vehicleCondition;
     private int locationId;
     private int vehicleTypeId;
+
     //int location; --foreign key to Location
     //int vehicleType; --foreign key to vehicleType
 
@@ -62,8 +67,27 @@ public class VehicleReg implements IVehicleReg {
         this.addressRepository = addressRepository;
     }
 
+    public VehicleReg(  String licensePlate , String model,String make,
+    Boolean status, String vIN,int year, String vehicleCondition,int locationId, int vehicleTypeId,
+    VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
+
+        this.licensePlate = licensePlate;
+        this.model = model;
+        this.make = make;
+        this.status = status;
+        this.vIN = vIN;
+        this.year = year;
+        this.vehicleCondition = vehicleCondition;
+        this.locationId =locationId; 
+        this.vehicleTypeId = vehicleTypeId;
+        this.vehicleRepository = vehicleRepository;
+        this.vehicleTypeRepository = vehicleTypeRepository;
+        this.locationRepository = locationRepository;
+        this.addressRepository = addressRepository;
+
+    }
     public VehicleReg( String vehicleClass, int vehicleSize , String licensePlate , String model,String make,
-                       Boolean status, String vIN,int year,int contactNumber, String name, int vehicleCapacity,
+                       Boolean status, String vIN,int year, String vehicleCondition, int contactNumber, String name, int vehicleCapacity,
                        String street, String city,String state, String zipcode,
                        VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
 
@@ -75,6 +99,7 @@ public class VehicleReg implements IVehicleReg {
         this.status = status;
         this.vIN = vIN;
         this.year = year;
+        this.vehicleCondition = vehicleCondition;
         this.contactNumber = contactNumber;
         this.name = name;
         this.vehicleCapacity = vehicleCapacity;
@@ -89,24 +114,7 @@ public class VehicleReg implements IVehicleReg {
 
     }
 
-    public VehicleReg(  String licensePlate , String model,String make,
-                       Boolean status, String vIN,int year,int locationId, int vehicleTypeId,
-                       VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
-
-        this.licensePlate = licensePlate;
-        this.model = model;
-        this.make = make;
-        this.status = status;
-        this.vIN = vIN;
-        this.year = year;
-        this.locationId =locationId; 
-        this.vehicleTypeId = vehicleTypeId;
-        this.vehicleRepository = vehicleRepository;
-        this.vehicleTypeRepository = vehicleTypeRepository;
-        this.locationRepository = locationRepository;
-        this.addressRepository = addressRepository;
-
-    }
+   
     
     // validation logic for vehicle api
     public String addVehicle() throws Exception {
@@ -124,6 +132,7 @@ public class VehicleReg implements IVehicleReg {
             vehicle.setMake(make);
             vehicle.setStatus(status);
             vehicle.setYear(year);
+            vehicle.setVehicleCondition(vehicleCondition);
             response.put("isVINAvailable", "true");
 
             // Add VIN check
@@ -167,6 +176,7 @@ public class VehicleReg implements IVehicleReg {
             vehicle.setMake(make);
             vehicle.setStatus(status);
             vehicle.setYear(year);
+            vehicle.setVehicleCondition(vehicleCondition);
             response.put("isVINAvailable", "true");
 
             // Add VIN check
@@ -264,6 +274,48 @@ public class VehicleReg implements IVehicleReg {
         return vehicleRepository.findById(id);
     }
 
+    //get available vehicle for a vehicleType Id
+    public Iterable<Vehicle> getVehicleByVehicleType(Integer vehicleTypeId) throws Exception {
+
+        // Optional<Vehicle> vec = vehicleRepository.findById(id)
+        //                                          .filter(vehicle -> (vehicle.getVehicleTypeId().getId() == vehicleTypeId.intValue()) && vehicle.isStatus());
+        
+        // if(vec.isPresent()){
+        //     return vec;
+        // }
+        // return vec.empty();
+
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Vehicle tempVehicle = (Vehicle) iter.next();
+            if((tempVehicle.getVehicleTypeId().getId() != vehicleTypeId.intValue()) && !tempVehicle.isStatus()) {
+                System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
+                iter.remove();
+            }
+        }
+
+        return  itr;
+    }
+
+    //get available vehicle for a location
+    public Iterable<Vehicle> getVehicleByLocation(Integer locationId) throws Exception {
+
+        //Optional<Vehicle> vec = vehicleRepository.findAll();
+                                                // .filter(vehicle -> (vehicle.getLocation().getId() == locationId.intValue()) && vehicle.isStatus());
+      
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Vehicle tempVehicle = (Vehicle) iter.next();
+            if((tempVehicle.getLocation().getId() != locationId.intValue()) && !tempVehicle.isStatus()) {
+                System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
+                iter.remove();
+            }
+        }
+        return itr;
+    }
+
     //delete api
     public String delVehicle(Integer id) throws Exception {
 
@@ -293,6 +345,8 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setStatus(Optional.ofNullable(vehicle.isStatus()).orElse(existVehicle.isStatus()));
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
+            existVehicle.setVehicleCondition(Optional.ofNullable(vehicle.getVehicleCondition()).orElse(existVehicle.getVehicleCondition()));
+            
 
          
             response.put("LocationIdNotAvailable", "true");
@@ -332,6 +386,7 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setStatus(Optional.ofNullable(vehicle.isStatus()).orElse(existVehicle.isStatus()));
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
+            existVehicle.setVehicleCondition(Optional.ofNullable(vehicle.getVehicleCondition()).orElse(existVehicle.getVehicleCondition()));
 
             
             int vehicleTypeId = existVehicle.getVehicleTypeId().getId();

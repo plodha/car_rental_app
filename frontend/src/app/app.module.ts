@@ -29,7 +29,13 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {HttpClientModule} from '@angular/common/http';
-
+import {MatMenuModule} from '@angular/material/menu';
+import { AddVehiclePageComponent } from './add-vehicle-page/add-vehicle-page.component';
+import { AddLocationPageComponent } from './add-location-page/add-location-page.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { AddReservationPageComponent } from './add-reservation-page/add-reservation-page.component';
+import { DropoffSurveyPageComponent } from './dropoff-survey-page/dropoff-survey-page.component';
+import { CancelPageComponent } from './cancel-page/cancel-page.component';
 
 
 //import {FormsModule} from '@angular/forms';
@@ -42,7 +48,13 @@ import {HttpClientModule} from '@angular/common/http';
     EmployeeHomePageComponent,
     AdminHomePageComponent,
     VehiclePageComponent,
-    HomePageComponent
+    HomePageComponent,
+    AddVehiclePageComponent,
+    AddLocationPageComponent,
+    ProfilePageComponent,
+    AddReservationPageComponent,
+    DropoffSurveyPageComponent,
+    CancelPageComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +78,8 @@ import {HttpClientModule} from '@angular/common/http';
     ReactiveFormsModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    HttpClientModule
+    HttpClientModule,
+    MatMenuModule
 
 
   ],
