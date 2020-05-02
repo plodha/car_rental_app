@@ -9,5 +9,7 @@ public interface ICustomer {
 	Customer getCustomerInfo(String userId);
 
 	String updateCustomer(Customer customer);
+
+	String removeCustomer(String userId);
     
 }

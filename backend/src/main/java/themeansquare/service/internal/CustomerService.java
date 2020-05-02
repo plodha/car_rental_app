@@ -144,5 +144,14 @@ public class CustomerService implements ICustomer {
         response.put("status", "200");
         return convertMapToJson(response);
     }
+
+    @Override
+    public String removeCustomer(String userId) {
+        HashMap<String, String> response = new HashMap<String, String>();
+        Customer toRemove = getCustomerInfo(userId);
+        customerRepository.delete(toRemove);
+        response.put("status", "200");
+        return convertMapToJson(response);
+    }
     
 }

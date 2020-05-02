@@ -145,11 +145,22 @@ public class CustomerController {
         return customerService.updateCustomer(customer);
     }
 
-    @DeleteMapping("/removeCustomer")
-    public String removeCustomer(@RequestBody User user) {
-        IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
+    /**
+        Use case:
+            Admin can delete the user. They need to only pass id of user
         
-        return userAuth.isValidCredentials(user);
+        Response:
+            Success
+
+            Failure:
+                No failures possible
+     */
+
+    @DeleteMapping("/removeCustomer")
+    public String removeCustomer(@RequestParam(value = "userId") String userId) {
+        ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
+        
+        return customerService.removeCustomer(userId);
     }
 
 }
