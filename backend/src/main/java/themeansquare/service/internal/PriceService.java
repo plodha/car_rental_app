@@ -106,5 +106,14 @@ public class PriceService implements IPrice {
 
         return convertMapToJson(response);
     }
+
+    @Override
+    public String deletePrice(String priceId) {
+        HashMap<String, String> response = new HashMap<String, String>();
+        this.priceRepository.deleteById(Integer.parseInt(priceId));
+        
+        response.put("status", "200");
+        return convertMapToJson(response);
+    }
     
 }

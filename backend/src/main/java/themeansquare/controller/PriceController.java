@@ -121,6 +121,26 @@ public class PriceController {
         
         return priceService.updatePrice(price);
     }
+
+    /**
+        Use case:
+            As admin I can delete an existing price
+        
+        Response:
+            Success:
+                {
+                    status: 200
+                }
+            Failure:
+                No failures, empty will return empty with 200
+     */
+
+    @DeleteMapping("/deletePrice")
+    public String deletePrice(@RequestParam(value = "priceId") String priceId) {
+        IPrice priceService = new PriceService(priceRepository);
+        
+        return priceService.deletePrice(priceId);
+    }
 }
 
 

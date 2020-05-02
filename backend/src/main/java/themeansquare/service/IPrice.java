@@ -11,5 +11,7 @@ public interface IPrice {
 	String addPrice(Price price);
 
 	String updatePrice(Price price);
+
+	String deletePrice(String price);
     
 }
