@@ -150,8 +150,8 @@ public class CustomerController {
             Admin can delete the user. They need to only pass id of user
         
         Response:
-            Success
-
+            Success:
+                response.put("status", "200");
             Failure:
                 No failures possible
      */
