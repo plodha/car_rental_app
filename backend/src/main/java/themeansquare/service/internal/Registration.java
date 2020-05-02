@@ -137,9 +137,7 @@ public class Registration implements IRegistration {
     public boolean checkIfEmailExists() {
 
         Iterable<Customer> itr = customerRepository.findAll();
-        
         Iterator it = itr.iterator();
-        
         while (it.hasNext()) {
             Customer tempCustomer = (Customer) it.next();
             System.out.println(tempCustomer.getEmail());
