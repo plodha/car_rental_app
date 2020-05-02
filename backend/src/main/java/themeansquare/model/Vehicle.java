@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
@@ -22,12 +23,13 @@ public class Vehicle {
     private String VIN;
 	
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	//@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
     @JoinColumn(name = "VehicleType", referencedColumnName = "Id")
 	private VehicleType VehicleTypeId;
 	
 	@NotNull
-	@OneToOne(cascade = CascadeType.ALL)
+	@ManyToOne()
     @JoinColumn(name = "Location", referencedColumnName = "Id")
 	private Location Location;
 	
