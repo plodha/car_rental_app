@@ -37,3 +37,32 @@
 .mat-flat-button {
   margin: 5px;
 }
+.example-button-row button,
+.example-button-row a {
+  margin-right: 45px;
+}
+
+.example-content {
+  margin-top: 100px;
+  margin-left:50px;
+}
+table {
+  width: 100%;
+}
+
+.mat-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td, th {
+  width: 25%;
+}
+.breadcrumb {
+  padding:15px;
+}
+
+.example-content-page {
+  margin-top: 50px;
+  margin-left:50px;
+}
