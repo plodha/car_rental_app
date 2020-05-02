@@ -102,7 +102,25 @@ public class PriceController {
         return priceService.addPrice(price);
     }
 
+    /**
+        Use case:
+            As admin I can update an existing price
+        
+        Response:
+            Success:
+                {
+                    status: 200
+                }
+            Failure:
+                No failures, empty will return empty with 200
+     */
 
+    @PutMapping("/updatePrice")
+    public String updatePrice(@RequestBody Price price) {
+        IPrice priceService = new PriceService(priceRepository);
+        
+        return priceService.updatePrice(price);
+    }
 }
 
 

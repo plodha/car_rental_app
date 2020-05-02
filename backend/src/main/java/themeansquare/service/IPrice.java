@@ -9,5 +9,7 @@ public interface IPrice {
 	ArrayList<Price> getPriceForVehicleType(String vehicleTypeId);
 
 	String addPrice(Price price);
+
+	String updatePrice(Price price);
     
 }

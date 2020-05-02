@@ -3,6 +3,7 @@ package themeansquare.service.internal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Optional;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,26 +40,35 @@ public class PriceService implements IPrice {
     @Override
     public String addPrice(Price price) {
         
-        Iterable<Price> itr = this.priceRepository.findAll();
-        Iterator it = itr.iterator();
+        
         HashMap<String, String> response = new HashMap<String, String>();
         
-        while (it.hasNext()) {
-            Price p = (Price) it.next();
-            if (p.getVehicleTypeId().getId() == price.getVehicleTypeId().getId()) {
-                if (p.getHourlyRange().equals(price.getHourlyRange())) {
-                    response.put("status", "400");
-                    response.put("message", "Price for that hourly range and vehicle type exist already");
-                    return convertMapToJson(response);
-                }
-            }
+        if (ifHourlyRangeExistsForVehicleType(price)) {
+            response.put("status", "400");
+            response.put("message", "Price for that hourly range and vehicle type exist already");
+            return convertMapToJson(response);
         }
-        
+                    
         this.priceRepository.save(price);
         
         response.put("status", "200");
 
         return convertMapToJson(response);
+    }
+
+    public boolean ifHourlyRangeExistsForVehicleType(Price price) {
+        Iterable<Price> itr = this.priceRepository.findAll();
+        Iterator it = itr.iterator();
+        while (it.hasNext()) {
+            Price p = (Price) it.next();
+            if (p.getVehicleTypeId().getId() == price.getVehicleTypeId().getId()) {
+                if (p.getHourlyRange().equals(price.getHourlyRange())) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     public String convertMapToJson(HashMap<String, String> response) {
@@ -73,6 +83,28 @@ public class PriceService implements IPrice {
         }
     
         return jsonResponse;
+    }
+
+    @Override
+    public String updatePrice(Price price) {
+        Optional<Price> op = this.priceRepository.findById(price.getId());
+        Price og = op.get();
+
+        HashMap<String, String> response = new HashMap<String, String>();
+        
+        if (!og.getHourlyRange().equals(price.getHourlyRange())) {
+            if (ifHourlyRangeExistsForVehicleType(price)) {
+                response.put("status", "400");
+                response.put("message", "Price for that hourly range and vehicle type exist already");
+                return convertMapToJson(response);
+            }
+        }
+        
+        this.priceRepository.save(price);
+        
+        response.put("status", "200");
+
+        return convertMapToJson(response);
     }
     
 }
