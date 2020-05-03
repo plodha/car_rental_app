@@ -3,6 +3,11 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
+import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import {ActivatedRoute, Router } from '@angular/router';
+
+
+import {ApiService} from '../api.service'
 
 export interface Location {
   id:number;
@@ -13,8 +18,10 @@ export interface Location {
   zipcode:string;
   contactNumber:string;
   vehicleCapacity:number;
+  addressId : number;
 
 }
+/*
 const ELEMENT_DATA: Location[] = [
   {id: 1, name:'Sunnyvale Suite',addressLine: '26 Showers drive', city:'Sunnyvale', state:'CA', zipcode:'94089', contactNumber:'23131313213',vehicleCapacity:10},
   {id: 2, name:'San Jose Suite',addressLine: '28 Showers drive', city:'Sunnyvale', state:'CA', zipcode:'94089', contactNumber:'23131313213',vehicleCapacity:10},
@@ -27,6 +34,7 @@ const ELEMENT_DATA: Location[] = [
   {id: 9, name:'Milroy Suite',addressLine: '26 Showers drive', city:'Sunnyvale', state:'CA', zipcode:'94089', contactNumber:'23131313213',vehicleCapacity:10},
   {id: 10, name:'Palo alto Suite',addressLine: '26 Showers drive', city:'Sunnyvale', state:'CA', zipcode:'94089', contactNumber:'23131313213',vehicleCapacity:10},
 ];
+*/
 @Component({
   selector: 'app-locations-page',
   templateUrl: './locations-page.component.html',
@@ -35,18 +43,43 @@ const ELEMENT_DATA: Location[] = [
 export class LocationsPageComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'addressLine','city','state','zipcode', 'contactNumber','vehicleCapacity','star'];
   dataSource: MatTableDataSource<Location>;
-
+  ELEMENT_DATA: Location[] = [];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  constructor() {
-    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+  constructor(private router: Router,private actr: ActivatedRoute, private formBuilder: FormBuilder,private api: ApiService) {
+    this.actr.data.subscribe((data)=>{
+      var locations = data.location
+      var i = 0;
+      for (i = 0; i < locations.length; i++) {
 
+        var obj = locations[i]
+        var location = {
+          id: obj.id,
+          name:obj.name,
+          addressLine: obj.address.street,
+           city:obj.address.city,
+           state:obj.address.state,
+           zipcode:obj.address.zipCode,
+            contactNumber:obj.contactNumber,
+            vehicleCapacity:obj.vehicleCapacity,
+            addressId : obj.address.id
+        }
+        this.ELEMENT_DATA[i] = location;
+      }
+    });
+    this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
+    // console.log('datasuce ');
+    // console.log(this.dataSource)
   }
 
   ngOnInit(): void {
+
+
+
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
   }
 
   applyFilter(event: Event) {
@@ -56,6 +89,48 @@ export class LocationsPageComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  fetchAllLocations(){
+    this.api.getAllLocations().subscribe((data:any) => {
+      console.log("result")
+      console.log(data[0]);
+      var i = 0;
+      for (i = 0; i < data.length; i++) {
+
+        var obj = data[i]
+        console.log(obj)
+        var location = {
+          id: obj.id,
+          name:obj.name,
+          addressLine: obj.address.street,
+           city:obj.address.city,
+           state:obj.address.state,
+           zipcode:obj.address.zipCode,
+            contactNumber:obj.contactNumber,
+            vehicleCapacity:obj.vehicleCapacity,
+            addressId : obj.address.id
+        }
+        this.ELEMENT_DATA[i] = location;
+
+      }
+
+    /*
+
+      "address": {
+                 "state": "CA",
+                 "id": 1,
+                 "city": "random city",
+                 "street": "random street",
+                 "zipCode": 94086
+             },
+             "id": 1,
+             "vehicleCapacity": 10,
+             "contactNumber": 1234567890,
+             "name": "America"
+*/
+
+    })
   }
 
 }

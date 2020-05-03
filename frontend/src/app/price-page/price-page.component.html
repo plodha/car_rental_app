@@ -12,7 +12,7 @@
   <div class="breadcrumb"> <a style="font-size:16px" [routerLink]="['/home']"> Home</a> >> Customers</div>
 
   <div class="example-content-page">
-<h2> Customers</h2>
+<h2> Price List</h2>
 <mat-form-field>
   <mat-label>Filter</mat-label>
   <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
@@ -30,54 +30,30 @@
       </td>
        </ng-container>
 
-       <ng-container matColumnDef="name">
-         <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
-         <td mat-cell *matCellDef="let row" > {{row.name}} </td>
+       <ng-container matColumnDef="vehicleClass">
+         <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Class </th>
+         <td mat-cell *matCellDef="let row" > {{row.vehicleClass}} </td>
        </ng-container>
 
 
     <!-- Progress Column -->
-    <ng-container matColumnDef="addressLine">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Address Line </th>
-      <td mat-cell *matCellDef="let row"> {{row.addressLine}} </td>
+    <ng-container matColumnDef="vehicleSize">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Size </th>
+      <td mat-cell *matCellDef="let row"> {{row.vehicleSize}} </td>
     </ng-container>
 
     <!-- Color Column -->
-    <ng-container matColumnDef="licenseInfo">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> License Information </th>
-      <td mat-cell *matCellDef="let row" > {{row.licenseInfo}} </td>
+    <ng-container matColumnDef="lateFee">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Late Fee </th>
+      <td mat-cell *matCellDef="let row" > {{row.lateFee}} </td>
     </ng-container>
     <!-- Name Column -->
-    <ng-container matColumnDef="startDate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Start Date  </th>
-      <td mat-cell *matCellDef="let row"> {{row.startDate}} </td>
+    <ng-container matColumnDef="hourlyFee">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Hourly Fee </th>
+      <td mat-cell *matCellDef="let row"> {{row.hourlyFee}} </td>
     </ng-container>
 
 
-    <!-- Color Column -->
-    <ng-container matColumnDef="endDate">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> End Date </th>
-      <td mat-cell *matCellDef="let row" > {{row.endDate}} </td>
-    </ng-container>
-
-    <!-- Color Column -->
-    <ng-container matColumnDef="verified">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Verified</th>
-      <td mat-cell *matCellDef="let row" > {{row.verified}} </td>
-    </ng-container>
-
-    <!-- Color Column -->
-    <ng-container matColumnDef="status">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Status</th>
-      <td mat-cell *matCellDef="let row" > {{row.status}} </td>
-    </ng-container>
-
-    <!-- Color Column -->
-    <ng-container matColumnDef="email">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
-      <td mat-cell *matCellDef="let row" > {{row.email}} </td>
-    </ng-container>
-    <!-- Color Column -->
 
 <!-- icon -->
     <ng-container matColumnDef="star" stickyEnd>

@@ -8,6 +8,9 @@ export class ApiService {
 
   //api_url = "https://api.wasaequreshi.com/"
   api_url = "http://localhost:8020/"
+
+  location_endpoint = "location"
+
   constructor(private http: HttpClient) {
 
   }
@@ -62,4 +65,14 @@ export class ApiService {
     return this.http.post(this.api_url + end_point, params);
 
   }
+
+public getAllLocations(){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.api_url + this.location_endpoint,{headers})
+
+
+}
+
+
 }
