@@ -28,6 +28,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatRadioModule} from '@angular/material/radio';
+
 import {HttpClientModule} from '@angular/common/http';
 import {MatMenuModule} from '@angular/material/menu';
 import { AddVehiclePageComponent } from './add-vehicle-page/add-vehicle-page.component';
@@ -37,7 +39,9 @@ import { AddReservationPageComponent } from './add-reservation-page/add-reservat
 import { DropoffSurveyPageComponent } from './dropoff-survey-page/dropoff-survey-page.component';
 import { CancelPageComponent } from './cancel-page/cancel-page.component';
 
-
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 //import {FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -79,7 +83,12 @@ import { CancelPageComponent } from './cancel-page/cancel-page.component';
     MatDatepickerModule,
     MatNativeDateModule,
     HttpClientModule,
-    MatMenuModule
+    MatMenuModule,
+    NgxMaterialTimepickerModule,
+    MatRadioModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatMomentModule
 
 
   ],

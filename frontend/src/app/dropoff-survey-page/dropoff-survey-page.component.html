@@ -1,0 +1,70 @@
+<div class="example-container mat-elevation-z8">
+  <div class="container">
+    <div class='title'>
+    <h1>Car Rental System - Login</h1>
+    </div>
+  </div>
+  <div class="example-loading-shade"
+        *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <mat-card class="example-card">
+    <label id="example-radio-group-label">Please Fill for any Damage information</label>
+
+    <form [formGroup]="surveyForm" (ngSubmit)="onFormSubmit()">
+        <label id="example-radio-group-label">Flat tyre: </label>
+        <mat-radio-group [formControl]="flatTyre">
+            <mat-radio-button value="yes">Yes</mat-radio-button>
+            <mat-radio-button value="no">No</mat-radio-button>
+        </mat-radio-group>
+   <div>
+        <label id="example-radio-group-label" >Physical Damage: </label>
+     <mat-radio-group [formControl]="physicalDamage">
+       <mat-radio-button value="yes">Yes</mat-radio-button>
+       <mat-radio-button value="no">no</mat-radio-button>
+     </mat-radio-group>
+</div>
+     <div>
+  <label id="example-radio-group-label" >Headlight Damage: </label>
+<mat-radio-group [formControl]="headlightDamage">
+        <mat-radio-button value="yes">Yes</mat-radio-button>
+        <mat-radio-button value="no">no</mat-radio-button>
+      </mat-radio-group>
+</div>
+<div>
+
+<label id="example-radio-group-label">Side mirror Damage: </label>
+ <mat-radio-group  [formControl] ="sideMirrorDamage">
+         <mat-radio-button value="yes">Yes</mat-radio-button>
+         <mat-radio-button value="no">no</mat-radio-button>
+       </mat-radio-group>
+
+</div>
+
+<div>
+ <label id="example-radio-group-label" >Front or rear glass damage: </label>
+ <mat-radio-group aria-label="Front or rear glass damage" [formControl] ="glassDamage">
+        <mat-radio-button value="yes">Yes</mat-radio-button>
+        <mat-radio-button value="no">no</mat-radio-button>
+      </mat-radio-group>
+
+</div>
+
+
+<div>
+ <label id="example-radio-group-label" >Scratches: </label>
+ <mat-radio-group aria-label="Minor scratches" [formControl] ="scratches">
+           <mat-radio-button value="yes">Yes</mat-radio-button>
+           <mat-radio-button value="no">no</mat-radio-button>
+         </mat-radio-group>
+</div>
+
+
+
+
+      <div class="button-row">
+        <button type="submit"  mat-flat-button color="primary">Submit</button>
+      </div>
+    </form>
+  </mat-card>
+  </div>
