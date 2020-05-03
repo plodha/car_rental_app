@@ -20,7 +20,20 @@ import { LocationsPageComponent } from './locations-page/locations-page.componen
 import { CustomersPageComponent } from './customers-page/customers-page.component';
 import { PricePageComponent } from './price-page/price-page.component';
 import { InvoicePageComponent } from './invoice-page/invoice-page.component';
+import { Injectable } from '@angular/core';
+import { ApiService } from './api.service';
 
+import { Resolve } from '@angular/router';
+
+
+@Injectable()
+export class LocationResolver implements Resolve<any> {
+  constructor(private apiService: ApiService) {}
+
+  resolve() {
+    return this.apiService.getAllLocations();
+  }
+}
 const routes: Routes = [{
     path: 'login',
     component: LoginPageComponent
@@ -67,7 +80,10 @@ const routes: Routes = [{
       },
       {
           path:'locations',
-          component: LocationsPageComponent
+          component: LocationsPageComponent,
+          resolve: {
+           location: LocationResolver
+       }
       },
       {
           path:'reservations',
@@ -89,8 +105,12 @@ const routes: Routes = [{
   //{ path: '', component: ContentLayoutComponent, data: { title: 'content Views' }, children: CONTENT_ROUTES },
 ];
 
+
+
+
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [LocationResolver]
 })
 export class AppRoutingModule { }
