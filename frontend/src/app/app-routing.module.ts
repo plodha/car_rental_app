@@ -18,7 +18,8 @@ import { CustomerLandingPageComponent } from './customer-landing-page/customer-l
 import { ReservationsPageComponent } from './reservations-page/reservations-page.component';
 import { LocationsPageComponent } from './locations-page/locations-page.component';
 import { CustomersPageComponent } from './customers-page/customers-page.component';
-
+import { PricePageComponent } from './price-page/price-page.component';
+import { InvoicePageComponent } from './invoice-page/invoice-page.component';
 
 const routes: Routes = [{
     path: 'login',
@@ -75,6 +76,14 @@ const routes: Routes = [{
       {
           path:'customers',
           component: CustomersPageComponent
+      },
+      {
+          path:'priceList',
+          component: PricePageComponent
+      },
+      {
+          path:'invoice',
+          component: InvoicePageComponent
       },
   { path: 'register', component: RegisterPageComponent, data: { title: 'Register' } }, //, children: Full_ROUTES },
   //{ path: '', component: ContentLayoutComponent, data: { title: 'content Views' }, children: CONTENT_ROUTES },

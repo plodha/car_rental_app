@@ -46,6 +46,8 @@ import { CustomerLandingPageComponent } from './customer-landing-page/customer-l
 import { ReservationsPageComponent } from './reservations-page/reservations-page.component';
 import { LocationsPageComponent } from './locations-page/locations-page.component';
 import { CustomersPageComponent } from './customers-page/customers-page.component';
+import { PricePageComponent } from './price-page/price-page.component';
+import { InvoicePageComponent } from './invoice-page/invoice-page.component';
 //import {FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -66,7 +68,9 @@ import { CustomersPageComponent } from './customers-page/customers-page.componen
     CustomerLandingPageComponent,
     ReservationsPageComponent,
     LocationsPageComponent,
-    CustomersPageComponent
+    CustomersPageComponent,
+    PricePageComponent,
+    InvoicePageComponent
   ],
   imports: [
     BrowserModule,
