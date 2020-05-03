@@ -9,5 +9,5 @@ public interface IReservation {
     public String addReservationOld() throws Exception;
     public Iterable<Reservation> getReservations() throws Exception;
     public Optional<Reservation> getReservationById(Integer id) throws Exception;
-    public String cancelReservation(Integer id) throws Exception;
+    public String cancelReservation(Integer reservationId, Boolean isLatefee) throws Exception;
 }
