@@ -15,6 +15,7 @@ import themeansquare.service.IUser;
 import themeansquare.service.internal.Registration;
 import themeansquare.service.internal.UserAuth;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +77,7 @@ public class CustomerController {
      */
 
     @GetMapping("/getAllCustomers")
-    public String getAllCustomers() {
+    public ArrayList<Customer> getAllCustomers() {
         ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
         
         return customerService.getAllCustomers();

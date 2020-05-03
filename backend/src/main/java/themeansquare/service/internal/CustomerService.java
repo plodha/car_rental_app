@@ -39,40 +39,20 @@ public class CustomerService implements ICustomer {
 	}
 
     @Override
-    public String getAllCustomers() {
-
-        HashMap<String, ArrayList<HashMap<String, String>>> response = new HashMap<String, ArrayList<HashMap<String, String>>>();
-        ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();;
+    public ArrayList<Customer> getAllCustomers() {
 
         Iterable<Customer> custItr = customerRepository.findAll();
 
         Iterator custIt = custItr.iterator();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+        
+        ArrayList<Customer> resultsFinal = new ArrayList<Customer>();
 
         while (custIt.hasNext()) {
-            HashMap<String, String> temp = new HashMap<>();
             Customer customer = (Customer) custIt.next();
-            temp.put("FirstName", customer.getFirstName());
-            temp.put("LastName", customer.getLastName());
-            temp.put("Street", customer.getAddress().getStreet());
-            temp.put("LicenseNumber", customer.getLicenseNumber());
-            //Date s = customer.getMembershipStartDate();
-            temp.put("Start Date", dateFormat.format(customer.getMembershipStartDate()));
-            //s = customer.getMembershipEndDate();
-            temp.put("End Date", dateFormat.format(customer.getMembershipEndDate()));
-            temp.put("Email", customer.getEmail());
-            results.add(temp);
+            resultsFinal.add(customer);
         }
 
-        ArrayList<HashMap<String, String>> status = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> statusTemp = new HashMap<>();
-
-        statusTemp.put("status", "200");
-        status.add(statusTemp);
-        response.put("results", results);
-        response.put("status", status);
-
-        return convertMapListToJson(response);
+        return resultsFinal;
     }
 
 
