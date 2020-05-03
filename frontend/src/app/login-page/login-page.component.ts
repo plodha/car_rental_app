@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 //import { ApiService } from '../api.service';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import {ApiService} from '../api.service'
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -23,7 +24,9 @@ export class LoginPageComponent implements OnInit {
   password = '';
   isLoadingResults = false;
   matcher = new MyErrorStateMatcher();
-  constructor(private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private router: Router, private formBuilder: FormBuilder,private api: ApiService) {
+
+  }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -33,7 +36,11 @@ export class LoginPageComponent implements OnInit {
   }
   onFormSubmit() {
     this.isLoadingResults = true;
-    this.router.navigate(['/home']);
+  //  this.router.navigate(['/home']);
+    this.api.callLogin(this.loginForm).subscribe((data:any) => {
+      console.log("result")
+      console.log(data);
+    })
   }
 
 }

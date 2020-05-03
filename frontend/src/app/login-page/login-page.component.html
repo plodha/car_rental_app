@@ -20,7 +20,7 @@
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <mat-label>Password</mat-label>
-        <input matInput placeholder="Password" formControlName="password"
+        <input matInput placeholder="Password" type="password" formControlName="password"
                 [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!loginForm.get('password').valid && loginForm.get('password').touched">Please enter Password</span>
