@@ -61,6 +61,14 @@ public class MembershipController {
         IMembership reg = new MembershipService(userRepository, customerRepository, addressRepository);
 
         return reg.cancelMembership(userId);
+    }
+    
+    @PutMapping("/renewMembership")
+    public String renewMembership(@RequestParam(value = "userId") String userId) throws Exception {
+        
+        IMembership reg = new MembershipService(userRepository, customerRepository, addressRepository);
+
+        return reg.renewMembership(userId);
 	}
 
 }

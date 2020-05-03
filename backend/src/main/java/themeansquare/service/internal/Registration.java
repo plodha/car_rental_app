@@ -108,10 +108,10 @@ public class Registration implements IRegistration {
 
     public Date getEndMembershipDate() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, 1); 
-        Date nextYear = cal.getTime();
+        cal.add(Calendar.MONTH, 6); 
+        Date nextSixMonths = cal.getTime();
 
-        return nextYear;
+        return nextSixMonths;
     }
 
     public boolean checkIfEmailExists(String email) {
