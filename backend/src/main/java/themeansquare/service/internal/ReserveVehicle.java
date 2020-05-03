@@ -171,6 +171,30 @@ public class ReserveVehicle implements IReservation {
         return reservationRepository.findById(id);
     }
 
+    //cancel reservation
+    public String cancelReservation(Integer id) throws Exception {
+
+        HashMap<String, String> response = new HashMap<>();
+        response.put("status", "400");
+
+        if (reservationRepository.existsById(id)) {
+            Reservation existReserve = reservationRepository.findById(id).get();
+            if(existReserve != null) {
+                //reservation status = 1 -active ; 0 =cancel
+                existReserve.setStatus(false);
+                Vehicle existVehicle = existReserve.getVehicle();
+                if(existVehicle != null) {
+                    //vehicle status = true = free for reservation
+                    existVehicle.setStatus(true);
+                    existReserve.setVehicle(existVehicle);
+                }
+                reservationRepository.save(existReserve);
+                response.put("status", "200");
+            }
+        }
+        return this.convertMapToJson(response);
+    }
+
     public String convertMapToJson(HashMap<String, String> response) {
 
         ObjectMapper objectMapper = new ObjectMapper();
