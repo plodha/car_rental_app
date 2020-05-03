@@ -84,7 +84,39 @@ public class ReserveVehicle implements IReservation {
         this.reservationRepository = reservationRepository;
     }
 
-    public String addReservation() throws Exception {
+    public String addReservation(Reservation newReservation) throws Exception {
+        HashMap<String, String> response = new HashMap<>();
+        response.put("status", "400");
+
+        Reservation reservation = new Reservation();
+        reservation.setActualDropOffTime(newReservation.getActualDropOffTime());
+        reservation.setEstimateDropOffTime(newReservation.getEstimateDropOffTime());
+        reservation.setEstimatedPrice(newReservation.getEstimatedPrice());
+        reservation.setPickUpTime(newReservation.getPickUpTime());
+        reservation.setStatus(newReservation.isStatus());
+
+        reservation.setCustomer(newReservation.getCustomer());
+        reservation.setVehicle(newReservation.getVehicle());
+        reservation.setLocation(newReservation.getLocation());
+        reservation.setInvoice(this.createInvoice(newReservation));
+        reservationRepository.save(reservation);
+        
+        response.put("status", "200");
+        return this.convertMapToJson(response);
+    }
+
+    private Invoice createInvoice(Reservation newReservation) {
+        Invoice invoice = new Invoice();
+        invoice.setDamageFee(newReservation.getInvoice().getDamageFee());
+        invoice.setEstimatedPrice(newReservation.getInvoice().getEstimatedPrice());
+        invoice.setLateFee(newReservation.getInvoice().getLateFee());
+        invoice.setTotalPrice(newReservation.getInvoice().getTotalPrice());
+        invoiceRepository.save(invoice);
+
+        return invoice;
+    }
+
+    public String addReservationOld() throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
@@ -102,13 +134,13 @@ public class ReserveVehicle implements IReservation {
         reservation.setCustomer(customerRepository.findById(customerId).get());
         reservation.setVehicle(vehicleRepository.findById(vehicleId).get());
         reservation.setLocation(locationRepository.findById(locationId).get());
-        reservation.setInvoice(this.createInvoice());
+        reservation.setInvoice(this.createInvoiceOld());
         reservationRepository.save(reservation);
         response.put("status", "200");
         return this.convertMapToJson(response);
     }
 
-    private Invoice createInvoice() {
+    private Invoice createInvoiceOld() {
         Invoice invoice = new Invoice();
         invoice.setDamageFee(damageFee);
         invoice.setEstimatedPrice(estimatedPriceInvoice);
@@ -118,6 +150,9 @@ public class ReserveVehicle implements IReservation {
 
         return invoice;
     }
+
+    
+    
 
     //get-all api 
     public Iterable<Reservation> getReservations() throws Exception {

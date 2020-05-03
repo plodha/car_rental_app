@@ -62,7 +62,110 @@ public class ReserveVehicleController {
     @Autowired
     private ReservationRepository reservationRepository;
 
+    /**
+        Input must be in this format (fields can be missing for some like id):
+            {
+                "status": true,
+                "location": {
+                    "address": {
+                        "state": "CA",
+                        "id": 2,
+                        "street": "101",
+                        "city": "mountain view",
+                        "zipCode": 94043
+                    },
+                    "name": "rental_spot_2",
+                    "id": 2,
+                    "contactNumber": 432651234,
+                    "vehicleCapacity": 4
+                },
+                "id": 1,
+                "estimatedPrice": 100,
+                "customer": {
+                    "creditCard": "35485739857",
+                    "creditCardExpDate": "2022-05-19",
+                    "id": 1,
+                    "address": {
+                        "state": "ca",
+                        "id": 9,
+                        "street": "random street",
+                        "city": "random city",
+                        "zipCode": 94086
+                    },
+                    "licenseNumber": "747324",
+                    "firstName": "subarna",
+                    "cvv": "454",
+                    "licenseExpDate": "1994-05-21",
+                    "lastName": "chy",
+                    "userId": {
+                        "id": 1,
+                        "username": "schy4",
+                        "password": "notsecure"
+                    },
+                    "email": "different2@gmail.com",
+                    "membershipEndDate": "2021-05-01",
+                    "membershipStartDate": "2020-05-01"
+                },
+                "invoice": {
+                    "id": 1,
+                    "lateFee": 10,
+                    "estimatedPrice": 100,
+                    "damageFee": 20,
+                    "totalPrice": 120
+                },
+                "pickUpTime": "2020-05-01",
+                "vehicle": {
+                    "vehicleCondition": "good",
+                    "year": 2020,
+                    "location": {
+                        "address": {
+                            "state": "CA",
+                            "id": 2,
+                            "street": "101",
+                            "city": "mountain view",
+                            "zipCode": 94043
+                        },
+                        "name": "rental_spot_2",
+                        "id": 2,
+                        "contactNumber": 432651234,
+                        "vehicleCapacity": 4
+                    },
+                    "id": 1,
+                    "status": false,
+                    "vehicleTypeId": {
+                        "id": 1,
+                        "vehicleClass": "Micro",
+                        "vehicleSize": 5
+                    },
+                    "vin": "2334",
+                    "make": "EMPTY",
+                    "licensePlate": "VN123",
+                    "model": "BMW"
+                },
+                "actualDropOffTime": "2020-05-01",
+                "estimateDropOffTime": "2020-05-01"
+            }
+        Use case:
+            This is used by the user to for reservation confirmation. After success, the reservation is confirmed.
+        
+        Response:
+            Success:
+                response.put("status", "200");
+            Failure:
+                response.put("status", "400");
+     */
+
     @PostMapping("/reservation")
+    public String register(@RequestBody Reservation newReservation) throws Exception {
+        
+        IReservation res = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, 
+                                                  invoiceRepository,reservationRepository);
+        String response = res.addReservation(newReservation);
+
+        return response;
+	}
+
+    @PostMapping("/reservationOld")
     public String addReservation(@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
             @RequestParam(value = "estimateDropOffTime") String estimateDropOffTime, 
             @RequestParam(value = "estimatedPrice") Double estimatedPrice,
@@ -80,7 +183,7 @@ public class ReserveVehicleController {
         IReservation reserve = new ReserveVehicle(actualDropOffTime, estimateDropOffTime, estimatedPrice, pickUpTime, status,
                                                 damageFee,estimatedPriceInvoice,lateFee,totalPrice,customerId,vehicleId,vehicleTypeId, locationId,
                                               customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository);
-        String response = reserve.addReservation();
+        String response = reserve.addReservationOld();
         return response;
     }
 
