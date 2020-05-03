@@ -43,29 +43,6 @@ export class ApiService {
 
   }
 
-  registrationAPI(username, password, firstName, lastName, licenseNumber, licenseExpDate, email, street, city, state, zipcode) {
-
-    var end_point = "register";
-
-    var params = new HttpParams()
-      .set('username', username)
-      .set('password', password)
-      .set('firstName', firstName)
-      .set('lastName', lastName)
-      .set('licenseNumber', licenseNumber)
-      .set('licenseExpDate', licenseExpDate)
-      .set('email', email)
-      .set('street', street)
-      .set('city', city)
-      .set('state', state)
-      .set('zipcode', zipcode);
-
-
-
-    return this.http.post(this.api_url + end_point, params);
-
-  }
-
 public getAllLocations(){
     let headers = { 'Content-Type': 'application/json','Accept':'application/json',
                'Access-Control-Allow-Origin': '*' };
@@ -73,6 +50,41 @@ public getAllLocations(){
 
 
 }
-
+  /*
+      regFormGroup format:
+          {
+            "address": {
+                "state": "ca",
+                "city": "random city",
+                "street": "random street",
+                "zipCode": 94086
+            },
+            "userId": {
+                "password": "password",
+                "username": "jeyasriCustomer"
+            },
+            "firstName": "Jeyasri",
+            "lastName": "Customer",
+            "licenseNumber": "747324",
+            "licenseExpDate": "1994-05-22",
+            "membershipStartDate": "2020-05-01",
+            "membershipEndDate": "2021-05-01",
+            "email": "jeyasriCustomer@gmail.com",
+            "creditCard" : "35485739857",
+            "creditCardExpDate" : "2022-05-20",
+            "cvv" : "454"
+          
+          }
+    /registration API return:
+        Success:
+          {"role":"Customer","id":"4","status":"200","username":"WasaeCustomer"}
+        Error:
+          {"message":"<some reason it failed>","status":"400"}
+  */
+    regAPI(regFormGroup) {
+      let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+      let body = JSON.stringify(regFormGroup.value);
+      return this.http.post("https://api.wasaequreshi.com/registration", body, {headers});
+    }
 
 }
