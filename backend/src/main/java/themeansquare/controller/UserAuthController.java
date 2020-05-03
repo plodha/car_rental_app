@@ -62,10 +62,18 @@ public class UserAuthController {
      */
 
     @GetMapping("/auth")
-    public String auth(@RequestBody User user) {
+    public String authOld(@RequestBody User user) {
         IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
         
         return userAuth.isValidCredentials(user);
+    }
+
+    @GetMapping("/authNew")
+    public String auth(@RequestParam(value = "username") String username,
+            @RequestParam(value = "password") String password) throws Exception {
+
+                IUser userAuth = new UserAuth(username, password, userRepository, employeeRepository, customerRepository);
+                return userAuth.isValidCredentialsNew();
     }
 
 }
