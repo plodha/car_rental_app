@@ -14,6 +14,11 @@ import {AddReservationPageComponent} from './add-reservation-page/add-reservatio
 import {ProfilePageComponent} from './profile-page/profile-page.component'
 import {DropoffSurveyPageComponent } from './dropoff-survey-page/dropoff-survey-page.component'
 import {CancelPageComponent} from './cancel-page/cancel-page.component'
+import { CustomerLandingPageComponent } from './customer-landing-page/customer-landing-page.component';
+import { ReservationsPageComponent } from './reservations-page/reservations-page.component';
+import { LocationsPageComponent } from './locations-page/locations-page.component';
+import { CustomersPageComponent } from './customers-page/customers-page.component';
+
 
 const routes: Routes = [{
     path: 'login',
@@ -54,6 +59,22 @@ const routes: Routes = [{
       {
           path:'cancel',
           component: CancelPageComponent
+      },
+      {
+          path:'customerPage',
+          component: CustomerLandingPageComponent
+      },
+      {
+          path:'locations',
+          component: LocationsPageComponent
+      },
+      {
+          path:'reservations',
+          component: ReservationsPageComponent
+      },
+      {
+          path:'customers',
+          component: CustomersPageComponent
       },
   { path: 'register', component: RegisterPageComponent, data: { title: 'Register' } }, //, children: Full_ROUTES },
   //{ path: '', component: ContentLayoutComponent, data: { title: 'content Views' }, children: CONTENT_ROUTES },

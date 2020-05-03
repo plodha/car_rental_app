@@ -42,6 +42,10 @@ import { CancelPageComponent } from './cancel-page/cancel-page.component';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { CustomerLandingPageComponent } from './customer-landing-page/customer-landing-page.component';
+import { ReservationsPageComponent } from './reservations-page/reservations-page.component';
+import { LocationsPageComponent } from './locations-page/locations-page.component';
+import { CustomersPageComponent } from './customers-page/customers-page.component';
 //import {FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -58,7 +62,11 @@ import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
     ProfilePageComponent,
     AddReservationPageComponent,
     DropoffSurveyPageComponent,
-    CancelPageComponent
+    CancelPageComponent,
+    CustomerLandingPageComponent,
+    ReservationsPageComponent,
+    LocationsPageComponent,
+    CustomersPageComponent
   ],
   imports: [
     BrowserModule,
