@@ -77,11 +77,14 @@ public class UserAuth implements IUser {
     }
 
     
+    
+
     public String isValidCredentials(User userCheck) {
        
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
         response.put("message", "User does not exist");
+        
         Iterable<User> itr = userRepository.findAll();
 
         Iterator it = itr.iterator();
@@ -90,8 +93,8 @@ public class UserAuth implements IUser {
             User user = (User) it.next();
             System.out.println(user.getUsername());
             
-            if (user.getUsername().equals(this.username)) {
-                if (user.getPassword().equals(this.password))
+            if (user.getUsername().equals(userCheck.getUsername())) {
+                if (user.getPassword().equals(userCheck.getPassword()))
                 {
 
                     response.put("status", "200");
@@ -114,13 +117,11 @@ public class UserAuth implements IUser {
 
     }
 
-	
-    public String isValidCredentialsOld(User userCheck) {
+    public String isValidCredentialsNew() {
        
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
         response.put("message", "User does not exist");
-        
         Iterable<User> itr = userRepository.findAll();
 
         Iterator it = itr.iterator();
@@ -129,8 +130,8 @@ public class UserAuth implements IUser {
             User user = (User) it.next();
             System.out.println(user.getUsername());
             
-            if (user.getUsername().equals(userCheck.getUsername())) {
-                if (user.getPassword().equals(userCheck.getPassword()))
+            if (user.getUsername().equals(this.username)) {
+                if (user.getPassword().equals(this.password))
                 {
 
                     response.put("status", "200");
