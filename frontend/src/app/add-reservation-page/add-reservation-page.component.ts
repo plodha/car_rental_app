@@ -82,7 +82,7 @@ export class AddReservationPageComponent implements OnInit {
   }
 
   validateFor72Hours() {
-  
+
   }
 
 
