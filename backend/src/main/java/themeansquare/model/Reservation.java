@@ -1,11 +1,11 @@
 package themeansquare.model;
 
-import java.time.LocalDateTime; // Import the LocalDateTime class
+import java.time.LocalDateTime;  // Import the LocalDateTime class
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Entity; // Import the DateTimeFormatter class
+import javax.persistence.Entity;  // Import the DateTimeFormatter class
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,9 +14,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -45,16 +42,13 @@ public class Reservation{
 	private Location Location;
 	
 	@NotNull
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date PickUpTime;
 	
 	@NotNull
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date EstimateDropOffTime;
 	
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date ActualDropOffTime;
 	

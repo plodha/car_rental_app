@@ -57,17 +57,17 @@ public class ReserveVehicle implements IReservation {
         this.reservationRepository = reservationRepository;
     }
 
-    public ReserveVehicle(String actualDropOffTime, String estimateDropOffTime,Double estimatedPrice,String pickUpTime, Boolean status,
+    public ReserveVehicle(String ActualDropOffTime, String EstimateDropOffTime,Double estimatedPrice,String PickUpTime, Boolean status,
                           Double damageFee,Double estimatedPriceInvoice,Double lateFee,Double totalPrice,                      
                           int customerId, int vehicleId, int vehicleTypeId, int locationId, 
                           CustomerRepository customerRepository, LocationRepository locationRepository,
                           VehicleRepository vehicleRepository, InvoiceRepository invoiceRepository,
                           ReservationRepository reservationRepository) {
 
-        this.actualDropOffTime= actualDropOffTime;
-        this.estimateDropOffTime = estimateDropOffTime;
+        this.actualDropOffTime= ActualDropOffTime;
+        this.estimateDropOffTime = EstimateDropOffTime;
         this.estimatedPrice = estimatedPrice;
-        this.pickUpTime = pickUpTime;
+        this.pickUpTime = PickUpTime;
         this.status = status;
         this.damageFee =damageFee;
         this.estimatedPriceInvoice = estimatedPriceInvoice;
@@ -122,12 +122,12 @@ public class ReserveVehicle implements IReservation {
         response.put("status", "400");
 
         Reservation reservation = new Reservation();
-        Date actualDropOffTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(actualDropOffTime);
-        reservation.setActualDropOffTime(actualDropOffTimeformat);
-        Date estimateDropOffTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(estimateDropOffTime);
-        reservation.setEstimateDropOffTime(estimateDropOffTimeformat);
+        Date ActualDropOffTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(this.actualDropOffTime);
+        reservation.setActualDropOffTime(ActualDropOffTimeformat);
+        Date EstimateDropOffTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(this.estimateDropOffTime);
+        reservation.setEstimateDropOffTime(EstimateDropOffTimeformat);
         reservation.setEstimatedPrice(estimatedPrice);
-        Date setPickUpTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(pickUpTime);
+        Date setPickUpTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(this.pickUpTime);
         reservation.setPickUpTime(setPickUpTimeformat);
         reservation.setStatus(status);
 

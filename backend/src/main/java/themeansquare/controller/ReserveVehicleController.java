@@ -67,80 +67,21 @@ public class ReserveVehicleController {
             {
                 "status": true,
                 "location": {
-                    "address": {
-                        "state": "CA",
-                        "id": 2,
-                        "street": "101",
-                        "city": "mountain view",
-                        "zipCode": 94043
-                    },
-                    "name": "rental_spot_2",
-                    "id": 2,
-                    "contactNumber": 432651234,
-                    "vehicleCapacity": 4
+                    
+                    "id": 2
+                   
                 },
-                "id": 1,
-                "estimatedPrice": 100,
+                "estimatedPrice":500,
                 "customer": {
-                    "creditCard": "35485739857",
-                    "creditCardExpDate": "2022-05-19",
-                    "id": 1,
-                    "address": {
-                        "state": "ca",
-                        "id": 9,
-                        "street": "random street",
-                        "city": "random city",
-                        "zipCode": 94086
-                    },
-                    "licenseNumber": "747324",
-                    "firstName": "subarna",
-                    "cvv": "454",
-                    "licenseExpDate": "1994-05-21",
-                    "lastName": "chy",
-                    "userId": {
-                        "id": 1,
-                        "username": "schy4",
-                        "password": "notsecure"
-                    },
-                    "email": "different2@gmail.com",
-                    "membershipEndDate": "2021-05-01",
-                    "membershipStartDate": "2020-05-01"
+                   
+                    "id": 1
                 },
                 "invoice": {
-                    "id": 1,
-                    "lateFee": 10,
-                    "estimatedPrice": 100,
-                    "damageFee": 20,
-                    "totalPrice": 120
+                    "id": 1
                 },
                 "pickUpTime": "2020-05-01",
                 "vehicle": {
-                    "vehicleCondition": "good",
-                    "year": 2020,
-                    "location": {
-                        "address": {
-                            "state": "CA",
-                            "id": 2,
-                            "street": "101",
-                            "city": "mountain view",
-                            "zipCode": 94043
-                        },
-                        "name": "rental_spot_2",
-                        "id": 2,
-                        "contactNumber": 432651234,
-                        "vehicleCapacity": 4
-                    },
-                    "id": 1,
-                    "status": false,
-                    "vehicleTypeId": {
-                        "id": 1,
-                        "vehicleClass": "Micro",
-                        "vehicleSize": 5
-                    },
-                    "vin": "2334",
-                    "make": "EMPTY",
-                    "licensePlate": "VN123",
-                    "model": "BMW"
+                    "id": 1
                 },
                 "actualDropOffTime": "2020-05-01",
                 "estimateDropOffTime": "2020-05-01"
