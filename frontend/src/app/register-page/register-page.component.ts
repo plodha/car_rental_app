@@ -37,7 +37,10 @@ export class RegisterPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
-      name : [null, Validators.required],
+      firstName : [null, Validators.required],
+      lastName : [null, Validators.required],
+      username : [null, Validators.required],
+      password:[null, Validators.required],
       dateofbirth : [null, Validators.required],
       address : [null, Validators.required],
       city : [null, Validators.required],
@@ -52,6 +55,8 @@ export class RegisterPageComponent implements OnInit {
 
   onFormSubmit() {
     this.isLoadingResults = true;
+
+
     this.router.navigate(['/login']);
     /*
     this.api.addCases(this.casesForm.value)
