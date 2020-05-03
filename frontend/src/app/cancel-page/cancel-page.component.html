@@ -1,0 +1,29 @@
+<div class="example-container mat-elevation-z8">
+  <div class="container">
+    <div class='title'>
+    <h1>Car Rental System - Login</h1>
+    </div>
+  </div>
+
+  <div class="example-loading-shade"
+        *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <!-- <div class="button-row">
+    <a mat-flat-button color="primary" [routerLink]="['/cases']"><mat-icon>list</mat-icon></a>
+  </div> -->
+  <mat-card class="example-card">
+
+<div class="page-content">
+
+  <h2>Warning! </h2>
+
+  Your current membership is active till 09/20/2020. Your cancellation will not refund your registration fee.
+  Would you like to continue?
+
+  </div>
+  <div class="button-row">
+    <a mat-flat-button color="primary" [routerLink]="['/home']"> Proceed to cancellation</a>
+  </div>
+
+  </mat-card>
