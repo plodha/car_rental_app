@@ -52,12 +52,13 @@ public class ReserveVehicle implements IReservation {
 
     public ReserveVehicle( CustomerRepository customerRepository, LocationRepository locationRepository,
                           VehicleRepository vehicleRepository, InvoiceRepository invoiceRepository,
-                          ReservationRepository reservationRepository) {
+                          ReservationRepository reservationRepository, PriceRepository priceRepository) {
         this.customerRepository = customerRepository; 
         this.locationRepository = locationRepository;
         this.vehicleRepository = vehicleRepository; 
         this.invoiceRepository = invoiceRepository;
         this.reservationRepository = reservationRepository;
+        this.priceRepository = priceRepository;
     }
 
     public ReserveVehicle(String ActualDropOffTime, String EstimateDropOffTime,Double estimatedPrice,String PickUpTime, Boolean status,
@@ -65,7 +66,7 @@ public class ReserveVehicle implements IReservation {
                           int customerId, int vehicleId, int vehicleTypeId, int locationId, 
                           CustomerRepository customerRepository, LocationRepository locationRepository,
                           VehicleRepository vehicleRepository, InvoiceRepository invoiceRepository,
-                          ReservationRepository reservationRepository) {
+                          ReservationRepository reservationRepository, PriceRepository priceRepository) {
 
         this.actualDropOffTime= ActualDropOffTime;
         this.estimateDropOffTime = EstimateDropOffTime;
@@ -85,6 +86,7 @@ public class ReserveVehicle implements IReservation {
         this.vehicleRepository = vehicleRepository; 
         this.invoiceRepository = invoiceRepository;
         this.reservationRepository = reservationRepository;
+        this.priceRepository = priceRepository;
     }
 
     public String addReservation(Reservation newReservation) throws Exception {
@@ -197,6 +199,7 @@ public class ReserveVehicle implements IReservation {
                         int vehicleTypeId = existVehicle.getVehicleTypeId().getId();
                         ///2 get late fee
                         double lateFee = getLateFeeForVehicleType(vehicleTypeId);
+                        System.out.println("lateFee "+ lateFee);
 
                         ///3 get invoce id and update latefee and total fee
                         Invoice invoice = existReserve.getInvoice();
@@ -221,7 +224,6 @@ public class ReserveVehicle implements IReservation {
                         vehicleRepository.save(existVehicle);
                     }
                 }
-                
                 reservationRepository.save(existReserve);
                 response.put("status", "200");
             }
@@ -233,8 +235,10 @@ public class ReserveVehicle implements IReservation {
 
         Iterable<Price> itr = priceRepository.findAll();
         Iterator iter = itr.iterator();
+        System.out.println("vehicleTypeId " + vehicleTypeId);
         while(iter.hasNext()){
             Price tempPrice = (Price) iter.next();
+            System.out.println("tempPrice.getVehicleTypeId().getId() " + tempPrice.getVehicleTypeId().getId());
             //tempVehicle.isStatus() = false = occupied vehicle
             if((tempPrice.getVehicleTypeId().getId() == vehicleTypeId)) {
                 System.out.println("remove tempVehicle.getId() "+ tempPrice.getId());

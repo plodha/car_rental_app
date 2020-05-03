@@ -9,6 +9,7 @@ import themeansquare.model.Invoice;
 import themeansquare.service.internal.ReserveVehicle;
 import themeansquare.repository.CustomerRepository;
 import themeansquare.repository.LocationRepository;
+import themeansquare.repository.PriceRepository;
 import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.InvoiceRepository;
 import themeansquare.repository.ReservationRepository;
@@ -61,6 +62,8 @@ public class ReserveVehicleController {
     private InvoiceRepository invoiceRepository;
     @Autowired
     private ReservationRepository reservationRepository;
+    @Autowired
+    private PriceRepository priceRepository;
 
     /**
         Input must be in this format (fields can be missing for some like id):
@@ -100,7 +103,7 @@ public class ReserveVehicleController {
     public String register(@RequestBody Reservation newReservation) throws Exception {
         
         IReservation res = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, 
-                                                  invoiceRepository,reservationRepository);
+                                              invoiceRepository,reservationRepository, priceRepository);
         String response = res.addReservation(newReservation);
 
         return response;
@@ -123,7 +126,7 @@ public class ReserveVehicleController {
 
         IReservation reserve = new ReserveVehicle(actualDropOffTime, estimateDropOffTime, estimatedPrice, pickUpTime, status,
                                                 damageFee,estimatedPriceInvoice,lateFee,totalPrice,customerId,vehicleId,vehicleTypeId, locationId,
-                                              customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository);
+                                              customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository,priceRepository);
         String response = reserve.addReservationOld();
         return response;
     }
@@ -132,7 +135,7 @@ public class ReserveVehicleController {
     @GetMapping("/reservation")
     public Iterable<Reservation> getReservations() throws Exception {
         IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, 
-                                                  invoiceRepository,reservationRepository);
+                                                  invoiceRepository,reservationRepository,priceRepository);
         return reserve.getReservations();
     }
 
@@ -140,7 +143,7 @@ public class ReserveVehicleController {
     @GetMapping(value = "/reservation/{id}")
     public Optional<Reservation> getReservationById (@PathVariable Integer id) throws Exception {
         IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, 
-                                                  invoiceRepository,reservationRepository);
+                                                  invoiceRepository,reservationRepository,priceRepository);
         return reserve.getReservationById(id);
     }
 
@@ -148,10 +151,10 @@ public class ReserveVehicleController {
     //Cancel a reservation
     ///frontend will send me resevation id only,isLatefee
 
-    @PutMapping("/reservationCancel/{id}/{isLatefee}")
+    @PutMapping("/reservationCancel/{reservationId}/{isLatefee}")
     public String cancelReservation (@PathVariable Integer reservationId, @PathVariable Boolean isLatefee) throws Exception {
 
-            IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository);
+            IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository,priceRepository);
             String response = reserve.cancelReservation(reservationId, isLatefee);  
             return response;  
     }
