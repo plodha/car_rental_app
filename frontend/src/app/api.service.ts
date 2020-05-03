@@ -8,7 +8,7 @@ export class ApiService {
 
   //api_url = "https://api.wasaequreshi.com/"
   api_url = "http://localhost:8020/"
-
+  prod_api_url = "https://api.wasaequreshi.com/"
   location_endpoint = "location"
 
   constructor(private http: HttpClient) {
@@ -51,6 +51,7 @@ public getAllLocations(){
 
 }
   /*
+      POST Request
       regFormGroup format:
           {
             "address": {
@@ -84,7 +85,102 @@ public getAllLocations(){
     regAPI(regFormGroup) {
       let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
       let body = JSON.stringify(regFormGroup.value);
-      return this.http.post("https://api.wasaequreshi.com/registration", body, {headers});
+      let end_point = "registration";
+      return this.http.post(this.prod_api_url + end_point, body, {headers});
     }
+
+    /*
+        POST Request
+        damageFormGroup format:
+          {
+              "vehicleTypeId": {
+                  "id" : 2
+              },
+              "damageType": "It broke alot more",
+              "damageFee": 700.0
+          }
+        /addDamage API return:
+          Success:
+            {"status":"200"}
+          Error:
+            No failure possible
+    */
+    addDamageAPI(damageFormGroup) {
+      let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+      let body = JSON.stringify(damageFormGroup.value);
+      let end_point = "addDamage";
+      return this.http.post(this.prod_api_url + end_point, body, {headers});
+    }
+
+    /*
+        POST Request
+        employeeFormGroup format:
+          {
+            "userId": {
+                "password": "notsecure",
+                "username": "wqureshiAdmin"
+            },
+            "firstName": "Wasae",
+            "lastName": "Admin"
+          }
+        /createEmployee API return:
+          Success:
+            {"status":"200"}
+          Error:
+            No failure possible, please don't run multuple times on same data :)
+    */
+   createEmployeeAPI(employeeFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(employeeFormGroup.value);
+    let end_point = "createEmployee";
+    return this.http.post(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        POST Request
+        priceFormGroup format:
+         {
+            "hourlyPrice": 50.0,
+            "hourlyRange": "10 - 10",
+            
+            "vehicleTypeId": {
+                "id": 1
+            },
+            "lateFee": 40.0
+        }
+        /addPrice API return:
+          Success:
+            {"status":"200"}
+          Error:
+            {"message":"Price for that hourly range and vehicle type exist already","status":"400"}
+    */
+   addPriceAPI(priceFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(priceFormGroup.value);
+    let end_point = "addPrice";
+    return this.http.post(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        POST Request
+        authFormGroup format:
+          {
+              "username" : "jeyasriAdmin",
+              "password" : "password"
+            
+          }
+        /auth API return:
+          Success:
+            {"role":"Employee","id":"1","status":"200","username":"jeyasriAdmin"}
+          Error:
+            {"message":"Invalid password","status":"400"}
+            {"message":"User does not exist","status":"400"}
+    */
+   authAPI(authFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(authFormGroup.value);
+    let end_point = "auth";
+    return this.http.post(this.prod_api_url + end_point, body, {headers});
+  }
 
 }
