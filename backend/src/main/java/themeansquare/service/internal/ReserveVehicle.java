@@ -127,13 +127,13 @@ public class ReserveVehicle implements IReservation {
         response.put("status", "400");
 
         Reservation reservation = new Reservation();
-        Date ActualDropOffTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(this.actualDropOffTime);
-        reservation.setActualDropOffTime(ActualDropOffTimeformat);
-        Date EstimateDropOffTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(this.estimateDropOffTime);
-        reservation.setEstimateDropOffTime(EstimateDropOffTimeformat);
+        //Date ActualDropOffTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(this.actualDropOffTime);
+        reservation.setActualDropOffTime(this.actualDropOffTime);
+       //Date EstimateDropOffTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(this.estimateDropOffTime);
+        reservation.setEstimateDropOffTime(this.estimateDropOffTime);
         reservation.setEstimatedPrice(estimatedPrice);
-        Date setPickUpTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(this.pickUpTime);
-        reservation.setPickUpTime(setPickUpTimeformat);
+        //Date setPickUpTimeformat= new SimpleDateFormat("yyyy-MM-dd").parse(this.pickUpTime);
+        reservation.setPickUpTime(this.pickUpTime);
         reservation.setStatus(status);
 
         reservation.setCustomer(customerRepository.findById(customerId).get());
@@ -247,6 +247,8 @@ public class ReserveVehicle implements IReservation {
         }
         return 0.0;
     }
+
+    
 
     public String convertMapToJson(HashMap<String, String> response) {
 
