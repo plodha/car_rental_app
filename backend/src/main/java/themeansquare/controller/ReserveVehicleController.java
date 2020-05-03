@@ -146,7 +146,9 @@ public class ReserveVehicleController {
 
    
     //Cancel a reservation
-    @PutMapping("/reservationCancel/{id}")
+    ///frontend will send me resevation id only,isLatefee
+
+    @PutMapping("/reservationCancel/{id}/{isLatefee}")
     public String cancelReservation (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
             @RequestParam(value = "estimateDropOffTime") String estimateDropOffTime, 
             @RequestParam(value = "estimatedPrice") Double estimatedPrice,

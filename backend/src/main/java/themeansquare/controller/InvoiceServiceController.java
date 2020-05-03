@@ -49,6 +49,8 @@ public class InvoiceServiceController {
     private ReservationRepository reservationRepository;
 
      //final invoice computation
+     //reservation id, damage id[], IsDamage, actualdropofftime, 
+     //late fee = estimated -actual > 1hour 
      @PutMapping("/reservationCancel/{id}")
      public String cancelReservation (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
              @RequestParam(value = "estimateDropOffTime") String estimateDropOffTime, 
@@ -65,7 +67,7 @@ public class InvoiceServiceController {
              @RequestParam(value = "locationId") int locationId,
              @PathVariable Integer id) throws Exception {
  
-             IInvoice invoice = new InvoiceService(actualDropOffTime, estimateDropOffTime, estimatedPrice, pickUpTime, status,
+             IInvoice invoice = new InvoiceService  ( actualDropOffTime, estimateDropOffTime, estimatedPrice, pickUpTime, status,
                                                      damageFee,estimatedPriceInvoice,lateFee,totalPrice,customerId,vehicleId,vehicleTypeId, locationId,
                                                  customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository);
              String response = invoice.computeInvoice(id);  
