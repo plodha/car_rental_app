@@ -3,12 +3,14 @@ package themeansquare.service.internal;
 import themeansquare.service.IReservation;
 import themeansquare.model.Customer;
 import themeansquare.model.Location;
+import themeansquare.model.Price;
 import themeansquare.model.Reservation;
 import themeansquare.model.Vehicle;
 import themeansquare.model.Invoice;
 import themeansquare.service.internal.ReserveVehicle;
 import themeansquare.repository.CustomerRepository;
 import themeansquare.repository.LocationRepository;
+import themeansquare.repository.PriceRepository;
 import themeansquare.repository.ReservationRepository;
 import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.InvoiceRepository;
@@ -32,6 +34,7 @@ public class ReserveVehicle implements IReservation {
     private VehicleRepository vehicleRepository;
     private InvoiceRepository invoiceRepository;
     private ReservationRepository reservationRepository;
+    private PriceRepository priceRepository;
 
     private String actualDropOffTime; 
     private String estimateDropOffTime;
@@ -172,27 +175,73 @@ public class ReserveVehicle implements IReservation {
     }
 
     //cancel reservation
-    public String cancelReservation(Integer id) throws Exception {
+    /*
+        logic for late fee: get the vehicle type
+               get the late fee for that vehicle type
+               then update invoice table for latefee and total fee
+               vehicle status = true = free for reservation
+    */
+    public String cancelReservation(Integer reservationId, Boolean isLatefee) throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
-
-        if (reservationRepository.existsById(id)) {
-            Reservation existReserve = reservationRepository.findById(id).get();
+        
+        if (reservationRepository.existsById(reservationId)) {
+            Reservation existReserve = reservationRepository.findById(reservationId).get();
             if(existReserve != null) {
-                //reservation status = 1 -active ; 0 =cancel
-                existReserve.setStatus(false);
-                Vehicle existVehicle = existReserve.getVehicle();
-                if(existVehicle != null) {
-                    //vehicle status = true = free for reservation
-                    existVehicle.setStatus(true);
-                    existReserve.setVehicle(existVehicle);
+                ///late fee computation for cancelation
+                if(isLatefee) {
+                    Vehicle existVehicle = existReserve.getVehicle();
+                    if(existVehicle != null) {
+                        ///1 get vehicleType
+                        int vehicleTypeId = existVehicle.getVehicleTypeId().getId();
+                        ///2 get late fee
+                        double lateFee = getLateFeeForVehicleType(vehicleTypeId);
+
+                        ///3 get invoce id and update latefee and total fee
+                        Invoice invoice = existReserve.getInvoice();
+                        invoice.setLateFee(lateFee);
+                        invoice.setTotalPrice(lateFee);
+                        invoiceRepository.save(invoice);
+
+                        ///4 vehicle status = true = free for reservation
+                        existVehicle.setStatus(true);
+                        existReserve.setVehicle(existVehicle);
+                        vehicleRepository.save(existVehicle);
+                    }
                 }
+                else {
+                    ///reservation status = 1 -active ; 0 =cancel
+                    existReserve.setStatus(false);
+                    Vehicle existVehicle = existReserve.getVehicle();
+                    if(existVehicle != null) {
+                        ///vehicle status = true = free for reservation
+                        existVehicle.setStatus(true);
+                        existReserve.setVehicle(existVehicle);
+                        vehicleRepository.save(existVehicle);
+                    }
+                }
+                
                 reservationRepository.save(existReserve);
                 response.put("status", "200");
             }
         }
         return this.convertMapToJson(response);
+    }
+
+    public double getLateFeeForVehicleType(int vehicleTypeId) {
+
+        Iterable<Price> itr = priceRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Price tempPrice = (Price) iter.next();
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if((tempPrice.getVehicleTypeId().getId() == vehicleTypeId)) {
+                System.out.println("remove tempVehicle.getId() "+ tempPrice.getId());
+                return tempPrice.getLateFee();
+            }
+        }
+        return 0.0;
     }
 
     public String convertMapToJson(HashMap<String, String> response) {

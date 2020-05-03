@@ -149,25 +149,10 @@ public class ReserveVehicleController {
     ///frontend will send me resevation id only,isLatefee
 
     @PutMapping("/reservationCancel/{id}/{isLatefee}")
-    public String cancelReservation (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
-            @RequestParam(value = "estimateDropOffTime") String estimateDropOffTime, 
-            @RequestParam(value = "estimatedPrice") Double estimatedPrice,
-            @RequestParam(value = "pickUpTime") String pickUpTime,
-            @RequestParam(value = "status") Boolean status,
-            @RequestParam(value = "damageFee") Double damageFee,
-            @RequestParam(value = "estimatedPrice") Double estimatedPriceInvoice,
-            @RequestParam(value = "lateFee") Double lateFee,
-            @RequestParam(value = "totalPrice") Double totalPrice, 
-            @RequestParam(value = "customerId") int customerId,
-            @RequestParam(value = "vehicleId") int vehicleId,
-            @RequestParam(value = "vehicleTypeId") int vehicleTypeId,
-            @RequestParam(value = "locationId") int locationId,
-            @PathVariable Integer id) throws Exception {
+    public String cancelReservation (@PathVariable Integer reservationId, @PathVariable Boolean isLatefee) throws Exception {
 
-            IReservation reserve = new ReserveVehicle(actualDropOffTime, estimateDropOffTime, estimatedPrice, pickUpTime, status,
-                                                    damageFee,estimatedPriceInvoice,lateFee,totalPrice,customerId,vehicleId,vehicleTypeId, locationId,
-                                                customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository);
-            String response = reserve.cancelReservation(id);  
+            IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository);
+            String response = reserve.cancelReservation(reservationId, isLatefee);  
             return response;  
     }
     

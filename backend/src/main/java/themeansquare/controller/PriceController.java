@@ -86,6 +86,15 @@ public class PriceController {
         Use case:
             As admin, I can add a price 
         
+        Request body: 
+            {
+            "hourlyPrice": 50.0,
+            "hourlyRange": "10 - 10",
+            "vehicleTypeId": {
+                "id": 1
+            },
+            "lateFee": 40.0
+            }
         Response:
             Success:
                 {
