@@ -10,6 +10,7 @@ import themeansquare.model.Invoice;
 import themeansquare.service.internal.InvoiceService;
 import themeansquare.repository.CustomerRepository;
 import themeansquare.repository.LocationRepository;
+import themeansquare.repository.PriceRepository;
 import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.InvoiceRepository;
 import themeansquare.repository.ReservationRepository;
@@ -47,30 +48,21 @@ public class InvoiceServiceController {
     private InvoiceRepository invoiceRepository;
     @Autowired
     private ReservationRepository reservationRepository;
+    @Autowired
+    private PriceRepository priceRepository;
 
      //final invoice computation
      //reservation id, damage id[], IsDamage, actualdropofftime, 
      //late fee = estimated -actual > 1hour 
-     @PutMapping("/reservationCancel/{id}")
-     public String cancelReservation (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
-             @RequestParam(value = "estimateDropOffTime") String estimateDropOffTime, 
-             @RequestParam(value = "estimatedPrice") Double estimatedPrice,
-             @RequestParam(value = "pickUpTime") String pickUpTime,
-             @RequestParam(value = "status") Boolean status,
-             @RequestParam(value = "damageFee") Double damageFee,
-             @RequestParam(value = "estimatedPrice") Double estimatedPriceInvoice,
-             @RequestParam(value = "lateFee") Double lateFee,
-             @RequestParam(value = "totalPrice") Double totalPrice, 
-             @RequestParam(value = "customerId") int customerId,
-             @RequestParam(value = "vehicleId") int vehicleId,
-             @RequestParam(value = "vehicleTypeId") int vehicleTypeId,
-             @RequestParam(value = "locationId") int locationId,
-             @PathVariable Integer id) throws Exception {
+     @PutMapping("/computeInvoice/{damageId}")
+     public String computeInvoice (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
+             @RequestParam(value = "reservationId") Integer reservationId,
+             @RequestParam(value = "IsDamage") Boolean IsDamage,
+             @PathVariable(value = "damageId") String[] damageId) throws Exception {
  
-             IInvoice invoice = new InvoiceService  ( actualDropOffTime, estimateDropOffTime, estimatedPrice, pickUpTime, status,
-                                                     damageFee,estimatedPriceInvoice,lateFee,totalPrice,customerId,vehicleId,vehicleTypeId, locationId,
-                                                 customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository);
-             String response = invoice.computeInvoice(id);  
+             IInvoice invoice = new InvoiceService  ( customerRepository, locationRepository,vehicleRepository, 
+                                                      invoiceRepository,reservationRepository,priceRepository);
+             String response = invoice.computeInvoice(reservationId, actualDropOffTime, IsDamage,damageId);  
              return response;  
      }
 }
