@@ -46,18 +46,18 @@
   margin-top: 100px;
   margin-left:50px;
 }
-table {
+/* table {
   width: 100%;
-}
+} */
 
 .mat-form-field {
   font-size: 14px;
   width: 100%;
 }
 
-td, th {
+/* td, th {
   width: 25%;
-}
+} */
 .breadcrumb {
   padding:15px;
 }
