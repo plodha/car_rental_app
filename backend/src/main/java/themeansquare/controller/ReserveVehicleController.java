@@ -194,5 +194,13 @@ public class ReserveVehicleController {
                                                   invoiceRepository,reservationRepository);
         return reserve.getReservations();
     }
+
+    // get reservation with a fixed reservation id
+    @GetMapping(value = "/reservation/{id}")
+    public Optional<Reservation> getReservationById (@PathVariable Integer id) throws Exception {
+        IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, 
+                                                  invoiceRepository,reservationRepository);
+        return reserve.getReservationById(id);
+    }
     
 }

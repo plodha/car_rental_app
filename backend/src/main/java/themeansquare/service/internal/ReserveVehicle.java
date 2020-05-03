@@ -151,8 +151,6 @@ public class ReserveVehicle implements IReservation {
         return invoice;
     }
 
-    
-    
 
     //get-all api 
     public Iterable<Reservation> getReservations() throws Exception {
@@ -165,6 +163,12 @@ public class ReserveVehicle implements IReservation {
             return  itr;
         }
         return null;
+    }
+
+    //get Reservation by id api
+    public Optional<Reservation> getReservationById(Integer id) throws Exception {
+
+        return reservationRepository.findById(id);
     }
 
     public String convertMapToJson(HashMap<String, String> response) {
