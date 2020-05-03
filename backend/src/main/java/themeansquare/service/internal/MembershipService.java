@@ -2,6 +2,7 @@ package themeansquare.service.internal;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,6 +45,40 @@ public class MembershipService implements IMembership {
                 SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
                 Date today = new Date();
                 customer.setMembershipEndDate(formatter.parse(formatter.format(today)));
+                customerRepository.save(customer);
+                response.put("status", "200");
+                return convertMapToJson(response);
+            }
+        }
+
+        response.put("message", "No user :(");
+        response.put("status", "400");
+
+        return convertMapToJson(response);
+
+    }
+
+    public String renewMembership(String userId) throws ParseException {
+
+        HashMap<String, String> response = new HashMap<>();
+
+        Iterable<Customer> custItr = customerRepository.findAll();
+        
+        Iterator custIt = custItr.iterator();
+        
+        while (custIt.hasNext()) {
+            
+            Customer customer = (Customer) custIt.next();
+            if (customer.getUserId().getId() == Integer.parseInt(userId)) {
+                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                Date today = new Date();
+                customer.setMembershipStartDate(formatter.parse(formatter.format(today)));
+
+                Calendar cal = Calendar.getInstance();
+                cal.add(Calendar.MONTH, 6); 
+                Date nextSixMonths = cal.getTime();
+
+                customer.setMembershipEndDate(nextSixMonths);
                 customerRepository.save(customer);
                 response.put("status", "200");
                 return convertMapToJson(response);
