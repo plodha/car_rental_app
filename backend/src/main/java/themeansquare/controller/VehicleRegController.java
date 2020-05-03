@@ -98,14 +98,14 @@ public class VehicleRegController {
     }
 
     // get available vehicle for a vehicleType Id
-    @GetMapping(value = "/vehiclebyvehicletype/{vehicleTypeId}")
+    @GetMapping(value = "/vehicleForVehicletype/{vehicleTypeId}")
     public Iterable<Vehicle> getVehicleByVehicleType(@PathVariable Integer vehicleTypeId) throws Exception {
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         return reg.getVehicleByVehicleType(vehicleTypeId);
     }
 
     // get available vehicle for a location
-    @GetMapping(value = "/vehiclebylocation/{locationId}")
+    @GetMapping(value = "/vehicleForLocation/{locationId}")
     public Iterable<Vehicle> getVehicleByLocation(@PathVariable Integer locationId) throws Exception {
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         return reg.getVehicleByLocation(locationId);

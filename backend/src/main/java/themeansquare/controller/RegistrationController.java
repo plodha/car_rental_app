@@ -62,6 +62,8 @@ public class RegistrationController {
                 "licenseExpDate": "1994-05-22",
                 "membershipStartDate": "2020-05-01",
                 "membershipEndDate": "2021-05-01",
+                "creditCard" : "1234567890123456"	
+                "creditCardExpDate" : "2022-05-01",
                 "email": "different@gmail.com"
             }
         Use case:
