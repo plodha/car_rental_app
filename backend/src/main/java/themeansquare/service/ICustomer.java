@@ -1,10 +1,12 @@
 package themeansquare.service;
 
+import java.util.ArrayList;
+
 import themeansquare.model.Customer;
 
 public interface ICustomer {
 
-	String getAllCustomers();
+	ArrayList<Customer> getAllCustomers();
 
 	Customer getCustomerInfo(String userId);
 
