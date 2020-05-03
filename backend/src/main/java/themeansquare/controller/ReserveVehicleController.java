@@ -1,11 +1,11 @@
 package themeansquare.controller;
 
+import themeansquare.service.IReservation;
 import themeansquare.model.Customer;
 import themeansquare.model.Location;
 import themeansquare.model.Reservation;
 import themeansquare.model.Vehicle;
 import themeansquare.model.Invoice;
-import themeansquare.service.IReservation;
 import themeansquare.service.internal.ReserveVehicle;
 import themeansquare.repository.CustomerRepository;
 import themeansquare.repository.LocationRepository;
