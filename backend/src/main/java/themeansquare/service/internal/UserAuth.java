@@ -22,13 +22,23 @@ public class UserAuth implements IUser {
     private EmployeeRepository employeeRepository; 
     private CustomerRepository customerRepository;
 
-
+    private String username;
+    private String password;
 
     public UserAuth(UserRepository userRepository, EmployeeRepository employeeRepository, CustomerRepository customerRepository) {
         this .userRepository = userRepository;
         this.employeeRepository = employeeRepository;
         this.customerRepository = customerRepository;
-	}
+    }
+    
+    public UserAuth(String username, String password,UserRepository userRepository, EmployeeRepository employeeRepository, CustomerRepository customerRepository) {
+
+        this.username = username;
+        this.password = password;
+        this .userRepository = userRepository;
+        this.employeeRepository = employeeRepository;
+        this.customerRepository = customerRepository;
+    }
 
     public String getRole(int id) {
 
@@ -66,8 +76,46 @@ public class UserAuth implements IUser {
 
     }
 
-	@Override
+    
     public String isValidCredentials(User userCheck) {
+       
+        HashMap<String, String> response = new HashMap<>();
+        response.put("status", "400");
+        response.put("message", "User does not exist");
+        Iterable<User> itr = userRepository.findAll();
+
+        Iterator it = itr.iterator();
+        
+        while (it.hasNext()) {
+            User user = (User) it.next();
+            System.out.println(user.getUsername());
+            
+            if (user.getUsername().equals(this.username)) {
+                if (user.getPassword().equals(this.password))
+                {
+
+                    response.put("status", "200");
+                    response.remove("message");
+                    response.put("role", getRole(user.getId()));
+                    response.put("username", user.getUsername());
+                    response.put("id", user.getId() + "");
+                    return convertMapToJson(response);
+                }
+                else 
+                {
+                    response.put("message", "Invalid password");
+                    return convertMapToJson(response);
+                }
+                
+            }
+        }
+
+        return convertMapToJson(response);
+
+    }
+
+	
+    public String isValidCredentialsOld(User userCheck) {
        
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");

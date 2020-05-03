@@ -61,11 +61,20 @@ public class UserAuthController {
                 response.put("message", "Some message on why it failed");
      */
 
-    @GetMapping("/auth")
-    public String auth(@RequestBody User user) {
+    @GetMapping("/authOld")
+    public String authOld(@RequestBody User user) {
         IUser userAuth = new UserAuth(userRepository, employeeRepository, customerRepository);
         
-        return userAuth.isValidCredentials(user);
+        return userAuth.isValidCredentialsOld(user);
+    }
+
+    @GetMapping("/auth")
+    public String auth(@RequestParam(value = "username") String username,
+            @RequestParam(value = "password") String password) throws Exception {
+
+                IUser userAuth = new UserAuth(username, password, userRepository, employeeRepository, customerRepository);
+                return null;
+                //userAuth.isValidCredentials(user);
     }
 
 }
