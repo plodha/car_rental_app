@@ -16,7 +16,7 @@
 
       <mat-form-field class="example-full-width">
           <mat-label>Location</mat-label>
-            <mat-select formControlName="location">
+            <mat-select formControlName="location" >
               <mat-option *ngFor="let location of locations"  [value]="location.id">
                 {{location.name}}
               </mat-option>
@@ -41,8 +41,10 @@
         <mat-label>Pickup Date time</mat-label>
        <input matInput [ngxMatDatetimePicker]="pickupTimePicker" placeholder="Pickup date" [formControl]="pickupDateTime">
        <mat-datepicker-toggle matSuffix [for]="pickupTimePicker"></mat-datepicker-toggle>
-       <ngx-mat-datetime-picker #pickupTimePicker></ngx-mat-datetime-picker>
+       <ngx-mat-datetime-picker [showSeconds]='false' #pickupTimePicker></ngx-mat-datetime-picker>
      </mat-form-field>
+
+
 
 
       <mat-form-field>

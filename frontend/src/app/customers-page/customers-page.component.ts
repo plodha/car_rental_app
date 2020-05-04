@@ -3,31 +3,23 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
+import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import {ActivatedRoute, Router } from '@angular/router';
+
+import {ApiService} from '../api.service'
 
 export interface Customer {
   id:number;
   name: string;
   addressLine: string;
   licenseInfo: string;
+  licenseExpDate:string;
   startDate: string;
   endDate:string;
-  verified:string;
   status:string;
   email :string;
 
 }
-const ELEMENT_DATA: Customer[] = [
-  {id: 1, name:'Bob Maxwell',addressLine: '26 Showers drive', licenseInfo:'32424324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-  {id: 2, name:'Varun Krishna',addressLine: '26 Showers drive', licenseInfo:'92424324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-  {id: 3, name:'Damini Mukerji',addressLine: '26 Showers drive', licenseInfo:'1124324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-  {id: 4, name:'Bob Maxwell',addressLine: '26 Showers drive', licenseInfo:'32424324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-  {id: 5, name:'John Maxwell',addressLine: '26 Showers drive', licenseInfo:'82424324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-  {id: 6, name:'Barbie Maxwell',addressLine: '26 Showers drive', licenseInfo:'72424324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-  {id: 7, name:'Mary Maxwell',addressLine: '26 Showers drive', licenseInfo:'32424324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-  {id: 8, name:'Bob Maxwell',addressLine: '26 Showers drive', licenseInfo:'22224324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-  {id: 9, name:'Donald Maxwell',addressLine: '26 Showers drive', licenseInfo:'62424324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-  {id: 10, name:'Bob Maxwell',addressLine: '26 Showers drive', licenseInfo:'52424324234', startDate:'04/01/2020', endDate:'01/10/2021', verified:'yes',status:'active', email:'abdcff@yahoo.com'},
-];
 
 @Component({
   selector: 'app-customers-page',
@@ -36,14 +28,39 @@ const ELEMENT_DATA: Customer[] = [
 })
 export class CustomersPageComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'addressLine','licenseInfo','startDate','endDate', 'verified','status','email','star'];
+  displayedColumns: string[] = ['id', 'name', 'addressLine','licenseInfo','licenseExpDate','startDate','endDate','email', 'status','star'];
   dataSource: MatTableDataSource<Customer>;
-
+  ELEMENT_DATA: Customer[] = [];
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  constructor() {
-    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+  constructor(private router: Router,private actr: ActivatedRoute, private formBuilder: FormBuilder,private api: ApiService) {
+    this.actr.data.subscribe((data)=>{
+      console.log(data);
+      var customers = data.customer;
+      console.log(customers)
+      console.log(customers.length)
+
+      var i = 0;
+      for (i = 0; i < customers.length; i++) {
+
+        var obj = customers[i];
+        console.log(obj)
+        var customer = {
+          id: obj.id,
+          name:obj.firstName+' '+obj.lastName,
+          addressLine: obj.address.street+', '+obj.address.city+", "+obj.address.state+", "+obj.address.zipCode,
+           licenseInfo:obj.licenseNumber,
+           licenseExpDate:obj.licenseExpDate,
+           startDate:obj.membershipStartDate,
+           endDate:obj.membershipEndDate,
+            email:obj.email,
+            status : 'Active'
+        }
+        this.ELEMENT_DATA[i] = customer;
+      }
+    });
+    this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   }
 
