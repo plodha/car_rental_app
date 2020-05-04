@@ -57,6 +57,9 @@ public class InvoiceServiceController {
      //final invoice computation
      //reservation id, damage id[], IsDamage, actualdropofftime, front end will send date format =1/15/2020 10:57:03 AM
      //late fee = estimated -actual > 1hour 
+     /*from postman:
+        http://localhost:8080/computeInvoice/1?actualDropOffTime=1/15/2020 3:57:03 PM&reservationId=1&IsDamage=true
+     */
      @PutMapping("/computeInvoice/{damageId}")
      public String computeInvoice (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
              @RequestParam(value = "reservationId") Integer reservationId,
@@ -74,7 +77,7 @@ public class InvoiceServiceController {
         public Iterable<Invoice> getInvoices() throws Exception {
                 IInvoice invoice = new InvoiceService  ( customerRepository, locationRepository,vehicleRepository, 
                                                       invoiceRepository,reservationRepository,priceRepository,damageRepository);
-                return invoice.getVehicles();
+                return invoice.getInvoices();
                 
         }
 

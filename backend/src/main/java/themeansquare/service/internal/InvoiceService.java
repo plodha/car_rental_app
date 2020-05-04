@@ -260,6 +260,25 @@ public class InvoiceService implements IInvoice {
         return false;
     }
 
+    //get-all api 
+    public Iterable<Invoice> getInvoices() throws Exception {
+        
+        HashMap<String, String> response = new HashMap<>();
+        Iterable<Invoice> itr = invoiceRepository.findAll();
+        response.put("status", "400");
+        if(itr != null){
+            response.put("status", "200");
+            return  itr;
+        }
+        return null;
+    }
+
+    //get by id api
+    public Optional<Invoice> getInvoiceById(Integer id) throws Exception {
+
+        return invoiceRepository.findById(id);
+    }
+    
     public String convertMapToJson(HashMap<String, String> response) {
 
         ObjectMapper objectMapper = new ObjectMapper();
