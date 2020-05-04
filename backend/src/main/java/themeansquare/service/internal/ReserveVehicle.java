@@ -260,7 +260,7 @@ public class ReserveVehicle implements IReservation {
     public String getEstimatedPriceForVehicles (Integer locationId, String pickUpTime, String estimatedDropOffTime) throws Exception {
         ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
 
-        Iterable<Vehicle> itr = getVehicleByLocation(locationId);
+        Iterable<Vehicle> itr = this.getVehicleByLocation(locationId);
         Iterator iter = itr.iterator();
         while(iter.hasNext()){
             HashMap<String, String> row = new HashMap<String, String>();
@@ -269,12 +269,12 @@ public class ReserveVehicle implements IReservation {
             VehicleType tempVehicleType = tempVehicle.getVehicleTypeId();
 
             /// getting two range of price for vehicle types of a vehicle: location>>vehicle>>vehicletype>>price
-            Iterable<Price> itr_price = getPriceListForVehicleType(tempVehicleType.getId());
+            Iterable<Price> itr_price = this.getPriceListForVehicleType(tempVehicleType.getId());
             Iterator iter_price = itr_price.iterator();
             Price price_5hr = (Price) iter_price.next();
             Price price_10hr = (Price) iter_price.next();
 
-            double hrDiff = DateDiff(pickUpTime,estimatedDropOffTime);  
+            double hrDiff = this.DateDiff(pickUpTime,estimatedDropOffTime);  
             
             ///computing estimated price
             double estimatedPrice = 0.0;
@@ -285,7 +285,6 @@ public class ReserveVehicle implements IReservation {
             else {
                 estimatedPrice = hrDiff * price_5hr.getHourlyPrice() ;                  
             }
-
             System.out.println( "[" 
                                 + " vehicle: " +  tempVehicle.getId()
                                 + "  vehicle Type: " + tempVehicleType.getId()
@@ -305,7 +304,8 @@ public class ReserveVehicle implements IReservation {
             result.add(row);
         }
 
-        return null;
+        return this.convertArrayMapToJson(result);
+       // return null;
     }
 
     //get price list for a vehicleType
@@ -388,6 +388,20 @@ public class ReserveVehicle implements IReservation {
         String jsonResponse;
         try {
             jsonResponse = objectMapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            jsonResponse = "{\"Status\" : 400, \"error_message\" : \"convertMapToJson failed. ReserveVehicle.java file\"}";
+        }
+    
+        return jsonResponse;
+    }
+
+    public String convertArrayMapToJson(ArrayList<HashMap<String, String>> result) {
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        String jsonResponse;
+        try {
+            jsonResponse = objectMapper.writeValueAsString(result);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             jsonResponse = "{\"Status\" : 400, \"error_message\" : \"convertMapToJson failed. ReserveVehicle.java file\"}";

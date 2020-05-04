@@ -172,8 +172,8 @@ public class ReserveVehicleController {
         IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository,priceRepository);
         //IPrice priceService = new PriceService(priceRepository);
         
-        reserve.getEstimatedPriceForVehicles(locationId,pickUpTime,estimatedDropOffTime);
-       return null;
+        return reserve.getEstimatedPriceForVehicles(locationId,pickUpTime,estimatedDropOffTime);
+      // return null;
     }
     
 }
