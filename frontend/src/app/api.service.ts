@@ -511,4 +511,122 @@ public getAllLocations(){
     return this.http.put(this.prod_api_url + end_point, body, {headers});
   }
 
+  /*
+        DELETE Request
+        customerFormGroup format:
+          
+           .set('userId', customerFormGroup.userId)
+        /renewcustomer API return:
+          Success:
+            {status:200}
+          Error:
+            
+    */
+   removeCustomer(customerFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(customerFormGroup.value);
+    let end_point = "removeCustomer";
+    var params = new HttpParams()
+      .set('userId', customerFormGroup.userId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        DELETE Request
+        damageFormGroup format:
+          
+           .set('damageId', damageFormGroup.damageId)
+        /renewdamage API return:
+          Success:
+            {status:200}
+          Error:
+            
+    */
+   deleteDamage(damageFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(damageFormGroup.value);
+    let end_point = "deleteDamage";
+    var params = new HttpParams()
+      .set('damageId', damageFormGroup.damageId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        DELETE Request
+        damageFormGroup format:
+          
+           damageFormGroup.id
+        /renewdamage API return:
+          Success:
+            {status:200}
+          Error:
+            
+    */
+   deleteLocation(damageFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(damageFormGroup.value);
+    let end_point = "location/" + damageFormGroup.id;
+    
+    return this.http.put(this.prod_api_url + end_point, {}, {headers});
+  }
+
+  /*
+        DELETE Request
+        priceFormGroup format:
+          
+           .set('priceId', priceFormGroup.priceId)
+        /renewprice API return:
+          Success:
+            {status:200}
+          Error:
+            
+    */
+   deletePrice(priceFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(priceFormGroup.value);
+    let end_point = "deletePrice";
+    var params = new HttpParams()
+      .set('priceId', priceFormGroup.priceId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        DELETE Request
+        vehicleFormGroup format:
+          
+           vehicleFormGroup.id
+        /renewvehicle API return:
+          Success:
+            {status:200}
+          Error:
+            
+    */
+   deleteVehicle(vehicleFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleFormGroup.value);
+    let end_point = "vehicle/" + vehicleFormGroup.id;
+
+    return this.http.put(this.prod_api_url + end_point, {}, {headers});
+  }
+
+  /*
+        DELETE Request
+        vehicleTypeIdFormGroup format:
+          
+           .set('vehicleTypeId', vehicleTypeIdFormGroup.vehicleTypeId)
+        /deleteVehicleType API return:
+          Success:
+            {status:200}
+          Error:
+            
+    */
+   deleteVehicleType(vehicleTypeIdFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleTypeIdFormGroup.value);
+    let end_point = "deleteVehicleType";
+    var params = new HttpParams()
+      .set('vehicleTypeId', vehicleTypeIdFormGroup.vehicleTypeId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+  
 }
