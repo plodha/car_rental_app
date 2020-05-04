@@ -182,5 +182,96 @@ public getAllLocations(){
     let end_point = "auth";
     return this.http.post(this.prod_api_url + end_point, body, {headers});
   }
+  
+   /*
+        POST Request
+        locationFormGroup format:
+          .set('contactNumber', locationFormGroup.contactNumber)
+          .set('name', locationFormGroup.name)
+          .set('vehicleCapacity', locationFormGroup.vehicleCapacity)
+          .set('street', locationFormGroup.street)
+          .set('city', locationFormGroup.city)
+          .set('state', locationFormGroup.state)
+          .set('zipcode', locationFormGroup.zipcode)
+        /location API return:
+          Success:
+            subarna will add
+          Error:
+           subarna will add
+    */
+   addLocationAPI(locationFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(locationFormGroup.value);
+    var params = new HttpParams()
+      .set('contactNumber', locationFormGroup.contactNumber)
+      .set('name', locationFormGroup.name)
+      .set('vehicleCapacity', locationFormGroup.vehicleCapacity)
+      .set('street', locationFormGroup.street)
+      .set('city', locationFormGroup.city)
+      .set('state', locationFormGroup.state)
+      .set('zipcode', locationFormGroup.zipcode)
+    let end_point = "location";
+    return this.http.post(this.prod_api_url + end_point, {headers, params});
+  }
+
+   /*
+        POST Request
+        reservationFormGroup format:
+          {
+              "username" : "jeyasriAdmin",
+              "password" : "password"
+            
+          }
+        /reservation API return:
+          Success:
+            {"role":"Employee","id":"1","status":"200","username":"jeyasriAdmin"}
+          Error:
+            {"message":"Invalid password","status":"400"}
+            {"message":"User does not exist","status":"400"}
+    */
+   addReservationAPI(reservationFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(reservationFormGroup.value);
+    let end_point = "reservation";
+    return this.http.post(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        POST Request
+        vehicleFormGroup format:
+          {
+              .set('licensePlate', vehicleFormGroup.licensePlate)
+              .set('model', vehicleFormGroup.model)
+              .set('make', vehicleFormGroup.make)
+              .set('status', vehicleFormGroup.status)
+              .set('vIN', vehicleFormGroup.vIN)
+              .set('year', vehicleFormGroup.year)
+              .set('vehicleTypeId', vehicleFormGroup.vehicleTypeId)
+              .set('vehicleCondition', vehicleFormGroup.vehicleCondition)
+              .set('locationId', vehicleFormGroup.locationId)
+            
+          }
+        /vehicle API return:
+          Success:
+            subarna will add
+          Error:
+           subarna will add
+    */
+   addVehicleAPI(vehicleFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleFormGroup.value);
+    let end_point = "vehicle";
+    var params = new HttpParams()
+      .set('licensePlate', vehicleFormGroup.licensePlate)
+      .set('model', vehicleFormGroup.model)
+      .set('make', vehicleFormGroup.make)
+      .set('status', vehicleFormGroup.status)
+      .set('vIN', vehicleFormGroup.vIN)
+      .set('year', vehicleFormGroup.year)
+      .set('vehicleTypeId', vehicleFormGroup.vehicleTypeId)
+      .set('vehicleCondition', vehicleFormGroup.vehicleCondition)
+      .set('locationId', vehicleFormGroup.locationId)
+    return this.http.post(this.prod_api_url + end_point, {headers, params});
+  }
 
 }
