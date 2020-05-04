@@ -274,4 +274,88 @@ public getAllLocations(){
     return this.http.post(this.prod_api_url + end_point, {headers, params});
   }
 
+  /*
+        PUT Request
+        customerFormGroup format:
+          {
+              "creditCard": "35485739857",
+              "creditCardExpDate": "2022-05-20",
+              "id": 2,
+              "userId": {
+                  "id": 3,
+                  "password": "notsecure",
+                  "username": "wqureshi5"
+              },
+              "firstName": "Wasae",
+              "lastName": "Qureshi",
+              "cvv": "454",
+              "licenseNumber": "747324",
+              "licenseExpDate": "1994-05-22",
+              "membershipStartDate": "2020-05-03",
+              "membershipEndDate": "2020-11-03",
+              "email": "different5@gmail.com",
+              "address": {
+                  "state": "ca",
+                  "id": 5,
+                  "street": "random street",
+                  "zipCode": 94086,
+                  "city": "random city"
+              }
+          }
+        /updateCustomer API return:
+          Success:
+            {"status":"200"}
+          Error:
+            {"message":"Email taken","status":"400"}
+            {"message":"username taken","status":"400"}
+    */
+   updateCustomerAPI(customerFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(customerFormGroup.value);
+    let end_point = "updateCustomer";
+    return this.http.post(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        damageFormGroup format:
+          {
+              "creditCard": "35485739857",
+              "creditCardExpDate": "2022-05-20",
+              "id": 2,
+              "userId": {
+                  "id": 3,
+                  "password": "notsecure",
+                  "username": "wqureshi5"
+              },
+              "firstName": "Wasae",
+              "lastName": "Qureshi",
+              "cvv": "454",
+              "licenseNumber": "747324",
+              "licenseExpDate": "1994-05-22",
+              "membershipStartDate": "2020-05-03",
+              "membershipEndDate": "2020-11-03",
+              "email": "different5@gmail.com",
+              "address": {
+                  "state": "ca",
+                  "id": 5,
+                  "street": "random street",
+                  "zipCode": 94086,
+                  "city": "random city"
+              }
+          }
+        /updateDamage API return:
+          Success:
+            {"status":"200"}
+          Error:
+            {"message":"Email taken","status":"400"}
+            {"message":"username taken","status":"400"}
+    */
+   updateDamageAPI(damageFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(damageFormGroup.value);
+    let end_point = "updateDamage";
+    return this.http.post(this.prod_api_url + end_point, body, {headers});
+  }
+
 }
