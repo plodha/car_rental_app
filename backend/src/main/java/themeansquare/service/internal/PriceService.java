@@ -115,5 +115,19 @@ public class PriceService implements IPrice {
         response.put("status", "200");
         return convertMapToJson(response);
     }
+
+    @Override
+    public ArrayList<Price> getAllPrices() {
+        Iterable<Price> itr = this.priceRepository.findAll();
+        Iterator it = itr.iterator();
+        ArrayList<Price> list = new ArrayList<Price>();
+        
+        while (it.hasNext()) {
+            Price p = (Price) it.next();
+            list.add(p);
+        }
+        
+        return list;
+    }
     
 }

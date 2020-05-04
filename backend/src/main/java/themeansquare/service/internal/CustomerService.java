@@ -18,12 +18,17 @@ import themeansquare.repository.UserRepository;
 import themeansquare.service.ICustomer;
 import themeansquare.service.IRegistration;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Calendar;
+
 public class CustomerService implements ICustomer {
 
-    private UserRepository userRepository; 
-    private EmployeeRepository employeeRepository; 
+    private UserRepository userRepository;
+    private EmployeeRepository employeeRepository;
     private CustomerRepository customerRepository;
-    private AddressRepository addressRepository; 
+    private AddressRepository addressRepository;
 
 	public CustomerService(UserRepository userRepository, EmployeeRepository employeeRepository,
 			CustomerRepository customerRepository, AddressRepository addressRepository) {
@@ -34,34 +39,22 @@ public class CustomerService implements ICustomer {
 	}
 
     @Override
-    public String getAllCustomers() {
-       
-        HashMap<String, ArrayList<HashMap<String, String>>> response = new HashMap<String, ArrayList<HashMap<String, String>>>();
-        ArrayList<HashMap<String, String>> results = new ArrayList<HashMap<String, String>>();;
-        
+    public ArrayList<Customer> getAllCustomers() {
+
         Iterable<Customer> custItr = customerRepository.findAll();
-        
+
         Iterator custIt = custItr.iterator();
         
+        ArrayList<Customer> resultsFinal = new ArrayList<Customer>();
+
         while (custIt.hasNext()) {
-            HashMap<String, String> temp = new HashMap<>();
             Customer customer = (Customer) custIt.next();
-            temp.put("username", customer.getUserId().getUsername());
-            temp.put("user_id", customer.getUserId().getId() + "");
-            results.add(temp);
+            resultsFinal.add(customer);
         }
-        
-        ArrayList<HashMap<String, String>> status = new ArrayList<HashMap<String, String>>();
-        HashMap<String, String> statusTemp = new HashMap<>();
-        
-        statusTemp.put("status", "200");
-        status.add(statusTemp);
-        response.put("results", results);
-        response.put("status", status);
-        
-        return convertMapListToJson(response);
+
+        return resultsFinal;
     }
-    
+
 
     public String convertMapToJson(HashMap<String, String> response) {
 
@@ -73,7 +66,7 @@ public class CustomerService implements ICustomer {
             e.printStackTrace();
             jsonResponse = "{\"Status\" : 400, \"error_message\" : \"convertMapToJson failed. Vehicle.java file\"}";
         }
-    
+
         return jsonResponse;
     }
 
@@ -87,19 +80,19 @@ public class CustomerService implements ICustomer {
             e.printStackTrace();
             jsonResponse = "{\"Status\" : 400, \"error_message\" : \"convertMapToJson failed. Vehicle.java file\"}";
         }
-    
+
         return jsonResponse;
     }
 
     @Override
     public Customer getCustomerInfo(String userId) {
-        
+
         Iterable<Customer> custItr = customerRepository.findAll();
-        
+
         Iterator custIt = custItr.iterator();
-        
+
         while (custIt.hasNext()) {
-            
+
             Customer customer = (Customer) custIt.next();
             if (customer.getUserId().getId() == Integer.parseInt(userId)) {
                 return customer;
@@ -111,25 +104,25 @@ public class CustomerService implements ICustomer {
 
     @Override
     public String updateCustomer(Customer customer) {
-        
+
         HashMap<String, String> response = new HashMap<String, String>();
 
         Registration registrationService = new Registration(this.userRepository, this.customerRepository, this.addressRepository);
         Optional<Customer> optionalCustomer = customerRepository.findById(customer.getId());
         Customer inDBCustomer = optionalCustomer.get();
-        
+
         if (!inDBCustomer.getUserId().getUsername().equals(customer.getUserId().getUsername())) {
-            
+
             String username = customer.getUserId().getUsername();
             if (registrationService.checkIfUserExists(username)) {
-                
+
                 response.put("status", "400");
                 response.put("message", "Username is taken");
                 return convertMapToJson(response);
             }
-            
+
         }
-        
+
         if (!inDBCustomer.getEmail().equals(customer.getEmail())) {
             String email = customer.getEmail();
             if (registrationService.checkIfEmailExists(email)) {
@@ -139,7 +132,7 @@ public class CustomerService implements ICustomer {
                 return convertMapToJson(response);
             }
         }
-        
+
         customerRepository.save(customer);
         response.put("status", "200");
         return convertMapToJson(response);
@@ -153,5 +146,5 @@ public class CustomerService implements ICustomer {
         response.put("status", "200");
         return convertMapToJson(response);
     }
-    
+
 }

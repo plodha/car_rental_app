@@ -52,6 +52,13 @@ public class PriceController {
     private PriceRepository priceRepository;
     
     
+    @GetMapping("/getAllPrices")
+    public ArrayList<Price> getAllPrices() {
+        IPrice priceService = new PriceService(priceRepository);
+        
+        return priceService.getAllPrices();
+    }
+
     /**
         Use case:
             Given a Vehicle Type, give me all the prices for it.
@@ -86,6 +93,15 @@ public class PriceController {
         Use case:
             As admin, I can add a price 
         
+        Request body: 
+            {
+            "hourlyPrice": 50.0,
+            "hourlyRange": "10 - 10",
+            "vehicleTypeId": {
+                "id": 1
+            },
+            "lateFee": 40.0
+            }
         Response:
             Success:
                 {
