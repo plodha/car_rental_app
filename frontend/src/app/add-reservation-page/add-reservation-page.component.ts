@@ -34,9 +34,11 @@ export class AddReservationPageComponent implements OnInit {
 
   reservationForm : FormGroup
   location = new FormControl('');
-  pickupDateTime = '';
-  dropoffDateTime = '';
+
   isLoadingResults = false;
+
+  public pickupDateTime = new FormControl(new Date());
+  public dropoffDateTime = new FormControl(new Date());
 
 
   vehicleType = new FormControl('');
@@ -63,10 +65,12 @@ export class AddReservationPageComponent implements OnInit {
 
         // pickupDateTime: [null, Validators.required],
         // dropoffDateTime:[null, Validators.required],
-        location: this.location,
-        vehicleType : this.vehicleType,
+        location: [null, Validators.required],
+        vehicleType : [null, Validators.required],
         pickupDateTime: this.pickupDateTime,
-        dropoffDateTime : this.dropoffDateTime
+        dropoffDateTime : this.dropoffDateTime,
+        pickupdatestring: '',
+        dropoffdatestring :''
 
 
       });
@@ -77,12 +81,40 @@ export class AddReservationPageComponent implements OnInit {
 
   onFormSubmit() {
     this.isLoadingResults = true;
-    this.validateFor72Hours()
-    this.router.navigate(['/login']);
+    if(this.validateFor72Hours()){
+      this.router.navigate(['/login']);
+    }
+    //this.router.navigate(['/login']);
   }
 
   validateFor72Hours() {
+    console.log(this.pickupDateTime.value);
+    //Sun May 03 2020 17:56:13 GMT-0700 (Pacific Daylight Time)
+    var pickuptime = this.reservationForm.get('pickupDateTime').value;
+    var dropofftime = this.reservationForm.get('dropoffDateTime').value;
 
+    var pickupdate = new Date(pickuptime);
+    var pickupdatestring = ''+(pickupdate.getMonth()+1);
+    pickupdatestring += "/"+pickupdate.getDate()+"/"+pickupdate.getFullYear()+" "+pickupdate.getHours()+":"+pickupdate.getMinutes();
+    var dropoffdate = new Date(dropofftime);
+    var dropoffdatestring = ''+(dropoffdate.getMonth()+1);
+    dropoffdatestring += "/"+dropoffdate.getDate()+"/"+dropoffdate.getFullYear()+" "+dropoffdate.getHours()+":"+dropoffdate.getMinutes();
+    console.log(pickupdatestring)
+    console.log(dropoffdatestring)
+
+    pickupdate = new Date(pickupdatestring)
+    this.reservationForm.setValue({ pickupdatestring:pickupdatestring,dropoffdatestring:dropoffdatestring});
+  //  this.reservationForm.set('dropoffdatestring').value = dropoffdatestring;
+
+    var milliseconds = 72*60*60*1000;
+    var a = new Date(dropoffdatestring)
+    var b = new Date(pickupdatestring)
+    let diff:any = +new Date(dropoffdatestring) -  +new Date(pickupdatestring);
+    console.log(diff)
+    console.log(diff > milliseconds)
+    if (diff > milliseconds) {
+      return false;
+    }
   }
 
 

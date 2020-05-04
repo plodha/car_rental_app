@@ -26,12 +26,17 @@ td.mat-column-model{
 }
 
 th.mat-column-make {
-  width:15%;
+  width:10%;
 }
 td.mat-column-make {
-  width:15%;
+  width:10%;
 }
-
+th.mat-column-year {
+  width:10%;
+}
+td.mat-column-year {
+  width:10%;
+}
 th.mat-column-VehicleType {
   width:15%;
 }
@@ -47,8 +52,15 @@ td.mat-column-location {
 }
 
 th.mat-column-licensePlate {
-  width:15%;
+  width:10%;
 }
 td.mat-column-licensePlate {
+  width:10%;
+}
+
+th.mat-column-vin {
+  width:15%;
+}
+td.mat-column-vin {
   width:15%;
 }

@@ -6,10 +6,19 @@ import {HttpClient, HttpParams,HttpHeaders} from '@angular/common/http';
 })
 export class ApiService {
 
-  //api_url = "https://api.wasaequreshi.com/"
-  api_url = "http://localhost:8020/"
+  api_url = "https://api.wasaequreshi.com/"
+  //api_url = "http://localhost:8020/"
 
   location_endpoint = "location"
+  customer_endpoint = "getAllCustomers"
+  vehicle_endpoint = 'vehicle'
+  vehicleTypes_endpoint = "getAllVehicleTypes"
+  damageType_endpoint = "getDamageForVehicleType"
+  reservation_endpoint = 'reservation'
+  priceInfo_endpoint = "getPriceforVehicleType"
+
+
+
 
   constructor(private http: HttpClient) {
 
@@ -35,11 +44,6 @@ export class ApiService {
     const formData = new FormData();
     formData.append('file', formObj.get('file').value);
     formData.append('bgfile', formObj.get('bgfile').value);
-
-
-
-
-
 
   }
 
@@ -73,6 +77,47 @@ public getAllLocations(){
 
 
 }
+
+public getAllCustomers(){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.api_url + this.customer_endpoint,{headers})
+
+}
+
+public getAllVehicles(){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.api_url + this.vehicle_endpoint,{headers})
+
+}
+
+public getAllVehicleTypes(){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.api_url + this.vehicleTypes_endpoint,{headers})
+
+}
+
+public getAllDamageType(vehicleType:any){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.api_url + this.damageType_endpoint+"/?vehicleTypeId="+vehicleType,{headers})
+
+}
+public getAllReservationsForUser(user_id:any){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.api_url + this.reservation_endpoint+"/"+user_id,{headers})
+
+}
+public getPriceInfo(vehicleTypeId:any){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.api_url + this.priceInfo_endpoint+"/?vehicleTypeId="+vehicleTypeId,{headers})
+
+}
+
 
 
 }
