@@ -6,10 +6,20 @@ import {HttpClient, HttpParams,HttpHeaders} from '@angular/common/http';
 })
 export class ApiService {
 
-  //api_url = "https://api.wasaequreshi.com/"
-  api_url = "http://localhost:8020/"
   prod_api_url = "https://api.wasaequreshi.com/"
+  //api_url = "http://localhost:8020/"
+
+
   location_endpoint = "location"
+  customer_endpoint = "getAllCustomers"
+  vehicle_endpoint = 'vehicle'
+  vehicleTypes_endpoint = "getAllVehicleTypes"
+  damageType_endpoint = "getDamageForVehicleType"
+  reservation_endpoint = 'reservation'
+  priceInfo_endpoint = "getPriceforVehicleType"
+
+
+
 
   constructor(private http: HttpClient) {
 
@@ -28,7 +38,7 @@ export class ApiService {
    //const options = { params: new HttpParams({fromString: "_page=1&_limit=20"}) };
    var params = '?username='+username+'&password='+password;
 
-    return this.http.get(this.api_url + end_point+params)
+    return this.http.get(this.prod_api_url + end_point+params)
   }
   registerUserAPI(formObj: any)
   {
@@ -36,17 +46,12 @@ export class ApiService {
     formData.append('file', formObj.get('file').value);
     formData.append('bgfile', formObj.get('bgfile').value);
 
-
-
-
-
-
   }
 
 public getAllLocations(){
     let headers = { 'Content-Type': 'application/json','Accept':'application/json',
                'Access-Control-Allow-Origin': '*' };
-    return this.http.get(this.api_url + this.location_endpoint,{headers})
+    return this.http.get(this.prod_api_url + this.location_endpoint,{headers})
 
 
 }
@@ -74,7 +79,7 @@ public getAllLocations(){
             "creditCard" : "35485739857",
             "creditCardExpDate" : "2022-05-20",
             "cvv" : "454"
-          
+
           }
     /registration API return:
         Success:
@@ -142,7 +147,7 @@ public getAllLocations(){
          {
             "hourlyPrice": 50.0,
             "hourlyRange": "10 - 10",
-            
+
             "vehicleTypeId": {
                 "id": 1
             },
@@ -167,7 +172,7 @@ public getAllLocations(){
           {
               "username" : "jeyasriAdmin",
               "password" : "password"
-            
+
           }
         /auth API return:
           Success:
@@ -182,7 +187,7 @@ public getAllLocations(){
     let end_point = "auth";
     return this.http.post(this.prod_api_url + end_point, body, {headers});
   }
-  
+
    /*
         POST Request
         locationFormGroup format:
@@ -211,7 +216,7 @@ public getAllLocations(){
       .set('state', locationFormGroup.state)
       .set('zipcode', locationFormGroup.zipcode)
     let end_point = "location";
-    return this.http.post(this.prod_api_url + end_point, {headers, params});
+    return this.http.post(this.prod_api_url + end_point, {}, {headers, params});
   }
 
    /*
@@ -220,7 +225,7 @@ public getAllLocations(){
           {
               "username" : "jeyasriAdmin",
               "password" : "password"
-            
+
           }
         /reservation API return:
           Success:
@@ -249,7 +254,7 @@ public getAllLocations(){
               .set('vehicleTypeId', vehicleFormGroup.vehicleTypeId)
               .set('vehicleCondition', vehicleFormGroup.vehicleCondition)
               .set('locationId', vehicleFormGroup.locationId)
-            
+
           }
         /vehicle API return:
           Success:
@@ -271,7 +276,405 @@ public getAllLocations(){
       .set('vehicleTypeId', vehicleFormGroup.vehicleTypeId)
       .set('vehicleCondition', vehicleFormGroup.vehicleCondition)
       .set('locationId', vehicleFormGroup.locationId)
-    return this.http.post(this.prod_api_url + end_point, {headers, params});
+    return this.http.post(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        PUT Request
+        customerFormGroup format:
+          {
+              "creditCard": "35485739857",
+              "creditCardExpDate": "2022-05-20",
+              "id": 2,
+              "userId": {
+                  "id": 3,
+                  "password": "notsecure",
+                  "username": "wqureshi5"
+              },
+              "firstName": "Wasae",
+              "lastName": "Qureshi",
+              "cvv": "454",
+              "licenseNumber": "747324",
+              "licenseExpDate": "1994-05-22",
+              "membershipStartDate": "2020-05-03",
+              "membershipEndDate": "2020-11-03",
+              "email": "different5@gmail.com",
+              "address": {
+                  "state": "ca",
+                  "id": 5,
+                  "street": "random street",
+                  "zipCode": 94086,
+                  "city": "random city"
+              }
+          }
+        /updateCustomer API return:
+          Success:
+            {"status":"200"}
+          Error:
+            {"message":"Email taken","status":"400"}
+            {"message":"username taken","status":"400"}
+    */
+   updateCustomerAPI(customerFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(customerFormGroup.value);
+    let end_point = "updateCustomer";
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        damageFormGroup format:
+          {
+                  "id": 1,
+                  "vehicleTypeId": {
+                      "id": 1,
+                      "vehicleSize": 5,
+                      "vehicleClass": "Car"
+                  },
+                  "damageType": "It broke",
+                  "damageFee": 10.0
+          }
+        /updateDamage API return:
+          Success:
+            {"status":"200"}
+          Error:
+            None
+    */
+   updateDamageAPI(damageFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(damageFormGroup.value);
+    let end_point = "updateDamage";
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        computeInvoiceFormGroup format:
+          .set('actualDropOffTime', computeInvoiceFormGroup.actualDropOffTime)
+          .set('reservationId', computeInvoiceFormGroup.reservationId)
+          .set('IsDamage', computeInvoiceFormGroup.IsDamage)
+          .set('damageId', computeInvoiceFormGroup.damageId)
+        /updatecomputeInvoice API return:
+          Success:
+           Ask Suburna
+          Error:
+           Ask Suburna
+    */
+   computeInvoiceAPI(computeInvoiceFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(computeInvoiceFormGroup.value);
+    let end_point = "/computeInvoice";
+    var params = new HttpParams()
+      .set('actualDropOffTime', computeInvoiceFormGroup.actualDropOffTime)
+      .set('reservationId', computeInvoiceFormGroup.reservationId)
+      .set('IsDamage', computeInvoiceFormGroup.IsDamage)
+      .set('damageId', computeInvoiceFormGroup.damageId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        PUT Request
+        locationFormGroup format:
+
+          Ask Suburna
+        /updatelocation API return:
+          Success:
+            Ask Suburna
+          Error:
+            Ask Suburna
+    */
+   updateLocationAPI(locationFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(locationFormGroup.value);
+    let end_point = "location/" + locationFormGroup.id;
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        membershipFormGroup format:
+
+           .set('userId', membershipFormGroup.userId)
+        /cancelMembership API return:
+          Success:
+            {status:200}
+          Error:
+
+    */
+   cancelMembershipAPI(membershipFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(membershipFormGroup.value);
+    let end_point = "cancelMembership";
+    var params = new HttpParams()
+      .set('userId', membershipFormGroup.userId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+
+public getAllCustomers(){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.prod_api_url + this.customer_endpoint,{headers})
+
+}
+
+public getAllVehicles(){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.prod_api_url + this.vehicle_endpoint,{headers})
+
+}
+
+public getAllVehicleTypes(){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.prod_api_url + this.vehicleTypes_endpoint,{headers})
+
+}
+
+public getAllDamageType(vehicleType:any){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.prod_api_url + this.damageType_endpoint+"/?vehicleTypeId="+vehicleType,{headers})
+
+}
+public getAllReservationsForUser(user_id:any){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.prod_api_url + this.reservation_endpoint+"/"+user_id,{headers})
+
+}
+public getPriceInfo(vehicleTypeId:any){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.prod_api_url + this.priceInfo_endpoint+"/?vehicleTypeId="+vehicleTypeId,{headers})
+
+}
+
+
+  /*
+        PUT Request
+        membershipFormGroup format:
+
+           .set('userId', membershipFormGroup.userId)
+        /renewMembership API return:
+          Success:
+            {status:200}
+          Error:
+
+    */
+   renewMembershipAPI(membershipFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(membershipFormGroup.value);
+    let end_point = "renewMembership";
+    var params = new HttpParams()
+      .set('userId', membershipFormGroup.userId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        PUT Request
+        priceFormGroup format:
+          {
+              "hourlyPrice": 50.0,
+              "hourlyRange": "6 - 9",
+              "id": 1,
+              "vehicleTypeId": {
+                  "id": 1,
+                  "vehicleSize": 5,
+                  "vehicleClass": "Car"
+              },
+              "lateFee": 50.0
+          }
+
+        /updatePrice API return:
+          Success:
+           {"status":"200"}
+    */
+   updatePriceAPI(priceFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(priceFormGroup.value);
+    let end_point = "updatePrice"
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+   /*
+        PUT Request
+        reservationFormGroup format:
+          ask subrana
+        /reservationCancel API return:
+          ask subrana
+    */
+   cancelReservationAPI(reservationFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(reservationFormGroup.value);
+    let end_point = "/reservationCancel/" + reservationFormGroup.reservationId + "/" + reservationFormGroup.isLatefee
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+   /*
+        PUT Request
+        vehicleFormGroup format:
+          ask subrana
+        /updateVehicleWithLocationAPI API return:
+          ask subrana
+    */
+   updateVehicleWithLocationAPI(vehicleFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleFormGroup.value);
+    let end_point = "/vehicle/" + vehicleFormGroup.id + "/" + vehicleFormGroup.vehicleTypeId + "/" + vehicleFormGroup.locationId
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        vehicleFormGroup format:
+          ask subrana
+        /updateVehicleAPI API return:
+          ask subrana
+    */
+   updateVehicleAPI(vehicleFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleFormGroup.value);
+    let end_point = "/vehicle/" + vehicleFormGroup.id
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        vehicleTypeFormGroup format:
+           {
+              "id" : 1,
+              "vehicleSize": 5,
+              "vehicleClass": "Carrry"
+            }
+        /updateVehicleType API return:
+          {"status":"200"}
+    */
+   updateVehicleTypeAPI(vehicleTypeFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleTypeFormGroup.value);
+    let end_point = "updateVehicleType"
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        DELETE Request
+        customerFormGroup format:
+
+           .set('userId', customerFormGroup.userId)
+        /renewcustomer API return:
+          Success:
+            {status:200}
+          Error:
+
+    */
+   removeCustomer(customerFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(customerFormGroup.value);
+    let end_point = "removeCustomer";
+    var params = new HttpParams()
+      .set('userId', customerFormGroup.userId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        DELETE Request
+        damageFormGroup format:
+
+           .set('damageId', damageFormGroup.damageId)
+        /renewdamage API return:
+          Success:
+            {status:200}
+          Error:
+
+    */
+   deleteDamage(damageFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(damageFormGroup.value);
+    let end_point = "deleteDamage";
+    var params = new HttpParams()
+      .set('damageId', damageFormGroup.damageId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        DELETE Request
+        damageFormGroup format:
+
+           damageFormGroup.id
+        /renewdamage API return:
+          Success:
+            {status:200}
+          Error:
+
+    */
+   deleteLocation(damageFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(damageFormGroup.value);
+    let end_point = "location/" + damageFormGroup.id;
+
+    return this.http.put(this.prod_api_url + end_point, {}, {headers});
+  }
+
+  /*
+        DELETE Request
+        priceFormGroup format:
+
+           .set('priceId', priceFormGroup.priceId)
+        /renewprice API return:
+          Success:
+            {status:200}
+          Error:
+
+    */
+   deletePrice(priceFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(priceFormGroup.value);
+    let end_point = "deletePrice";
+    var params = new HttpParams()
+      .set('priceId', priceFormGroup.priceId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+
+  /*
+        DELETE Request
+        vehicleFormGroup format:
+
+           vehicleFormGroup.id
+        /renewvehicle API return:
+          Success:
+            {status:200}
+          Error:
+
+    */
+   deleteVehicle(vehicleFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleFormGroup.value);
+    let end_point = "vehicle/" + vehicleFormGroup.id;
+
+    return this.http.put(this.prod_api_url + end_point, {}, {headers});
+  }
+
+  /*
+        DELETE Request
+        vehicleTypeIdFormGroup format:
+
+           .set('vehicleTypeId', vehicleTypeIdFormGroup.vehicleTypeId)
+        /deleteVehicleType API return:
+          Success:
+            {status:200}
+          Error:
+
+    */
+   deleteVehicleType(vehicleTypeIdFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleTypeIdFormGroup.value);
+    let end_point = "deleteVehicleType";
+    var params = new HttpParams()
+      .set('vehicleTypeId', vehicleTypeIdFormGroup.vehicleTypeId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
   }
 
 }

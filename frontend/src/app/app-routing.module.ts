@@ -23,7 +23,7 @@ import { InvoicePageComponent } from './invoice-page/invoice-page.component';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
 
-import { Resolve } from '@angular/router';
+import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
 
 @Injectable()
@@ -34,6 +34,58 @@ export class LocationResolver implements Resolve<any> {
     return this.apiService.getAllLocations();
   }
 }
+
+@Injectable()
+export class CustomerResolver implements Resolve<any> {
+  constructor(private apiService: ApiService) {}
+
+  resolve() {
+    return this.apiService.getAllCustomers();
+  }
+}
+@Injectable()
+export class VehicleResolver implements Resolve<any> {
+  constructor(private apiService: ApiService) {}
+
+  resolve() {
+    return this.apiService.getAllVehicles();
+  }
+}
+
+@Injectable()
+export class VehicleTypeResolver implements Resolve<any> {
+  constructor(private apiService: ApiService) {}
+
+  resolve() {
+    return this.apiService.getAllVehicleTypes();
+  }
+}
+@Injectable()
+export class DamageResolver implements Resolve<any> {
+  constructor(private apiService: ApiService) {}
+
+  resolve(route: ActivatedRouteSnapshot) {
+    return this.apiService.getAllDamageType(route.params.id);
+  }
+}
+@Injectable()
+export class ReservationResolver implements Resolve<any> {
+  constructor(private apiService: ApiService) {}
+
+  resolve(route: ActivatedRouteSnapshot) {
+    return this.apiService.getAllReservationsForUser(route.params.id);
+  }
+}
+/*This hsould be updated for all prices*/
+@Injectable()
+export class PriceResolver implements Resolve<any> {
+  constructor(private apiService: ApiService) {}
+
+  resolve(route: ActivatedRouteSnapshot) {
+    return this.apiService.getPriceInfo(route.params.id);
+  }
+}
+
 const routes: Routes = [{
     path: 'login',
     component: LoginPageComponent
@@ -48,7 +100,10 @@ const routes: Routes = [{
       },
       {
           path:'vehicle',
-          component: VehiclePageComponent
+          component: VehiclePageComponent,
+          resolve: {
+            vehicle: VehicleResolver
+          }
       },
       {
           path:'addVehicle',
@@ -86,12 +141,18 @@ const routes: Routes = [{
        }
       },
       {
-          path:'reservations',
-          component: ReservationsPageComponent
+          path:'reservations/:id',
+          component: ReservationsPageComponent,
+          resolve: {
+            reservation : ReservationResolver
+          }
       },
       {
           path:'customers',
-          component: CustomersPageComponent
+          component: CustomersPageComponent,
+          resolve: {
+            customer:CustomerResolver
+          }
       },
       {
           path:'priceList',
@@ -111,6 +172,6 @@ const routes: Routes = [{
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [LocationResolver]
+  providers: [LocationResolver,CustomerResolver, ReservationResolver,PriceResolver,VehicleTypeResolver,VehicleResolver, DamageResolver]
 })
 export class AppRoutingModule { }
