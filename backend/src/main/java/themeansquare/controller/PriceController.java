@@ -88,6 +88,7 @@ public class PriceController {
         
         return priceService.getPriceForVehicleType(vehicleTypeId);
     }
+
     
     /**
         Use case:

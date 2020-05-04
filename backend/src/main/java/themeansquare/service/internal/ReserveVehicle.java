@@ -6,6 +6,7 @@ import themeansquare.model.Location;
 import themeansquare.model.Price;
 import themeansquare.model.Reservation;
 import themeansquare.model.Vehicle;
+import themeansquare.model.VehicleType;
 import themeansquare.model.Invoice;
 import themeansquare.service.internal.ReserveVehicle;
 import themeansquare.repository.CustomerRepository;
@@ -13,6 +14,7 @@ import themeansquare.repository.LocationRepository;
 import themeansquare.repository.PriceRepository;
 import themeansquare.repository.ReservationRepository;
 import themeansquare.repository.VehicleRepository;
+import themeansquare.repository.VehicleTypeRepository;
 import themeansquare.repository.InvoiceRepository;
 
 import java.util.HashMap;
@@ -22,10 +24,13 @@ import java.util.ListIterator;
 import java.util.Optional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.beans.factory.annotation.Autowired;
 
 public class ReserveVehicle implements IReservation {
     
@@ -35,6 +40,9 @@ public class ReserveVehicle implements IReservation {
     private InvoiceRepository invoiceRepository;
     private ReservationRepository reservationRepository;
     private PriceRepository priceRepository;
+
+    @Autowired
+    private VehicleTypeRepository vehicleTypeRepository;
 
     private String actualDropOffTime; 
     private String estimateDropOffTime;
@@ -248,7 +256,124 @@ public class ReserveVehicle implements IReservation {
         return 0.0;
     }
 
-    
+    //get and compute the estimated prices for all the available vehicles in a location
+    public String getEstimatedPriceForVehicles (Integer locationId, String pickUpTime, String estimatedDropOffTime) throws Exception {
+        ArrayList<HashMap<String, String>> result = new ArrayList<HashMap<String, String>>();
+
+        Iterable<Vehicle> itr = getVehicleByLocation(locationId);
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            HashMap<String, String> row = new HashMap<String, String>();
+
+            Vehicle tempVehicle = (Vehicle) iter.next();
+            VehicleType tempVehicleType = tempVehicle.getVehicleTypeId();
+
+            /// getting two range of price for vehicle types of a vehicle: location>>vehicle>>vehicletype>>price
+            Iterable<Price> itr_price = getPriceListForVehicleType(tempVehicleType.getId());
+            Iterator iter_price = itr_price.iterator();
+            Price price_5hr = (Price) iter_price.next();
+            Price price_10hr = (Price) iter_price.next();
+
+            double hrDiff = DateDiff(pickUpTime,estimatedDropOffTime);  
+            
+            ///computing estimated price
+            double estimatedPrice = 0.0;
+            if( hrDiff >   Integer.parseInt(price_5hr.getHourlyRange())) {
+                estimatedPrice = Integer.parseInt(price_5hr.getHourlyRange()) * price_5hr.getHourlyPrice() 
+                                + (hrDiff - Integer.parseInt(price_5hr.getHourlyRange())) * price_10hr.getHourlyPrice();
+            }
+            else {
+                estimatedPrice = hrDiff * price_5hr.getHourlyPrice() ;                  
+            }
+
+            System.out.println( "[" 
+                                + " vehicle: " +  tempVehicle.getId()
+                                + "  vehicle Type: " + tempVehicleType.getId()
+                                + "  vehicle Type Name: " + tempVehicleType.getClass()
+                                + "  5hr price: " + price_5hr.getHourlyPrice()
+                                + "  10hr price: " + price_10hr.getHourlyPrice()
+                                + "  hrDiff: " + hrDiff
+                                + "  estimatedPrice: " +estimatedPrice
+                                +" ]");
+            row.put("vehicleId",String.valueOf(tempVehicle.getId()));
+        }
+
+        return null;
+    }
+
+    //get price list for a vehicleType
+    public Iterable<Price> getPriceListForVehicleType(int vehicleTypeId)  {
+        Iterable<Price> itr = priceRepository.findAll();
+        Iterator iter = itr.iterator();
+
+        while(iter.hasNext()){
+            Price tempPrice = (Price) iter.next();
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if(tempPrice.getVehicleTypeId().getId() != vehicleTypeId) {
+               // System.out.println("tempPrice.getVehicleTypeId() "+ tempPrice.getVehicleTypeId().getId());
+                iter.remove();
+            }
+        }
+        return itr;
+    }
+
+    //get available vehicle for a location
+    public Iterable<Vehicle> getVehicleByLocation(Integer locationId)  {
+
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Vehicle tempVehicle = (Vehicle) iter.next();
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if(!tempVehicle.isStatus() || (tempVehicle.getLocation().getId() != locationId.intValue())) {
+               // System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
+                iter.remove();
+            }
+        }
+        return itr;
+    }
+
+    //get available vehicle for a location
+    public Iterable<Vehicle> getPriceByVehicleType(Integer locationId)  {
+
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Vehicle tempVehicle = (Vehicle) iter.next();
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if(!tempVehicle.isStatus() || (tempVehicle.getLocation().getId() != locationId.intValue())) {
+                System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
+                iter.remove();
+            }
+        }
+        return itr;
+    }    
+
+    public double DateDiff(String pickUpTime, String estimateDropOffTime) {
+        String dateStart = pickUpTime;//"1/15/2020 10:57";
+        String dateStop = estimateDropOffTime;//"1/15/2020 9:57";
+
+        // Custom date format
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm");  
+
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = format.parse(dateStart);
+            d2 = format.parse(dateStop);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }    
+
+        // Get msec from each, and subtract.
+        double diff =   d2.getTime()- d1.getTime(); //estimatedDropOffTime -pickUpTime
+        double diffSeconds = diff / 1000 % 60;  
+        double diffMinutes = diff / (60 * 1000) % 60; 
+        double diffHours = diff / (60 * 60 * 1000);                             
+        System.out.println("Time in hours: " + diffHours + " hours.");
+
+        return Math.ceil(diffHours);
+}
 
     public String convertMapToJson(HashMap<String, String> response) {
 

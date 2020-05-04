@@ -3,6 +3,7 @@ package themeansquare.controller;
 import themeansquare.service.IReservation;
 import themeansquare.model.Customer;
 import themeansquare.model.Location;
+import themeansquare.model.Price;
 import themeansquare.model.Reservation;
 import themeansquare.model.Vehicle;
 import themeansquare.model.Invoice;
@@ -158,6 +159,21 @@ public class ReserveVehicleController {
             IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository,priceRepository);
             String response = reserve.cancelReservation(reservationId, isLatefee);  
             return response;  
+    }
+
+    
+
+    ///get and compute the estimated prices for all the available vehicles in a location
+    @GetMapping("/getEstimatedPriceForVehicles")
+    public String getEstimatedPriceForVehicles(@RequestParam(value = "locationId") Integer locationId,
+                                               @RequestParam(value = "pickUpTime") String pickUpTime,
+                                               @RequestParam(value = "estimatedDropOffTime") String estimatedDropOffTime) throws Exception {
+
+        IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, invoiceRepository,reservationRepository,priceRepository);
+        //IPrice priceService = new PriceService(priceRepository);
+        
+        reserve.getEstimatedPriceForVehicles(locationId,pickUpTime,estimatedDropOffTime);
+       return null;
     }
     
 }

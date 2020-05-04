@@ -242,7 +242,7 @@ public class InvoiceService implements IInvoice {
             //System.out.println("Time in minutes: " + diffMinutes + " minutes.");         
             System.out.println("Time in hours: " + diffHours + " hours.");
 
-            return diffHours;
+            return Math.ceil(diffHours);
     }
 
     public boolean isValidDate(String dateString) {

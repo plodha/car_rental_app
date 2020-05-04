@@ -10,4 +10,5 @@ public interface IReservation {
     public Iterable<Reservation> getReservations() throws Exception;
     public Optional<Reservation> getReservationById(Integer id) throws Exception;
     public String cancelReservation(Integer reservationId, Boolean isLatefee) throws Exception;
+    public String getEstimatedPriceForVehicles (Integer locationId, String startTime, String endTime) throws Exception;
 }

@@ -288,7 +288,7 @@ public class VehicleReg implements IVehicleReg {
         while(iter.hasNext()){
             Vehicle tempVehicle = (Vehicle) iter.next();
             //tempVehicle.isStatus() = false = occupied vehicle
-            if((tempVehicle.getVehicleTypeId().getId() != vehicleTypeId.intValue()) && !tempVehicle.isStatus()) { 
+            if(!tempVehicle.isStatus() || (tempVehicle.getVehicleTypeId().getId() != vehicleTypeId.intValue())) { 
                 System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
                 iter.remove();
             }
@@ -308,7 +308,7 @@ public class VehicleReg implements IVehicleReg {
         while(iter.hasNext()){
             Vehicle tempVehicle = (Vehicle) iter.next();
             //tempVehicle.isStatus() = false = occupied vehicle
-            if((tempVehicle.getLocation().getId() != locationId.intValue()) && !tempVehicle.isStatus()) {
+            if(!tempVehicle.isStatus() || (tempVehicle.getLocation().getId() != locationId.intValue())) {
                 System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
                 iter.remove();
             }
