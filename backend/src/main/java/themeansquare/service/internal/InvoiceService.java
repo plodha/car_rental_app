@@ -218,11 +218,11 @@ public class InvoiceService implements IInvoice {
     }
 
     public double DateDiff(String actualDropOffTime, String estimateDropOffTime) {
-            String dateStart = actualDropOffTime;//"1/15/2020 10:57:03 AM";
-            String dateStop = estimateDropOffTime;//"1/15/2020 9:57:03 AM";
+            String dateStart = actualDropOffTime;//"1/15/2020 10:57";
+            String dateStop = estimateDropOffTime;//"1/15/2020 9:57";
 
             // Custom date format
-            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");  
+            SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm");  
 
             Date d1 = null;
             Date d2 = null;
@@ -238,8 +238,8 @@ public class InvoiceService implements IInvoice {
             double diffSeconds = diff / 1000 % 60;  
             double diffMinutes = diff / (60 * 1000) % 60; 
             double diffHours = diff / (60 * 60 * 1000);                      
-            System.out.println("Time in seconds: " + diffSeconds + " seconds.");         
-            System.out.println("Time in minutes: " + diffMinutes + " minutes.");         
+            //System.out.println("Time in seconds: " + diffSeconds + " seconds.");         
+            //System.out.println("Time in minutes: " + diffMinutes + " minutes.");         
             System.out.println("Time in hours: " + diffHours + " hours.");
 
             return diffHours;
