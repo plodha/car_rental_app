@@ -13,5 +13,7 @@ public interface IPrice {
 	String updatePrice(Price price);
 
 	String deletePrice(String price);
+
+	ArrayList<Price> getAllPrices();
     
 }
