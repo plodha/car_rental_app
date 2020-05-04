@@ -2,12 +2,15 @@ package themeansquare.service.internal;
 
 import themeansquare.service.IInvoice;
 import themeansquare.model.Customer;
+import themeansquare.model.Damage;
 import themeansquare.model.Location;
+import themeansquare.model.Price;
 import themeansquare.model.Reservation;
 import themeansquare.model.Vehicle;
 import themeansquare.model.Invoice;
 import themeansquare.service.internal.ReserveVehicle;
 import themeansquare.repository.CustomerRepository;
+import themeansquare.repository.DamageRepository;
 import themeansquare.repository.LocationRepository;
 import themeansquare.repository.PriceRepository;
 import themeansquare.repository.ReservationRepository;
@@ -35,6 +38,7 @@ public class InvoiceService implements IInvoice {
     private InvoiceRepository invoiceRepository;
     private ReservationRepository reservationRepository;
     private PriceRepository priceRepository;
+    private DamageRepository damageRepository;
 
     private String actualDropOffTime; 
     private String estimateDropOffTime;
@@ -52,13 +56,15 @@ public class InvoiceService implements IInvoice {
 
     public InvoiceService( CustomerRepository customerRepository, LocationRepository locationRepository,
                           VehicleRepository vehicleRepository, InvoiceRepository invoiceRepository,
-                          ReservationRepository reservationRepository, PriceRepository priceRepository) {
+                          ReservationRepository reservationRepository, PriceRepository priceRepository,
+                          DamageRepository damageRepository) {
         this.customerRepository = customerRepository; 
         this.locationRepository = locationRepository;
         this.vehicleRepository = vehicleRepository; 
         this.invoiceRepository = invoiceRepository;
         this.reservationRepository = reservationRepository;
         this.priceRepository = priceRepository;
+        this.damageRepository = damageRepository;
     }
 
     public InvoiceService(String ActualDropOffTime, String EstimateDropOffTime,Double estimatedPrice,String PickUpTime, Boolean status,
@@ -66,7 +72,8 @@ public class InvoiceService implements IInvoice {
                           int customerId, int vehicleId, int vehicleTypeId, int locationId, 
                           CustomerRepository customerRepository, LocationRepository locationRepository,
                           VehicleRepository vehicleRepository, InvoiceRepository invoiceRepository,
-                          ReservationRepository reservationRepository, PriceRepository priceRepository) {
+                          ReservationRepository reservationRepository, PriceRepository priceRepository,
+                          DamageRepository damageRepository) {
 
         this.actualDropOffTime= ActualDropOffTime;
         this.estimateDropOffTime = EstimateDropOffTime;
@@ -87,6 +94,7 @@ public class InvoiceService implements IInvoice {
         this.invoiceRepository = invoiceRepository;
         this.reservationRepository = reservationRepository;
         this.priceRepository = priceRepository;
+        this.damageRepository = damageRepository;
     }
 
     //final invoice computation
@@ -96,23 +104,117 @@ public class InvoiceService implements IInvoice {
         2. compute late fee based on that 
         3. compute all type of damage fee for a vehicle type
         4. compute total price
-        5. update reservation with the actualdropoff time 
+        5. update invoice damage fee
+        6. update the vehicle table status as free
+        7. update reservation with the actualdropoff time 
+        
     */
     public String computeInvoice(Integer reservationId, String actualDropOffTime, Boolean IsDamage,String[] damageId) throws Exception {
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
         if (reservationRepository.existsById(reservationId)) {
             Reservation existReserve = reservationRepository.findById(reservationId).get();
-            String estimateDropOffTime = existReserve.getEstimateDropOffTime();
-            /// time diff in hour
-            double diffHours = DateDiff(actualDropOffTime,estimateDropOffTime);
-            //double hourlyPrice = existReserve.
-            System.out.println("diffHours "+ diffHours);
-            Invoice invoice = existReserve.getInvoice();
+            if(existReserve != null) {
+                String estimateDropOffTime = existReserve.getEstimateDropOffTime();
+                ///1 time diff in hour
+                double diffHours = DateDiff(actualDropOffTime,estimateDropOffTime);
+                Vehicle existVehicle = existReserve.getVehicle();
+                if(existVehicle != null) {
+                    /// get vehicleType
+                    int vehicleTypeId = existVehicle.getVehicleTypeId().getId();
+
+                    ///2 get latefee and compute total late fee
+                    double lateFeeHourly = 0.0;
+                    double totalLateFee = 0.0;
+                    if (diffHours > 0.0) {
+                        lateFeeHourly = getLateFeeForVehicleType(vehicleTypeId);
+                        totalLateFee = diffHours * lateFeeHourly;
+                        System.out.println("lateFeeHourly "+ lateFeeHourly);
+                        System.out.println("totalLateFee "+ totalLateFee);
+                    }
+                    ///3 compute total damage fee for a vehicleType
+                    double totalDamageFee = 0.0;
+                    if(IsDamage) {
+                        totalDamageFee = getTotalDamageFeeForVehicleType(vehicleTypeId,damageId);
+                    }
+                    
+                    /// 4, 5 get invoce id and update the total latefee and total fee
+                    Invoice invoice = existReserve.getInvoice();
+                    double totalPrice = invoice.getEstimatedPrice() + totalLateFee + totalDamageFee;
+                    invoice.setLateFee(totalLateFee);
+                    invoice.setDamageFee(totalDamageFee);
+                    invoice.setTotalPrice(totalPrice);
+                    invoiceRepository.save(invoice);
+
+                    ///6 vehicle status = true = free for reservation
+                    existVehicle.setStatus(true);
+                    existReserve.setVehicle(existVehicle);
+                    vehicleRepository.save(existVehicle);
+                }
+                ///7 update reservation with the actualdropoff time
+                existReserve.setActualDropOffTime(actualDropOffTime);
+                reservationRepository.save(existReserve);
+                response.put("status", "200");
+            }
+              
         }
 
         response.put("status", "200");
         return this.convertMapToJson(response);
+    }
+
+    public double getTotalDamageFeeForVehicleType(int vehicleTypeId, String[] damageId) {
+        double totalDamageFee = 0.0;
+        Iterable<Damage> itr = damageRepository.findAll();
+        Iterator iter = itr.iterator();
+        System.out.println("vehicleTypeId " + vehicleTypeId);
+        while(iter.hasNext()){
+            Damage tempDamage = (Damage) iter.next();
+            System.out.println("tempPrice.getVehicleTypeId().getId() " + tempDamage.getVehicleTypeId().getId());
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if((tempDamage.getVehicleTypeId().getId() == vehicleTypeId)) {
+                for (String strTemp : damageId) {
+                    if(tempDamage.getId() == Integer.parseInt(strTemp)) {
+                        totalDamageFee = totalDamageFee + tempDamage.getDamageFee();
+                    }    
+                }
+            }
+        }
+        return totalDamageFee;
+    }
+
+    public double getHourlyPriceForVehicleType(int vehicleTypeId) {
+
+        Iterable<Price> itr = priceRepository.findAll();
+        Iterator iter = itr.iterator();
+        System.out.println("vehicleTypeId " + vehicleTypeId);
+        while(iter.hasNext()){
+            Price tempPrice = (Price) iter.next();
+            System.out.println("tempPrice.getVehicleTypeId().getId() " + tempPrice.getVehicleTypeId().getId());
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if((tempPrice.getVehicleTypeId().getId() == vehicleTypeId)) {
+                System.out.println("remove tempVehicle.getId() "+ tempPrice.getId());
+                return tempPrice.getHourlyPrice();
+            }
+        }
+        return 0.0;
+    }
+
+    public double getLateFeeForVehicleType(int vehicleTypeId) {
+
+        Iterable<Price> itr = priceRepository.findAll();
+        Iterator iter = itr.iterator();
+        System.out.println("vehicleTypeId " + vehicleTypeId);
+        while(iter.hasNext()){
+            Price tempPrice = (Price) iter.next();
+            System.out.println("tempPrice.getVehicleTypeId().getId() " + tempPrice.getVehicleTypeId().getId());
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if((tempPrice.getVehicleTypeId().getId() == vehicleTypeId)) {
+                System.out.println("remove tempVehicle.getId() "+ tempPrice.getId());
+                return tempPrice.getLateFee();
+            }
+        }
+        return 0.0;
     }
 
     public double DateDiff(String actualDropOffTime, String estimateDropOffTime) {

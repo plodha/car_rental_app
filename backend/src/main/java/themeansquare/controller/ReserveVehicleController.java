@@ -74,7 +74,7 @@ public class ReserveVehicleController {
                     "id": 2
                    
                 },
-                "estimatedPrice":500,
+                "estimatedPrice": 5000,
                 "customer": {
                    
                     "id": 1
@@ -82,12 +82,12 @@ public class ReserveVehicleController {
                 "invoice": {
                     "id": 1
                 },
-                "pickUpTime": "2020-05-01",
+                "pickUpTime": "1/15/2020 9:57:03 AM",
                 "vehicle": {
                     "id": 1
                 },
-                "actualDropOffTime": "2020-05-01",
-                "estimateDropOffTime": "2020-05-01"
+                "actualDropOffTime": "1/15/2020 9:57:03 AM",
+                "estimateDropOffTime": "1/15/2020 9:57:03 AM"
             }
         Use case:
             This is used by the user to for reservation confirmation. After success, the reservation is confirmed.
@@ -109,6 +109,7 @@ public class ReserveVehicleController {
         return response;
 	}
 
+    //can be used for frontend
     @PostMapping("/reservationNew")
     public String addReservation (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
             @RequestParam(value = "estimateDropOffTime") String estimateDropOffTime, 
