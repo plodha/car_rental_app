@@ -10,13 +10,13 @@
   </div>
 
   <mat-card class="example-card">
-    <form [formGroup]="addVehicleForm" (ngSubmit)="onFormSubmit()">
+    <form [formGroup]="editVehicleForm" (ngSubmit)="onFormSubmit()">
       <mat-form-field class="example-full-width">
         <mat-label>Make</mat-label>
         <input matInput placeholder="make" formControlName="make" pattern="^[a-zA-Z][a-zA-Z ]+$"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!addVehicleForm.get('make').valid && addVehicleForm.get('make').touched">Please enter make of the vehicle</span>
+          <span *ngIf="!editVehicleForm.get('make').valid && editVehicleForm.get('make').touched">Please enter make of the vehicle</span>
         </mat-error>
       </mat-form-field>
 
@@ -27,7 +27,7 @@
         <input matInput placeholder="Model" formControlName="model" pattern="^[A-Za-z0-9 ]+$"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!addVehicleForm.get('model').valid && addVehicleForm.get('model').touched">Please enter model</span>
+          <span *ngIf="!editVehicleForm.get('model').valid && editVehicleForm.get('model').touched">Please enter model</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -35,7 +35,7 @@
         <input matInput placeholder="Year" formControlName="year" pattern="^[0-9]+$"  maxlength="4"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!addVehicleForm.get('year').valid && addVehicleForm.get('year').touched">Please enter Year</span>
+          <span *ngIf="!editVehicleForm.get('year').valid && editVehicleForm.get('year').touched">Please enter Year</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -43,7 +43,7 @@
         <input matInput placeholder="VIN" formControlName="VIN" pattern="^[A-Za-z0-9]+$"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!addVehicleForm.get('VIN').valid && addVehicleForm.get('VIN').touched">Please enter VIN</span>
+          <span *ngIf="!editVehicleForm.get('VIN').valid && editVehicleForm.get('VIN').touched">Please enter VIN</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -51,9 +51,23 @@
         <input matInput placeholder="License Plate" maxlength="7" pattern="^[A-Za-z0-9]+$" formControlName="licensePlate"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!addVehicleForm.get('licensePlate').valid && addVehicleForm.get('licensePlate').touched">Please enter License Plate <code></code></span>
+          <span *ngIf="!editVehicleForm.get('licensePlate').valid && editVehicleForm.get('licensePlate').touched">Please enter License Plate <code></code></span>
         </mat-error>
       </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Vehicle Condition</mat-label>
+        <input matInput placeholder="Vehicle Condition"  pattern="^[a-zA-Z][a-zA-Z ]+$" formControlName="vehicleCondition"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!editVehicleForm.get('vehicleCondition').valid && editVehicleForm.get('vehicleCondition').touched">Please enter Vehicle Condition <code></code></span>
+        </mat-error>
+      </mat-form-field>
+
+
+
+
+
   <mat-form-field class="example-full-width">
       <mat-label>Location</mat-label>
         <mat-select formControlName="location">
@@ -62,7 +76,7 @@
           </mat-option>
         </mat-select>
         <mat-error>
-          <span *ngIf="!addVehicleForm.get('location').valid && addVehicleForm.get('location').touched">Please select Location <code></code></span>
+          <span *ngIf="!editVehicleForm.get('location').valid && editVehicleForm.get('location').touched">Please select Location <code></code></span>
         </mat-error>
   </mat-form-field>
   <mat-form-field class="example-full-width">
@@ -73,13 +87,13 @@
           </mat-option>
         </mat-select>
         <mat-error>
-          <span *ngIf="!addVehicleForm.get('vehicleType').valid && addVehicleForm.get('vehicleType').touched">Please select Vehicle type <code></code></span>
+          <span *ngIf="!editVehicleForm.get('vehicleType').valid && editVehicleForm.get('vehicleType').touched">Please select Vehicle type <code></code></span>
         </mat-error>
   </mat-form-field>
 
 
       <div class="button-row">
-        <button type="submit" [disabled]="!addVehicleForm.valid" mat-flat-button color="primary">Save</button>
+        <button type="submit" [disabled]="!editVehicleForm.valid" mat-flat-button color="primary">Save</button>
       </div>
     </form>
   </mat-card>

@@ -35,8 +35,7 @@ export class VehiclePageComponent implements OnInit {
 
 
  constructor(private router: Router,private actr: ActivatedRoute, private formBuilder: FormBuilder,private api: ApiService) {
-   // Create 100 users
-   // Assign the data to the data source for the table to render
+
   this.actr.data.subscribe((data)=>{
     console.log(data);
     var vehicles = data.vehicle;
@@ -80,7 +79,11 @@ export class VehiclePageComponent implements OnInit {
      this.dataSource.paginator.firstPage();
    }
  }
-
+updateVehicle(operation, ele){
+  console.log('update ');
+  console.log(ele)
+  
+}
 
 
 }

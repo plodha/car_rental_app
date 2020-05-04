@@ -8,6 +8,8 @@ import {AdminHomePageComponent} from './admin-home-page/admin-home-page.componen
 import {VehiclePageComponent} from './vehicle-page/vehicle-page.component'
 
 import {AddVehiclePageComponent} from './add-vehicle-page/add-vehicle-page.component'
+import {EditVehiclePageComponent} from './edit-vehicle-page/edit-vehicle-page.component'
+
 import {AddLocationPageComponent} from './add-location-page/add-location-page.component'
 import {AddReservationPageComponent} from './add-reservation-page/add-reservation-page.component'
 
@@ -107,7 +109,19 @@ const routes: Routes = [{
       },
       {
           path:'addVehicle',
-          component: AddVehiclePageComponent
+          component: AddVehiclePageComponent,
+          resolve: {
+            location: LocationResolver,
+            vehicleType: VehicleTypeResolver
+          }
+      },
+      {
+          path:'editVehicle/:id',
+          component: EditVehiclePageComponent,
+          resolve: {
+            location: LocationResolver,
+            vehicleType: VehicleTypeResolver
+          }
       },
       {
           path:'addLocation',
