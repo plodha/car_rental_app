@@ -37,9 +37,27 @@ export class LoginPageComponent implements OnInit {
   onFormSubmit() {
     this.isLoadingResults = true;
   //  this.router.navigate(['/home']);
-    this.api.callLogin(this.loginForm).subscribe((data:any) => {
+
+
+  let username = (this.loginForm.get('username').value);
+  let password = (this.loginForm.get('password').value);
+
+
+  var data = {}
+  data['username'] = username
+  data['password'] = password
+  console.log(data)
+
+    this.api.authAPI(data).subscribe((response:any) => {
       console.log("result")
-      console.log(data);
+      console.log(response);
+      var role = response.role;
+      if(role == 'Employee') {
+         this.router.navigate(['/admin']);
+      }
+      else{
+         this.router.navigate(['/customerPage']);
+      }
     })
   }
 

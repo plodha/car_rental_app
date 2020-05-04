@@ -40,13 +40,7 @@ export class ApiService {
 
     return this.http.get(this.prod_api_url + end_point+params)
   }
-  registerUserAPI(formObj: any)
-  {
-    const formData = new FormData();
-    formData.append('file', formObj.get('file').value);
-    formData.append('bgfile', formObj.get('bgfile').value);
 
-  }
 
 public getAllLocations(){
     let headers = { 'Content-Type': 'application/json','Accept':'application/json',
@@ -183,7 +177,7 @@ public getAllLocations(){
     */
    authAPI(authFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
-    let body = JSON.stringify(authFormGroup.value);
+    let body = JSON.stringify(authFormGroup);
     let end_point = "auth";
     return this.http.post(this.prod_api_url + end_point, body, {headers});
   }
@@ -256,15 +250,11 @@ public getAllLocations(){
               .set('locationId', vehicleFormGroup.locationId)
 
           }
-        /vehicle API return:
-          Success:
-            subarna will add
-          Error:
-           subarna will add
+
     */
    addVehicleAPI(vehicleFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
-    let body = JSON.stringify(vehicleFormGroup.value);
+    let body = JSON.stringify(vehicleFormGroup);
     let end_point = "vehicle";
     var params = new HttpParams()
       .set('licensePlate', vehicleFormGroup.licensePlate)
@@ -378,7 +368,7 @@ public getAllLocations(){
 
           Ask Suburna
         /updatelocation API return:
-          Success:
+          Success
             Ask Suburna
           Error:
             Ask Suburna
@@ -451,6 +441,12 @@ public getPriceInfo(vehicleTypeId:any){
 
 }
 
+public getVehicleById(id:any){
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+               'Access-Control-Allow-Origin': '*' };
+    return this.http.get(this.prod_api_url + this.vehicle_endpoint+'/'+id,{headers})
+
+}
 
   /*
         PUT Request
@@ -533,12 +529,35 @@ public getPriceInfo(vehicleTypeId:any){
         /updateVehicleAPI API return:
           ask subrana
     */
-   updateVehicleAPI(vehicleFormGroup) {
+   updateVehicleAPI1(id, vehicleFormGroup) {
+     console.log('Api service ')
+     console.log(id)
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
-    let body = JSON.stringify(vehicleFormGroup.value);
-    let end_point = "/vehicle/" + vehicleFormGroup.id
+    let body = JSON.stringify(vehicleFormGroup);
+    let end_point = "vehicle/" +id
     return this.http.put(this.prod_api_url + end_point, body, {headers});
+
+  //  return this.http.post(this.prod_api_url + end_point, {}, {headers, params});
+
+
   }
+updateVehicleAPI(id, vehicleFormGroup) {
+  let headers = { 'Content-Type': 'application/json','Access-Control-Request-Method':'PUT','Accept':'application/json',"Access-Control-Allow-Methods": "GET,HEAD,POST,PUT", "Access-Control-Allow-Origin": "*"};
+  let body = JSON.stringify(vehicleFormGroup);
+  let end_point = "vehicle/"+id;
+  var params = new HttpParams()
+    .set('licensePlate', vehicleFormGroup.licensePlate)
+    .set('model', vehicleFormGroup.model)
+    .set('make', vehicleFormGroup.make)
+    .set('status', vehicleFormGroup.status)
+    .set('vIN', vehicleFormGroup.vIN)
+    .set('year', vehicleFormGroup.year)
+    .set('vehicleTypeId', vehicleFormGroup.vehicleTypeId)
+    .set('vehicleCondition', vehicleFormGroup.vehicleCondition)
+    .set('locationId', vehicleFormGroup.locationId)
+
+return this.http.put(this.prod_api_url + end_point, body, {headers});
+}
 
   /*
         PUT Request

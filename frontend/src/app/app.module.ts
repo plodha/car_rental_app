@@ -48,6 +48,7 @@ import { LocationsPageComponent } from './locations-page/locations-page.componen
 import { CustomersPageComponent } from './customers-page/customers-page.component';
 import { PricePageComponent } from './price-page/price-page.component';
 import { InvoicePageComponent } from './invoice-page/invoice-page.component';
+import { EditVehiclePageComponent } from './edit-vehicle-page/edit-vehicle-page.component';
 //import {FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -70,7 +71,8 @@ import { InvoicePageComponent } from './invoice-page/invoice-page.component';
     LocationsPageComponent,
     CustomersPageComponent,
     PricePageComponent,
-    InvoicePageComponent
+    InvoicePageComponent,
+    EditVehiclePageComponent
   ],
   imports: [
     BrowserModule,

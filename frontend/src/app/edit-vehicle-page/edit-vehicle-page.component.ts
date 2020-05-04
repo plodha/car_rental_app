@@ -24,16 +24,16 @@ interface VehicleType {
 }
 
 @Component({
-  selector: 'app-add-vehicle-page',
-  templateUrl: './add-vehicle-page.component.html',
-  styleUrls: ['./add-vehicle-page.component.scss']
+  selector: 'app-edit-vehicle-page',
+  templateUrl: './edit-vehicle-page.component.html',
+  styleUrls: ['./edit-vehicle-page.component.scss']
 })
-export class AddVehiclePageComponent implements OnInit {
+export class EditVehiclePageComponent implements OnInit {
 
   locations: Location[] = [];
    vehicleTypes: VehicleType[] = [];
 
-  addVehicleForm: FormGroup;
+  editVehicleForm: FormGroup;
   make = '';
   model = '';
   year = '';
@@ -41,7 +41,9 @@ export class AddVehiclePageComponent implements OnInit {
   licensePlate = '';
   location = '';
   vehicleType = '';
-  vehicleCondition = 'New';
+  vehicleCondition = '';
+  _id = ''
+  status = ''
 
 
   isLoadingResults = false;
@@ -91,7 +93,11 @@ export class AddVehiclePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.addVehicleForm = this.formBuilder.group({
+
+    this.getVehicleById(this.actr.snapshot.params.id);
+
+    this.editVehicleForm = this.formBuilder.group({
+      id :[null,Validators.required],
       make : [null, [Validators.required,Validators.pattern("^[a-zA-Z][a-zA-Z ]+$")]],
       model : [null, [Validators.required,Validators.pattern("^[A-Za-z0-9 ]+$")]],
       year : [null, [Validators.required, Validators.pattern("^[0-9]+$"),Validators.maxLength(7)]],
@@ -99,25 +105,55 @@ export class AddVehiclePageComponent implements OnInit {
       licensePlate : [null, [Validators.required, Validators.pattern("^[A-Za-z0-9]+$"), Validators.maxLength(7)]],
       location : [null, Validators.required],
       vehicleType : [null,  Validators.required],
-      vehicleCapacity : []
-
+      vehicleCondition:[null, [Validators.required,Validators.pattern("^[a-zA-Z][a-zA-Z ]+$")]],
+      status:[null, Validators.required]
     });
+
+
+
+
   }
+  getVehicleById(id: any) {
+    var object = this;
+   this.api.getVehicleById(id).subscribe((data: any) => {
+
+     console.log(data)
+     this.editVehicleForm.setValue({
+       id:data.id,
+       make: data.make,
+       model: data.model,
+       year: data.year,
+       VIN: data.vin,
+       licensePlate: data.licensePlate,
+       vehicleType: data.vehicleTypeId.id,
+       location: data.location.id,
+       vehicleCondition: data.vehicleCondition,
+       status: data.status,
+
+
+
+     });
+   });
+ }
 
   onFormSubmit() {
     this.isLoadingResults = true;
     //this.router.navigate(['/login']);
     var formData = {}
-    formData['make'] = this.addVehicleForm.get('make').value
-    formData['model'] = this.addVehicleForm.get('model').value
-    formData['year'] = this.addVehicleForm.get('year').value
-    formData['vIN'] = this.addVehicleForm.get('VIN').value
-    formData['licensePlate'] = this.addVehicleForm.get('licensePlate').value
-    formData['vehicleTypeId'] = this.addVehicleForm.get('vehicleType').value
-    formData['locationId'] = this.addVehicleForm.get('location').value
-    formData['vehicleCondition'] = 'new'
-    formData['status'] = 1
-    this.api.addVehicleAPI(formData).subscribe((res:any) => {
+    formData['id'] = this.editVehicleForm.get('id').value
+    formData['make'] = this.editVehicleForm.get('make').value
+    formData['model'] = this.editVehicleForm.get('model').value
+    formData['year'] = this.editVehicleForm.get('year').value
+    formData['vIN'] = this.editVehicleForm.get('VIN').value
+    formData['licensePlate'] = this.editVehicleForm.get('licensePlate').value
+    formData['vehicleTypeId'] = this.editVehicleForm.get('vehicleType').value
+    formData['locationId'] = this.editVehicleForm.get('location').value
+    formData['vehicleCondition'] = this.editVehicleForm.get('vehicleCondition').value
+    formData['status'] =  this.editVehicleForm.get('status').value
+
+    var id = this.editVehicleForm.get('id').value;
+    console.log(id)
+    this.api.updateVehicleAPI(id,formData).subscribe((res:any) => {
       console.log(res);
         this.isLoadingResults = false;
         this.router.navigate(['/vehicle']);
