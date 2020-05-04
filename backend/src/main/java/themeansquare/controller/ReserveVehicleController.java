@@ -164,6 +164,10 @@ public class ReserveVehicleController {
     
 
     ///get and compute the estimated prices for all the available vehicles in a location
+    /*
+        from postman:
+        http://localhost:8080/getEstimatedPriceForVehicles?locationId=2&pickUpTime=1/15/2020 10:00&estimatedDropOffTime=1/15/2020 16:57
+    */
     @GetMapping("/getEstimatedPriceForVehicles")
     public String getEstimatedPriceForVehicles(@RequestParam(value = "locationId") Integer locationId,
                                                @RequestParam(value = "pickUpTime") String pickUpTime,
