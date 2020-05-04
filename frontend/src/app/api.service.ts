@@ -211,7 +211,7 @@ public getAllLocations(){
       .set('state', locationFormGroup.state)
       .set('zipcode', locationFormGroup.zipcode)
     let end_point = "location";
-    return this.http.post(this.prod_api_url + end_point, {headers, params});
+    return this.http.post(this.prod_api_url + end_point, {}, {headers, params});
   }
 
    /*
@@ -271,7 +271,7 @@ public getAllLocations(){
       .set('vehicleTypeId', vehicleFormGroup.vehicleTypeId)
       .set('vehicleCondition', vehicleFormGroup.vehicleCondition)
       .set('locationId', vehicleFormGroup.locationId)
-    return this.http.post(this.prod_api_url + end_point, {headers, params});
+    return this.http.post(this.prod_api_url + end_point, {}, {headers, params});
   }
 
   /*
@@ -313,49 +313,202 @@ public getAllLocations(){
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
     let body = JSON.stringify(customerFormGroup.value);
     let end_point = "updateCustomer";
-    return this.http.post(this.prod_api_url + end_point, body, {headers});
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
   }
 
   /*
         PUT Request
         damageFormGroup format:
           {
-              "creditCard": "35485739857",
-              "creditCardExpDate": "2022-05-20",
-              "id": 2,
-              "userId": {
-                  "id": 3,
-                  "password": "notsecure",
-                  "username": "wqureshi5"
-              },
-              "firstName": "Wasae",
-              "lastName": "Qureshi",
-              "cvv": "454",
-              "licenseNumber": "747324",
-              "licenseExpDate": "1994-05-22",
-              "membershipStartDate": "2020-05-03",
-              "membershipEndDate": "2020-11-03",
-              "email": "different5@gmail.com",
-              "address": {
-                  "state": "ca",
-                  "id": 5,
-                  "street": "random street",
-                  "zipCode": 94086,
-                  "city": "random city"
-              }
+                  "id": 1,
+                  "vehicleTypeId": {
+                      "id": 1,
+                      "vehicleSize": 5,
+                      "vehicleClass": "Car"
+                  },
+                  "damageType": "It broke",
+                  "damageFee": 10.0
           }
         /updateDamage API return:
           Success:
             {"status":"200"}
           Error:
-            {"message":"Email taken","status":"400"}
-            {"message":"username taken","status":"400"}
+            None
     */
    updateDamageAPI(damageFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
     let body = JSON.stringify(damageFormGroup.value);
     let end_point = "updateDamage";
-    return this.http.post(this.prod_api_url + end_point, body, {headers});
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        computeInvoiceFormGroup format:
+          .set('actualDropOffTime', computeInvoiceFormGroup.actualDropOffTime)
+          .set('reservationId', computeInvoiceFormGroup.reservationId)
+          .set('IsDamage', computeInvoiceFormGroup.IsDamage)
+          .set('damageId', computeInvoiceFormGroup.damageId)
+        /updatecomputeInvoice API return:
+          Success:
+           Ask Suburna
+          Error:
+           Ask Suburna
+    */
+   computeInvoiceAPI(computeInvoiceFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(computeInvoiceFormGroup.value);
+    let end_point = "/computeInvoice";
+    var params = new HttpParams()
+      .set('actualDropOffTime', computeInvoiceFormGroup.actualDropOffTime)
+      .set('reservationId', computeInvoiceFormGroup.reservationId)
+      .set('IsDamage', computeInvoiceFormGroup.IsDamage)
+      .set('damageId', computeInvoiceFormGroup.damageId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        PUT Request
+        locationFormGroup format:
+          
+          Ask Suburna
+        /updatelocation API return:
+          Success:
+            Ask Suburna
+          Error:
+            Ask Suburna
+    */
+   updateLocationAPI(locationFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(locationFormGroup.value);
+    let end_point = "location/" + locationFormGroup.id;
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        membershipFormGroup format:
+          
+           .set('userId', membershipFormGroup.userId)
+        /cancelMembership API return:
+          Success:
+            {status:200}
+          Error:
+            
+    */
+   cancelMembershipAPI(membershipFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(membershipFormGroup.value);
+    let end_point = "cancelMembership";
+    var params = new HttpParams()
+      .set('userId', membershipFormGroup.userId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        PUT Request
+        membershipFormGroup format:
+          
+           .set('userId', membershipFormGroup.userId)
+        /renewMembership API return:
+          Success:
+            {status:200}
+          Error:
+            
+    */
+   renewMembershipAPI(membershipFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(membershipFormGroup.value);
+    let end_point = "renewMembership";
+    var params = new HttpParams()
+      .set('userId', membershipFormGroup.userId)
+    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+  }
+
+  /*
+        PUT Request
+        priceFormGroup format:
+          {
+              "hourlyPrice": 50.0,
+              "hourlyRange": "6 - 9",
+              "id": 1,
+              "vehicleTypeId": {
+                  "id": 1,
+                  "vehicleSize": 5,
+                  "vehicleClass": "Car"
+              },
+              "lateFee": 50.0
+          }
+          
+        /updatePrice API return:
+          Success:
+           {"status":"200"}
+    */
+   updatePriceAPI(priceFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(priceFormGroup.value);
+    let end_point = "updatePrice"
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+   /*
+        PUT Request
+        reservationFormGroup format:
+          ask subrana 
+        /reservationCancel API return:
+          ask subrana 
+    */
+   cancelReservationAPI(reservationFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(reservationFormGroup.value);
+    let end_point = "/reservationCancel/" + reservationFormGroup.reservationId + "/" + reservationFormGroup.isLatefee
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+   /*
+        PUT Request
+        vehicleFormGroup format:
+          ask subrana 
+        /updateVehicleWithLocationAPI API return:
+          ask subrana 
+    */
+   updateVehicleWithLocationAPI(vehicleFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleFormGroup.value);
+    let end_point = "/vehicle/" + vehicleFormGroup.id + "/" + vehicleFormGroup.vehicleTypeId + "/" + reservationFormGroup.locationId
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        vehicleFormGroup format:
+          ask subrana 
+        /updateVehicleAPI API return:
+          ask subrana 
+    */
+   updateVehicleAPI(vehicleFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleFormGroup.value);
+    let end_point = "/vehicle/" + vehicleFormGroup.id 
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
+  }
+
+  /*
+        PUT Request
+        vehicleTypeFormGroup format:
+           {
+              "id" : 1, 
+              "vehicleSize": 5,
+              "vehicleClass": "Carrry"
+            }
+        /updateVehicleType API return:
+          {"status":"200"}
+    */
+   updateVehicleTypeAPI(vehicleTypeFormGroup) {
+    let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
+    let body = JSON.stringify(vehicleTypeFormGroup.value);
+    let end_point = "updateVehicleType"
+    return this.http.put(this.prod_api_url + end_point, body, {headers});
   }
 
 }
