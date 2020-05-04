@@ -9,6 +9,7 @@ import themeansquare.model.Vehicle;
 import themeansquare.model.Invoice;
 import themeansquare.service.internal.InvoiceService;
 import themeansquare.repository.CustomerRepository;
+import themeansquare.repository.DamageRepository;
 import themeansquare.repository.LocationRepository;
 import themeansquare.repository.PriceRepository;
 import themeansquare.repository.VehicleRepository;
@@ -50,10 +51,15 @@ public class InvoiceServiceController {
     private ReservationRepository reservationRepository;
     @Autowired
     private PriceRepository priceRepository;
+    @Autowired
+    private DamageRepository damageRepository;
 
      //final invoice computation
-     //reservation id, damage id[], IsDamage, actualdropofftime, 
+     //reservation id, damage id[], IsDamage, actualdropofftime, front end will send date format =1/15/2020 10:57:03 AM
      //late fee = estimated -actual > 1hour 
+     /*from postman:
+        http://localhost:8080/computeInvoice/1?actualDropOffTime=1/15/2020 3:57:03 PM&reservationId=1&IsDamage=true
+     */
      @PutMapping("/computeInvoice/{damageId}")
      public String computeInvoice (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
              @RequestParam(value = "reservationId") Integer reservationId,
@@ -61,8 +67,25 @@ public class InvoiceServiceController {
              @PathVariable(value = "damageId") String[] damageId) throws Exception {
  
              IInvoice invoice = new InvoiceService  ( customerRepository, locationRepository,vehicleRepository, 
-                                                      invoiceRepository,reservationRepository,priceRepository);
+                                                      invoiceRepository,reservationRepository,priceRepository,damageRepository);
              String response = invoice.computeInvoice(reservationId, actualDropOffTime, IsDamage,damageId);  
              return response;  
      }
+
+     // get all invoice
+        @GetMapping("/invoice")
+        public Iterable<Invoice> getInvoices() throws Exception {
+                IInvoice invoice = new InvoiceService  ( customerRepository, locationRepository,vehicleRepository, 
+                                                      invoiceRepository,reservationRepository,priceRepository,damageRepository);
+                return invoice.getInvoices();
+                
+        }
+
+    // get invoice with a fixed invoice id
+        @GetMapping(value = "/invoice/{id}")
+        public Optional<Invoice> getInvoiceById(@PathVariable Integer id) throws Exception {
+                IInvoice invoice = new InvoiceService  ( customerRepository, locationRepository,vehicleRepository, 
+                                                      invoiceRepository,reservationRepository,priceRepository,damageRepository);
+                return invoice.getInvoiceById(id);
+        }
 }
