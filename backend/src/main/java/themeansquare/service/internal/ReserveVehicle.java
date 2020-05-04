@@ -296,6 +296,13 @@ public class ReserveVehicle implements IReservation {
                                 + "  estimatedPrice: " +estimatedPrice
                                 +" ]");
             row.put("vehicleId",String.valueOf(tempVehicle.getId()));
+            row.put("vehicleTypeId",String.valueOf(tempVehicleType.getId()));
+            row.put("vehicleTypeClass",String.valueOf(tempVehicleType.getClass()));
+            row.put("5hrPrice",String.valueOf(price_5hr.getHourlyPrice()));
+            row.put("10hrPrice",String.valueOf(price_10hr.getHourlyPrice()));
+            row.put("hrDiff",String.valueOf(hrDiff));
+            row.put("estimatedPrice",String.valueOf(estimatedPrice));
+            result.add(row);
         }
 
         return null;
