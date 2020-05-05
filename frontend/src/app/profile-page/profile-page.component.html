@@ -1,7 +1,11 @@
 <div class="example-container mat-elevation-z8">
   <div class="container">
     <div class='title'>
-    <h1>Car Rental System</h1>
+
+  <span>  <h1>Car Rental System
+<a style="color:white;font-size:16px" [routerLink]="['/profile']">
+    <span id="profileName" style="font-size:16px;">&nbsp;<i class="material-icons" style="padding-left:70%"> account_circle</i> </span></a>&nbsp;&nbsp;
+      <a style="color:white;font-size:16px" [routerLink]="['/logout']"> Logout</a></h1></span>
     </div>
   </div>
   <div class="example-loading-shade"
@@ -14,11 +18,19 @@
   <mat-card class="example-card">
     <form [formGroup]="profileForm" (ngSubmit)="onFormSubmit()">
       <mat-form-field class="example-full-width">
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Firstname Lastname" formControlName="name"
+        <mat-label>First Name</mat-label>
+        <input matInput placeholder="Firstname " formControlName="firstName"
                 [errorStateMatcher]="matcher"/>
         <mat-error>
-          <span *ngIf="!profileForm.get('name').valid && profileForm.get('name').touched">Please enter Name</span>
+          <span *ngIf="!profileForm.get('firstName').valid && profileForm.get('firstName').touched">Please enter Name</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Last Name</mat-label>
+        <input matInput placeholder="Lastname" formControlName="lastName"
+                [errorStateMatcher]="matcher"/>
+        <mat-error>
+          <span *ngIf="!profileForm.get('lastName').valid && profileForm.get('lastName').touched">Please enter Name</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field>
@@ -41,17 +53,13 @@
         </mat-error>
       </mat-form-field>
 
-      <div class="button-row">
-        <button type="submit" [disabled]="!profileForm.valid" mat-flat-button color="primary">Register</button>
-      </div>
-    </form>
-  <form [formGroup]="updateAddressForm" (ngSubmit)="onAddressSubmit()">
+
       <mat-form-field class="example-full-width">
         <mat-label>Address</mat-label>
         <input matInput placeholder="Address" formControlName="address"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!updateAddressForm.get('address').valid && updateAddressForm.get('address').touched">Please enter Address</span>
+          <span *ngIf="!profileForm.get('address').valid && profileForm.get('address').touched">Please enter Address</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -59,7 +67,7 @@
         <input matInput placeholder="City" formControlName="city"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!updateAddressForm.get('city').valid && updateAddressForm.get('city').touched">Please enter City</span>
+          <span *ngIf="!profileForm.get('city').valid && profileForm.get('city').touched">Please enter City</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -67,7 +75,7 @@
         <input matInput placeholder="State" formControlName="state"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!updateAddressForm.get('state').valid && updateAddressForm.get('state').touched">Please enter State</span>
+          <span *ngIf="!profileForm.get('state').valid && profileForm.get('state').touched">Please enter State</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -75,7 +83,7 @@
         <input matInput placeholder="Zip Code" formControlName="zipcode"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!updateAddressForm.get('zipcode').valid && updateAddressForm.get('zipcode').touched">Please enter Zip <code></code></span>
+          <span *ngIf="!profileForm.get('zipcode').valid && profileForm.get('zipcode').touched">Please enter Zip <code></code></span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -83,7 +91,7 @@
         <input matInput placeholder="Email" formControlName="email"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!updateAddressForm.get('email').valid && updateAddressForm.get('email').touched">Please enter Email Address</span>
+          <span *ngIf="!profileForm.get('email').valid && profileForm.get('email').touched">Please enter Email Address</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -91,7 +99,7 @@
         <input matInput placeholder="license number" formControlName="licensenumber"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!updateAddressForm.get('licensenumber').valid && updateAddressForm.get('licensenumber').touched">Please enter License number</span>
+          <span *ngIf="!profileForm.get('licensenumber').valid && profileForm.get('licensenumber').touched">Please enter License number</span>
         </mat-error>
       </mat-form-field>
 
@@ -101,13 +109,51 @@
       <mat-datepicker-toggle matSuffix [for]="licensepicker"></mat-datepicker-toggle>
       <mat-datepicker #licensepicker></mat-datepicker>
       <mat-error>
-        <span *ngIf="!updateAddressForm.get('licenseExpiryDate').valid && updateAddressForm.get('licenseExpiryDate').touched">Please enter License Expiration Date</span>
+        <span *ngIf="!profileForm.get('licenseExpiryDate').valid && profileForm.get('licenseExpiryDate').touched">Please enter License Expiration Date</span>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <mat-label>Credit card number</mat-label>
+      <input matInput placeholder="Credit card" formControlName="creditCard"
+              [errorStateMatcher]="matcher">
+      <mat-error>
+        <span *ngIf="!profileForm.get('creditCard').valid && profileForm.get('creditCard').touched">Please enter Credit card</span>
       </mat-error>
     </mat-form-field>
 
+    <mat-form-field >
+      <mat-label>Card Expiration Month</mat-label>
+      <mat-select formControlName="creditCardExpMonth">
+        <mat-option *ngFor="let month of months" [value]="month.value">
+          {{month.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Card Expiration Year</mat-label>
+      <mat-select formControlName="creditCardExpYear">
+        <mat-option *ngFor="let year of years" [value]="year">
+          {{year}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>cvv</mat-label>
+      <input matInput placeholder="cvv" formControlName="cvv" maxlength="3"
+              [errorStateMatcher]="matcher">
+      <mat-error>
+        <span *ngIf="!profileForm.get('cvv').valid && profileForm.get('cvv').touched">Please enter cvv</span>
+      </mat-error>
+    </mat-form-field>
 
       <div class="button-row">
-        <button type="submit" [disabled]="!updateAddressForm.valid" mat-flat-button color="primary">Update</button>
+        <button type="submit" [disabled]="!profileForm.valid" mat-flat-button color="primary">Update</button>
       </div>
     </form>
   </mat-card>
