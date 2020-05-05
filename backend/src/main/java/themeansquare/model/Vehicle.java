@@ -57,7 +57,6 @@ public class Vehicle {
 	
 	private String serviceDate;
 	
-	
 
 	public String getRegistrationTag() { return registrationTag; }
 

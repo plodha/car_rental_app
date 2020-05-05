@@ -1,5 +1,6 @@
 package themeansquare.service.internal;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,8 +44,10 @@ public class MembershipService implements IMembership {
             Customer customer = (Customer) custIt.next();
             if (customer.getUserId().getId() == Integer.parseInt(userId)) {
                 SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                DateFormat dateFormat = new SimpleDateFormat("yyyyy-MM-dd");
                 Date today = new Date();
-                customer.setMembershipEndDate(formatter.parse(formatter.format(today)));
+                String strDate = dateFormat.format(today);  
+                customer.setMembershipEndDate(strDate);
                 customerRepository.save(customer);
                 response.put("status", "200");
                 return convertMapToJson(response);
@@ -71,14 +74,17 @@ public class MembershipService implements IMembership {
             Customer customer = (Customer) custIt.next();
             if (customer.getUserId().getId() == Integer.parseInt(userId)) {
                 SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+                DateFormat dateFormat = new SimpleDateFormat("yyyyy-MM-dd");
                 Date today = new Date();
-                customer.setMembershipStartDate(formatter.parse(formatter.format(today)));
+                String strDate = dateFormat.format(today); 
+                customer.setMembershipStartDate(strDate);
 
                 Calendar cal = Calendar.getInstance();
                 cal.add(Calendar.MONTH, 6); 
                 Date nextSixMonths = cal.getTime();
+                strDate = dateFormat.format(nextSixMonths);
 
-                customer.setMembershipEndDate(nextSixMonths);
+                customer.setMembershipEndDate(strDate);
                 customerRepository.save(customer);
                 response.put("status", "200");
                 return convertMapToJson(response);

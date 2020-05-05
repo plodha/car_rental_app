@@ -8,6 +8,7 @@ import themeansquare.repository.CustomerRepository;
 import themeansquare.repository.UserRepository;
 import themeansquare.service.IRegistration;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -56,8 +57,11 @@ public class Registration implements IRegistration {
 
                 Date startMembership = getStartMembershipDate();
                 Date endMembership = getEndMembershipDate();
-                customer.setMembershipStartDate(startMembership);                
-                customer.setMembershipEndDate(endMembership);
+                DateFormat dateFormat = new SimpleDateFormat("yyyyy-MM-dd");
+                String sMembership = dateFormat.format(startMembership);
+                String eMembership = dateFormat.format(endMembership);
+                customer.setMembershipStartDate(sMembership);                
+                customer.setMembershipEndDate(eMembership);
                 
                 customer.setUserId(this.createUser(newCustomer.getUserId().getUsername(), newCustomer.getUserId().getPassword()));
                 

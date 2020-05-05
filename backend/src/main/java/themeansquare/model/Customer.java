@@ -49,16 +49,16 @@ public class Customer{
     private String LicenseNumber;
 	
 	@NotNull
-	@Temporal(TemporalType.DATE)
-    private Date LicenseExpDate;
+	//@Temporal(TemporalType.DATE)
+    private String LicenseExpDate;
 	
 	@NotNull
-	@Temporal(TemporalType.DATE)
-    private Date MembershipStartDate;
+	//@Temporal(TemporalType.DATE)
+    private String MembershipStartDate;
 	
 	@NotNull
-	@Temporal(TemporalType.DATE)
-	private Date MembershipEndDate;
+	//@Temporal(TemporalType.DATE)
+	private String MembershipEndDate;
 	
 	@NotNull
     @Column(columnDefinition = "TEXT")
@@ -68,15 +68,15 @@ public class Customer{
 	private String creditCard;
 	
 	@NotNull
-	@Temporal(TemporalType.DATE)
-	private Date creditCardExpDate;
+	//@Temporal(TemporalType.DATE)
+	private String creditCardExpDate;
 	
 	@NotNull
 	private String CVV;
 	
-	public Date getCreditCardExpDate() { return creditCardExpDate; }
+	public String getCreditCardExpDate() { return creditCardExpDate; }
 
-	public void setCreditCardExpDate(Date creditCardExpDate) { this.creditCardExpDate = creditCardExpDate; }
+	public void setCreditCardExpDate(String creditCardExpDate) { this.creditCardExpDate = creditCardExpDate; }
 
 	public String getCVV() {return CVV; }
 
@@ -110,17 +110,17 @@ public class Customer{
 
 	public void setLicenseNumber(String licenseNumber) { LicenseNumber = licenseNumber; }
 
-	public Date getLicenseExpDate() { return LicenseExpDate; }
+	public String getLicenseExpDate() { return LicenseExpDate; }
 
-	public void setLicenseExpDate(Date licenseExpDate) { LicenseExpDate = licenseExpDate; }
+	public void setLicenseExpDate(String licenseExpDate) { LicenseExpDate = licenseExpDate; }
 
-	public Date getMembershipStartDate() { return MembershipStartDate; }
+	public String getMembershipStartDate() { return MembershipStartDate; }
 
-	public void setMembershipStartDate(Date membershipStartDate) { MembershipStartDate = membershipStartDate; }
+	public void setMembershipStartDate(String membershipStartDate) { MembershipStartDate = membershipStartDate; }
 
-	public Date getMembershipEndDate() { return MembershipEndDate; }
+	public String getMembershipEndDate() { return MembershipEndDate; }
 
-	public void setMembershipEndDate(Date membershipEndDate) { MembershipEndDate = membershipEndDate; }
+	public void setMembershipEndDate(String membershipEndDate) { MembershipEndDate = membershipEndDate; }
 
 	public String getEmail() { return Email; }
 
