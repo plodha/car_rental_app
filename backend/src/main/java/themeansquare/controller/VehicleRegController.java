@@ -113,6 +113,24 @@ public class VehicleRegController {
         return reg.getVehicleByLocation(locationId);
     }
 
+    // get available vehicle for a vehicleType Id, location, pickuptime, actualdropOfftime
+    /*
+        from postman:
+        http://localhost:8080/getEstimatedPriceForVehicles?locationId=2&pickUpTime=1/15/2020 10:00&estimatedDropOffTime=1/15/2020 16:57
+    */
+    @GetMapping("/getVehiclesAvailableForReservation")
+    public Iterable<Vehicle> getVehiclesAvailableForReservation(@RequestParam(value = "locationId") Integer locationId,
+                                               @RequestParam(value = "vehicleTypeId") Integer vehicleTypeId,
+                                               @RequestParam(value = "newPickUpTime") String newPickUpTime,
+                                               @RequestParam(value = "newEstimatedDropOffTime") String newEstimatedDropOffTime) throws Exception {
+
+        IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
+        return reg.getVehiclesAvailableForReservation(locationId,vehicleTypeId,newPickUpTime,newEstimatedDropOffTime);
+        
+        //return reserve.getEstimatedPriceForVehicles(locationId,pickUpTime,estimatedDropOffTime);
+      // return null;
+    }
+
     @DeleteMapping("/vehicle/{id}")
     public String delVehicles(@PathVariable Integer id) throws Exception {
 

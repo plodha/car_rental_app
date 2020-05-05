@@ -380,7 +380,7 @@ public class ReserveVehicle implements IReservation {
         System.out.println("Time in hours: " + diffHours + " hours.");
 
         return Math.ceil(diffHours);
-}
+    }
 
     public String convertMapToJson(HashMap<String, String> response) {
 

@@ -4,18 +4,26 @@ import themeansquare.service.IVehicleReg;
 import themeansquare.model.Vehicle;
 import themeansquare.model.VehicleType;
 import themeansquare.model.Address;
+import themeansquare.model.Reservation;
 import themeansquare.model.Location;
 import themeansquare.repository.LocationRepository;
+import themeansquare.repository.ReservationRepository;
 import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.VehicleTypeRepository;
 import themeansquare.repository.AddressRepository;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
-
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,6 +38,8 @@ public class VehicleReg implements IVehicleReg {
     private VehicleTypeRepository vehicleTypeRepository;
     private LocationRepository locationRepository;
     private AddressRepository addressRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
     
     ///// arrtibutes
     //vehicle
@@ -332,6 +342,82 @@ public class VehicleReg implements IVehicleReg {
             }
         }
         return itr;
+    }
+    // get available vehicle for a vehicleType Id, location, pickuptime, actualdropOfftime
+    /*
+        1. get all vehicle for a location and vehicleType
+        2. get all the active reservation
+        3. for each vehicle of no.1, check overlapping date inside reservation list of no.2
+        logic for overlapping date checking:
+        1. newPickUpTime > oldDropOffTime or,
+        2. newDropoffTime < oldPickUpTime
+    */
+    public Iterable<Vehicle> getVehiclesAvailableForReservation (Integer locationId, Integer vehicleTypeId, String newPickUpTime, String newEstimatedDropOffTime) throws Exception {
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Vehicle tempVehicle = (Vehicle) iter.next();
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if((tempVehicle.getVehicleTypeId().getId() != vehicleTypeId.intValue()) || (tempVehicle.getLocation().getId() != locationId.intValue())) {
+                System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
+                iter.remove();
+            }
+        }
+
+        Iterable<Reservation> itr_reserve = this.getActiveReservationList();
+        Iterator iter1 = itr.iterator();
+        while(iter1.hasNext()){ 
+            Vehicle tempVehicle = (Vehicle) iter1.next();
+            Iterator iter_reserve = itr_reserve.iterator();
+            while(iter_reserve.hasNext()) {
+                Reservation tempReservation = (Reservation) iter_reserve.next();
+
+                iter1.remove(); //ei vehicle id ta potential list theke bad
+            }
+            
+        }
+        return itr;
+    }
+
+    //get active reservation list; status =1
+    public Iterable<Reservation> getActiveReservationList()  {
+        Iterable<Reservation> itr = reservationRepository.findAll();
+        Iterator iter = itr.iterator();
+
+        while(iter.hasNext()){
+            Reservation tempReservation= (Reservation) iter.next();
+            if(!tempReservation.isStatus()) {
+               // System.out.println("tempPrice.getVehicleTypeId() "+ tempPrice.getVehicleTypeId().getId());
+                iter.remove();
+            }
+        }
+        return itr;
+    }
+
+    public double DateDiff(String pickUpTime, String estimateDropOffTime) {
+        String dateStart = pickUpTime;//"1/15/2020 10:57";
+        String dateStop = estimateDropOffTime;//"1/15/2020 9:57";
+
+        // Custom date format
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm");  
+
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = format.parse(dateStart);
+            d2 = format.parse(dateStop);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }    
+
+        // Get msec from each, and subtract.
+        double diff =   d2.getTime()- d1.getTime(); //estimatedDropOffTime -pickUpTime
+        double diffSeconds = diff / 1000 % 60;  
+        double diffMinutes = diff / (60 * 1000) % 60; 
+        double diffHours = diff / (60 * 60 * 1000);                             
+        System.out.println("Time in hours: " + diffHours + " hours.");
+
+        return Math.ceil(diffHours);
     }
 
     //delete api

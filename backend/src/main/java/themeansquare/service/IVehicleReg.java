@@ -17,6 +17,7 @@ public interface IVehicleReg {
     public Optional<Vehicle> getVehicleById(Integer id) throws Exception;
     public Iterable<Vehicle> getVehicleByVehicleType(Integer vehicleTypeId) throws Exception;
     public Iterable<Vehicle> getVehicleByLocation( Integer locationId) throws Exception;
+    public Iterable<Vehicle> getVehiclesAvailableForReservation (Integer locationId, Integer vehicleTypeId, String startTime, String endTime) throws Exception;
 
     public String delVehicle(Integer id) throws Exception;
 
