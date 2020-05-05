@@ -9,9 +9,9 @@
       <a style="color:white;font-size:16px" [routerLink]="['/logout']"> Logout</a></h1></span>
     </div>
   </div>
-  <div class="breadcrumb"> <a style="font-size:16px" [routerLink]="['/admin']"> Home</a> >> Price List</div>
+  <div class="breadcrumb"> <a style="font-size:16px" [routerLink]="['/admin']"> Home</a> >> Vehicle Type</div>
   <div class="button-row">
-     <a mat-flat-button color="primary" [routerLink]="['/addPrice']"><mat-icon>add</mat-icon>Add Price</a>
+     <a mat-flat-button color="primary" [routerLink]="['/addVehicleType']"><mat-icon>add</mat-icon>Vehicle Type</a>
    </div>
   <div class="example-content-page">
 <h2> Price List</h2>
@@ -44,22 +44,6 @@
       <td mat-cell *matCellDef="let row"> {{row.vehicleSize}} </td>
     </ng-container>
 
-    <!-- Color Column -->
-    <ng-container matColumnDef="lateFee">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Late Fee </th>
-      <td mat-cell *matCellDef="let row" > ${{row.lateFee}} </td>
-    </ng-container>
-    <!-- Name Column -->
-    <ng-container matColumnDef="hourlyFee">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Hourly Fee </th>
-      <td mat-cell *matCellDef="let row"> ${{row.hourlyFee}} </td>
-    </ng-container>
-    <ng-container matColumnDef="hourlyRange">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Discount Range (in hours) </th>
-      <td mat-cell *matCellDef="let row"> upto {{row.hourlyRange}} hours </td>
-    </ng-container>
-
-
 <!-- icon -->
     <ng-container matColumnDef="star" stickyEnd>
       <th mat-header-cell *matHeaderCellDef></th>
@@ -68,12 +52,12 @@
             <mat-icon>more_vert</mat-icon>
         </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item (click)="updatePrice('Update',element)">
+                <button mat-menu-item (click)="updateVehicleType('Update',element)">
 
                   <span>Edit</span>
                 </button>
 
-                <button mat-menu-item (click)="updatePrice('Delete',element)">
+                <button mat-menu-item (click)="updateVehicleType('Delete',element)">
 
                   <span>Delete</span>
                 </button>

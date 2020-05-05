@@ -1,0 +1,43 @@
+<div class="example-container mat-elevation-z8">
+  <div class="container">
+    <div class='title'>
+    <h1>Car Rental System</h1>
+    </div>
+  </div>
+  <div class="example-loading-shade"
+        *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <!-- <div class="button-row">
+    <a mat-flat-button color="primary" [routerLink]="['/cases']"><mat-icon>list</mat-icon></a>
+  </div> -->
+  <mat-card class="example-card">
+    <form [formGroup]="addVehicleTypeForm" (ngSubmit)="onFormSubmit()">
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Vehicle Class</mat-label>
+        <input matInput placeholder="make" formControlName="vehicleClass" pattern="^[a-zA-Z][a-zA-Z ]+$"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleTypeForm.get('vehicleClass').valid && addVehicleTypeForm.get('vehicleClass').touched">Please enter vehicle class name</span>
+        </mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Vehicle seating capacity</mat-label>
+        <input matInput placeholder="vehicleSize" formControlName="vehicleSize" pattern="^[0-9]+$" maxlength="2"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleTypeForm.get('vehicleSize').valid && addVehicleTypeForm.get('vehicleSize').touched">Please enter vehicle seat capacity</span>
+        </mat-error>
+      </mat-form-field>
+
+
+      <div class="button-row">
+        <button type="submit" [disabled]="!addVehicleTypeForm.valid" mat-flat-button color="primary">Save</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

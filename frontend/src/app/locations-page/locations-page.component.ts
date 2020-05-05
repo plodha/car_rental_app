@@ -44,7 +44,7 @@ export class LocationsPageComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'addressLine','city','state','zipcode', 'contactNumber','vehicleCapacity','star'];
   dataSource: MatTableDataSource<Location>;
   ELEMENT_DATA: Location[] = [];
-
+  isLoadingResults = false;
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
   constructor(private router: Router,private actr: ActivatedRoute, private formBuilder: FormBuilder,private api: ApiService) {
@@ -131,6 +131,35 @@ export class LocationsPageComponent implements OnInit {
 */
 
     })
+  }
+
+
+  updateLocation(operation, ele){
+    console.log('update ');
+    console.log(ele)
+    if(operation == 'Update') {
+      this.router.navigate(['/editLocation/'+ele.id]);
+    }
+    if(operation == 'Delete') {
+      var formData = {}
+      formData['id'] = ele.id;
+      this.isLoadingResults = false;
+      this.api.deleteLocation(formData).subscribe((res:any) => {
+        console.log(res);
+          this.isLoadingResults = false;
+
+          //this.router.navigate(['/vehicle']);
+
+        this.fetchAllLocations();
+
+
+        });
+
+        location.reload();
+      //this.router.navigate(['/editVehicle/'+ele.id]);
+    }
+
+
   }
 
 }
