@@ -15,6 +15,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
+
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -39,6 +42,9 @@ public class VehicleReg implements IVehicleReg {
     private String vehicleCondition;
     private int locationId;
     private int vehicleTypeId;
+    private String currentMileage; 
+    private String registrationTag;
+    private String serviceDate;
 
     //int location; --foreign key to Location
     //int vehicleType; --foreign key to vehicleType
@@ -66,7 +72,7 @@ public class VehicleReg implements IVehicleReg {
     }
 
     public VehicleReg(  String licensePlate , String model,String make,
-    Boolean status, String vIN,int year, String vehicleCondition,int locationId, int vehicleTypeId,
+    Boolean status, String vIN,int year, String vehicleCondition,int locationId, int vehicleTypeId, String currentMileage, String registrationTag, String serviceDate,
     VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
 
         this.licensePlate = licensePlate;
@@ -78,6 +84,9 @@ public class VehicleReg implements IVehicleReg {
         this.vehicleCondition = vehicleCondition;
         this.locationId =locationId; 
         this.vehicleTypeId = vehicleTypeId;
+        this.currentMileage = currentMileage; 
+        this.registrationTag = registrationTag;
+        this.serviceDate = serviceDate;
         this.vehicleRepository = vehicleRepository;
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
@@ -86,7 +95,7 @@ public class VehicleReg implements IVehicleReg {
     }
     public VehicleReg( String vehicleClass, int vehicleSize , String licensePlate , String model,String make,
                        Boolean status, String vIN,int year, String vehicleCondition, int contactNumber, String name, int vehicleCapacity,
-                       String street, String city,String state, String zipcode,
+                       String street, String city,String state, String zipcode, String currentMileage, String registrationTag, String serviceDate,
                        VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
 
         this.vehicleClass = vehicleClass;
@@ -105,6 +114,9 @@ public class VehicleReg implements IVehicleReg {
         this.city = city;
         this.state = state;
         this.zipcode = zipcode;
+        this.currentMileage = currentMileage; 
+        this.registrationTag = registrationTag;
+        this.serviceDate = serviceDate;
         this.vehicleRepository = vehicleRepository;
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
@@ -131,6 +143,9 @@ public class VehicleReg implements IVehicleReg {
             vehicle.setStatus(status);
             vehicle.setYear(year);
             vehicle.setVehicleCondition(vehicleCondition);
+            vehicle.setCurrentMileage(currentMileage);
+            vehicle.setRegistrationTag(registrationTag);
+            vehicle.setServiceDate(serviceDate);
             response.put("isVINAvailable", "true");
 
             // Add VIN check
@@ -175,6 +190,9 @@ public class VehicleReg implements IVehicleReg {
             vehicle.setStatus(status);
             vehicle.setYear(year);
             vehicle.setVehicleCondition(vehicleCondition);
+            vehicle.setCurrentMileage(currentMileage);
+            vehicle.setRegistrationTag(registrationTag);
+            vehicle.setServiceDate(serviceDate);
             response.put("isVINAvailable", "true");
 
             // Add VIN check
@@ -346,6 +364,9 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
             existVehicle.setVehicleCondition(Optional.ofNullable(vehicle.getVehicleCondition()).orElse(existVehicle.getVehicleCondition()));
+            existVehicle.setCurrentMileage(Optional.ofNullable(vehicle.getCurrentMileage()).orElse(existVehicle.getCurrentMileage()));
+            existVehicle.setRegistrationTag(Optional.ofNullable(vehicle.getRegistrationTag()).orElse(existVehicle.getRegistrationTag()));
+            existVehicle.setServiceDate(Optional.ofNullable(vehicle.getServiceDate()).orElse(existVehicle.getServiceDate()));
             
 
          
@@ -387,6 +408,10 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
             existVehicle.setVehicleCondition(Optional.ofNullable(vehicle.getVehicleCondition()).orElse(existVehicle.getVehicleCondition()));
+            existVehicle.setCurrentMileage(Optional.ofNullable(vehicle.getCurrentMileage()).orElse(existVehicle.getCurrentMileage()));
+            existVehicle.setRegistrationTag(Optional.ofNullable(vehicle.getRegistrationTag()).orElse(existVehicle.getRegistrationTag()));
+            existVehicle.setServiceDate(Optional.ofNullable(vehicle.getServiceDate()).orElse(existVehicle.getServiceDate()));
+            
 
             
             int vehicleTypeId = existVehicle.getVehicleTypeId().getId();

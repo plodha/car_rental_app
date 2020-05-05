@@ -50,6 +50,26 @@ public class Vehicle {
 	
 	@NotNull
 	private String vehicleCondition;
+	
+	private String registrationTag; 
+	
+	private String currentMileage;
+	
+	private String serviceDate;
+	
+	
+
+	public String getRegistrationTag() { return registrationTag; }
+
+	public void setRegistrationTag(String registrationTag) {this.registrationTag = registrationTag; }
+
+	public String getCurrentMileage() {return currentMileage; }
+
+	public void setCurrentMileage(String currentMileage) {this.currentMileage = currentMileage; }
+
+	public String getServiceDate() {return serviceDate;}
+
+	public void setServiceDate(String serviceDate) { this.serviceDate = serviceDate;}
 
 	public int getId() { return Id; }
 
