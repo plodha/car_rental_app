@@ -9,8 +9,10 @@
       <a style="color:white;font-size:16px" [routerLink]="['/logout']"> Logout</a></h1></span>
     </div>
   </div>
-  <div class="breadcrumb"> <a style="font-size:16px" [routerLink]="['/admin']"> Home</a> >> Customers</div>
-
+  <div class="breadcrumb"> <a style="font-size:16px" [routerLink]="['/admin']"> Home</a> >> Price List</div>
+  <div class="button-row">
+     <a mat-flat-button color="primary" [routerLink]="['/addPrice']"><mat-icon>add</mat-icon>Add Price</a>
+   </div>
   <div class="example-content-page">
 <h2> Price List</h2>
 <mat-form-field>
@@ -38,21 +40,24 @@
 
     <!-- Progress Column -->
     <ng-container matColumnDef="vehicleSize">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Size </th>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>  Seating capacity </th>
       <td mat-cell *matCellDef="let row"> {{row.vehicleSize}} </td>
     </ng-container>
 
     <!-- Color Column -->
     <ng-container matColumnDef="lateFee">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Late Fee </th>
-      <td mat-cell *matCellDef="let row" > {{row.lateFee}} </td>
+      <td mat-cell *matCellDef="let row" > ${{row.lateFee}} </td>
     </ng-container>
     <!-- Name Column -->
     <ng-container matColumnDef="hourlyFee">
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Hourly Fee </th>
-      <td mat-cell *matCellDef="let row"> {{row.hourlyFee}} </td>
+      <td mat-cell *matCellDef="let row"> ${{row.hourlyFee}} </td>
     </ng-container>
-
+    <ng-container matColumnDef="hourlyRange">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Discount Range (in hours) </th>
+      <td mat-cell *matCellDef="let row"> upto {{row.hourlyRange}} hours </td>
+    </ng-container>
 
 
 <!-- icon -->
@@ -63,12 +68,12 @@
             <mat-icon>more_vert</mat-icon>
         </button>
               <mat-menu #menu="matMenu">
-                <button mat-menu-item>
+                <button mat-menu-item (click)="updatePrice('Update',element)">
 
                   <span>Edit</span>
                 </button>
 
-                <button mat-menu-item>
+                <button mat-menu-item (click)="updatePrice('Delete',element)">
 
                   <span>Delete</span>
                 </button>

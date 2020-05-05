@@ -4,17 +4,28 @@ import themeansquare.service.IVehicleReg;
 import themeansquare.model.Vehicle;
 import themeansquare.model.VehicleType;
 import themeansquare.model.Address;
+import themeansquare.model.Reservation;
 import themeansquare.model.Location;
 import themeansquare.repository.LocationRepository;
+import themeansquare.repository.ReservationRepository;
 import themeansquare.repository.VehicleRepository;
 import themeansquare.repository.VehicleTypeRepository;
 import themeansquare.repository.AddressRepository;
 
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Optional;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestParam;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,6 +38,7 @@ public class VehicleReg implements IVehicleReg {
     private VehicleTypeRepository vehicleTypeRepository;
     private LocationRepository locationRepository;
     private AddressRepository addressRepository;
+    private ReservationRepository reservationRepository;
     
     ///// arrtibutes
     //vehicle
@@ -39,6 +51,10 @@ public class VehicleReg implements IVehicleReg {
     private String vehicleCondition;
     private int locationId;
     private int vehicleTypeId;
+    private String currentMileage; 
+    private String registrationTag;
+    private String serviceDate;
+    
 
     //int location; --foreign key to Location
     //int vehicleType; --foreign key to vehicleType
@@ -58,16 +74,17 @@ public class VehicleReg implements IVehicleReg {
     private String state;
     private String zipcode;
 
-    public VehicleReg(VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository ) {
+    public VehicleReg(VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository,ReservationRepository reservationRepository ) {
         this.vehicleRepository = vehicleRepository;
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
         this.addressRepository = addressRepository;
+        this.reservationRepository =reservationRepository;
     }
 
     public VehicleReg(  String licensePlate , String model,String make,
-    Boolean status, String vIN,int year, String vehicleCondition,int locationId, int vehicleTypeId,
-    VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
+    Boolean status, String vIN,int year, String vehicleCondition,int locationId, int vehicleTypeId, String currentMileage, String registrationTag, String serviceDate,
+    VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository,ReservationRepository reservationRepository) {
 
         this.licensePlate = licensePlate;
         this.model = model;
@@ -78,16 +95,20 @@ public class VehicleReg implements IVehicleReg {
         this.vehicleCondition = vehicleCondition;
         this.locationId =locationId; 
         this.vehicleTypeId = vehicleTypeId;
+        this.currentMileage = currentMileage; 
+        this.registrationTag = registrationTag;
+        this.serviceDate = serviceDate;
         this.vehicleRepository = vehicleRepository;
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
         this.addressRepository = addressRepository;
+        this.reservationRepository = reservationRepository;
 
     }
     public VehicleReg( String vehicleClass, int vehicleSize , String licensePlate , String model,String make,
                        Boolean status, String vIN,int year, String vehicleCondition, int contactNumber, String name, int vehicleCapacity,
-                       String street, String city,String state, String zipcode,
-                       VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
+                       String street, String city,String state, String zipcode, String currentMileage, String registrationTag, String serviceDate,
+                       VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository,ReservationRepository reservationRepository) {
 
         this.vehicleClass = vehicleClass;
         this.vehicleSize = vehicleSize;
@@ -105,11 +126,14 @@ public class VehicleReg implements IVehicleReg {
         this.city = city;
         this.state = state;
         this.zipcode = zipcode;
+        this.currentMileage = currentMileage; 
+        this.registrationTag = registrationTag;
+        this.serviceDate = serviceDate;
         this.vehicleRepository = vehicleRepository;
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
         this.addressRepository = addressRepository;
-
+        this.reservationRepository = reservationRepository;
     }
 
    
@@ -131,6 +155,9 @@ public class VehicleReg implements IVehicleReg {
             vehicle.setStatus(status);
             vehicle.setYear(year);
             vehicle.setVehicleCondition(vehicleCondition);
+            vehicle.setCurrentMileage(currentMileage);
+            vehicle.setRegistrationTag(registrationTag);
+            vehicle.setServiceDate(serviceDate);
             response.put("isVINAvailable", "true");
 
             // Add VIN check
@@ -175,6 +202,9 @@ public class VehicleReg implements IVehicleReg {
             vehicle.setStatus(status);
             vehicle.setYear(year);
             vehicle.setVehicleCondition(vehicleCondition);
+            vehicle.setCurrentMileage(currentMileage);
+            vehicle.setRegistrationTag(registrationTag);
+            vehicle.setServiceDate(serviceDate);
             response.put("isVINAvailable", "true");
 
             // Add VIN check
@@ -316,6 +346,88 @@ public class VehicleReg implements IVehicleReg {
         return itr;
     }
 
+    // get available vehicle for a vehicleType Id, location, pickuptime, actualdropOfftime
+    /*
+        1. get all vehicle for a location and vehicleType
+        2. get all the active reservation
+        3. for each vehicle of no.1, check overlapping date inside reservation list of no.2
+        4. if 4.1 or 4.2 date diff is positive (>0), then that vehicle is available for reservation
+        logic for non overlapping date checking:
+        4.1. newPickUpTime > oldDropOffTime or,
+        4.2. newDropoffTime < oldPickUpTime
+    */
+    public Iterable<Vehicle> getVehiclesAvailableForReservation (Integer locationId, Integer vehicleTypeId, String newPickUpTime, String newEstimatedDropOffTime) throws Exception {
+        Iterable<Vehicle> itr = vehicleRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Vehicle tempVehicle = (Vehicle) iter.next();
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if((tempVehicle.getVehicleTypeId().getId() != vehicleTypeId.intValue()) || (tempVehicle.getLocation().getId() != locationId.intValue())) {
+                System.out.println("remove tempVehicle.getId() "+ tempVehicle.getId());
+                iter.remove();
+            }
+        }
+
+        Iterable<Reservation> itr_reserve = this.getActiveReservationList();
+        Iterator iter1 = itr.iterator();
+        while(iter1.hasNext()){ 
+            Vehicle tempVehicle = (Vehicle) iter1.next();
+            Iterator iter_reserve = itr_reserve.iterator();
+            while(iter_reserve.hasNext()) {
+                Reservation tempReservation = (Reservation) iter_reserve.next();
+                String oldPickUpTime = tempReservation.getPickUpTime(); 
+                String oldDropOffTime = tempReservation.getActualDropOffTime();
+                Double diff_1 = this.DateDiff(newPickUpTime, oldDropOffTime); //check if: 1. newPickUpTime > oldDropOffTime
+                Double diff_2 = this.DateDiff(oldPickUpTime, newEstimatedDropOffTime); //check if: 2. oldPickUpTime > newDropoffTime  
+                if (diff_1 <=0 && diff_2 <= 0) {
+                    iter1.remove(); //this vehicle is not eligible for reservation
+                }     
+            } 
+        }
+        return itr;
+    }
+
+    //get active reservation list; status =1
+    public Iterable<Reservation> getActiveReservationList()  {
+        Iterable<Reservation> itr = reservationRepository.findAll();
+        Iterator iter = itr.iterator();
+
+        while(iter.hasNext()){
+            Reservation tempReservation= (Reservation) iter.next();
+            if(!tempReservation.isStatus()) {
+               System.out.println("tempReservation.getId() "+ tempReservation.getId());
+                iter.remove();
+            }
+        }
+        return itr;
+    }
+
+    public double DateDiff(String pickUpTime, String estimateDropOffTime) {
+        String dateStart = pickUpTime;//"1/15/2020 10:57";
+        String dateStop = estimateDropOffTime;//"1/15/2020 9:57";
+
+        // Custom date format
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm");  
+
+        Date d1 = null;
+        Date d2 = null;
+        try {
+            d1 = format.parse(dateStart);
+            d2 = format.parse(dateStop);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }    
+
+        // Get msec from each, and subtract.
+        double diff =   d1.getTime()- d2.getTime(); // pickUpTime - estimatedDropOffTime
+        double diffSeconds = diff / 1000 % 60;  
+        double diffMinutes = diff / (60 * 1000) % 60; 
+        double diffHours = diff / (60 * 60 * 1000);                             
+        System.out.println("Time in hours: " + diffHours + " hours.");
+
+        return Math.ceil(diffHours);
+    }
+
     //delete api
     public String delVehicle(Integer id) throws Exception {
 
@@ -346,6 +458,9 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
             existVehicle.setVehicleCondition(Optional.ofNullable(vehicle.getVehicleCondition()).orElse(existVehicle.getVehicleCondition()));
+            existVehicle.setCurrentMileage(Optional.ofNullable(vehicle.getCurrentMileage()).orElse(existVehicle.getCurrentMileage()));
+            existVehicle.setRegistrationTag(Optional.ofNullable(vehicle.getRegistrationTag()).orElse(existVehicle.getRegistrationTag()));
+            existVehicle.setServiceDate(Optional.ofNullable(vehicle.getServiceDate()).orElse(existVehicle.getServiceDate()));
             
 
          
@@ -387,6 +502,10 @@ public class VehicleReg implements IVehicleReg {
             existVehicle.setVIN(Optional.ofNullable(vehicle.getVIN()).orElse(existVehicle.getVIN())); ///need to check vIN
             existVehicle.setYear(Optional.ofNullable(vehicle.getYear()).orElse(existVehicle.getYear()));
             existVehicle.setVehicleCondition(Optional.ofNullable(vehicle.getVehicleCondition()).orElse(existVehicle.getVehicleCondition()));
+            existVehicle.setCurrentMileage(Optional.ofNullable(vehicle.getCurrentMileage()).orElse(existVehicle.getCurrentMileage()));
+            existVehicle.setRegistrationTag(Optional.ofNullable(vehicle.getRegistrationTag()).orElse(existVehicle.getRegistrationTag()));
+            existVehicle.setServiceDate(Optional.ofNullable(vehicle.getServiceDate()).orElse(existVehicle.getServiceDate()));
+            
 
             
             int vehicleTypeId = existVehicle.getVehicleTypeId().getId();

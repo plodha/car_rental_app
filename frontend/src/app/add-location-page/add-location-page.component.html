@@ -59,7 +59,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Contact Number</mat-label>
-        <input matInput placeholder="Contact Number" formControlName="contactNumber" pattern="[0-9 ]{11}"
+        <input matInput placeholder="Contact Number" formControlName="contactNumber" pattern="^[0-9]+$" maxlength="10"
                 [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!addLocationForm.get('contactNumber').valid && addLocationForm.get('contactNumber').touched">Please enter Contact number</span>

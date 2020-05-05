@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 //import { ApiService } from '../api.service';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -7,6 +6,11 @@ import * as moment from 'moment';
 
 import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+
+//import { ApiService } from '../api.service';
+
+import {ActivatedRoute, Router } from '@angular/router';
+import {ApiService} from '../api.service'
 
 interface Location {
   name: string;
@@ -44,21 +48,50 @@ export class AddReservationPageComponent implements OnInit {
   vehicleType = new FormControl('');
 
 
-  locations: Location[] = [
-     {name: 'Sunnyvale', id: '1'},
-     {name: 'San Jose', id: '2'},
-     {name: 'Mountain View', id: '3'}
-   ];
-   vehicleTypes: VehicleType[] = [
-      {value: 'Compact', id: '1'},
-      {value: 'Luxury', id: '2'},
-      {value: 'Van', id: '3'}
-    ];
+  locations: Location[] = [];
+   vehicleTypes: VehicleType[] = [];
 
    matcher = new MyErrorStateMatcher();
 
 
-  constructor(private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private router: Router,private actr: ActivatedRoute, private formBuilder: FormBuilder,
+      private api: ApiService) {
+        this.actr.data.subscribe((data)=>{
+          var locations = data.location;
+
+          var i = 0;
+          for (i = 0; i < locations.length; i++) {
+
+            var obj = locations[i];
+
+            var location = {
+              id: obj.id,
+              name: obj.name
+            }
+            this.locations[i] = location;
+          }
+
+        });
+
+
+        this.actr.data.subscribe((data)=>{
+          var vehicleTypes = data.vehicleType;
+          console.log(vehicleTypes)
+          var i = 0;
+          for (i = 0; i < vehicleTypes.length; i++) {
+
+            var obj = vehicleTypes[i];
+
+            var vehicleType = {
+              id: obj.id,
+              value: obj.vehicleClass
+            }
+            this.vehicleTypes[i] = vehicleType;
+          }
+
+        });
+
+      }
 
   ngOnInit(): void {
       this.reservationForm = this.formBuilder.group({

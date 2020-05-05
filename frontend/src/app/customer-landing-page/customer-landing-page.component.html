@@ -3,9 +3,8 @@
     <div class='title'>
 
   <span>  <h1>Car Rental System
-
-
-    <i class="material-icons" style="padding-left:70%">account_circle</i> &nbsp;&nbsp;
+<a style="color:white;font-size:16px" [routerLink]="['/profile']">
+    <span id="profileName" style="font-size:16px;">&nbsp;<i class="material-icons" style="padding-left:70%"> account_circle</i> </span></a>&nbsp;&nbsp;
       <a style="color:white;font-size:16px" [routerLink]="['/logout']"> Logout</a></h1></span>
     </div>
   </div>
@@ -16,14 +15,16 @@
             <mat-icon> emoji_transportation</mat-icon>   Book a Vehicle
       </a>
 
-      <a mat-flat-button color="primary" [routerLink]="['/reservations']">
-            <mat-icon> airport_shuttle</mat-icon>  View Reservations
-      </a>
+      <button mat-flat-button color="primary" (click)="callReservation()">
+
+    <mat-icon> airport_shuttle</mat-icon>  View Reservations
+
+    </button>
+
 
       <a mat-flat-button color="primary" [routerLink]="['/cancel']">
               <mat-icon> sentiment_dissatisfied</mat-icon>   Cancel membership
       </a>
-
 
 
 

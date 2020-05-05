@@ -24,9 +24,17 @@ import { PricePageComponent } from './price-page/price-page.component';
 import { InvoicePageComponent } from './invoice-page/invoice-page.component';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
-
+import {Observable} from 'rxjs/Rx';
+import { of } from 'rxjs';
+import {EditLocationPageComponent} from './edit-location-page/edit-location-page.component';
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
+import { AddVehicletypePageComponent } from './add-vehicletype-page/add-vehicletype-page.component';
+import { EditVehicletypePageComponent } from './edit-vehicletype-page/edit-vehicletype-page.component';
+import { AddPricePageComponent } from './add-price-page/add-price-page.component';
+import { EditPricePageComponent } from './edit-price-page/edit-price-page.component';
+import { LogoutPageComponent } from './logout-page/logout-page.component';
+import { VehicleTypePageComponent } from './vehicle-type-page/vehicle-type-page.component';
 
 @Injectable()
 export class LocationResolver implements Resolve<any> {
@@ -50,9 +58,18 @@ export class VehicleResolver implements Resolve<any> {
   constructor(private apiService: ApiService) {}
 
   resolve() {
-    return this.apiService.getAllVehicles();
+    return (this.apiService.getAllVehicles());
   }
 }
+
+// @Injectable()
+// export class VehicleResolver implements Resolve<Observable<any>> {
+//   constructor(private apiService: ApiService) {}
+//
+//   resolve():Observable<Observable<any>> {
+//     return of(this.apiService.getAllVehicles());
+//   }
+// }
 
 @Injectable()
 export class VehicleTypeResolver implements Resolve<any> {
@@ -83,8 +100,8 @@ export class ReservationResolver implements Resolve<any> {
 export class PriceResolver implements Resolve<any> {
   constructor(private apiService: ApiService) {}
 
-  resolve(route: ActivatedRouteSnapshot) {
-    return this.apiService.getPriceInfo(route.params.id);
+  resolve() {
+    return this.apiService.getAllPrices();
   }
 }
 
@@ -116,6 +133,12 @@ const routes: Routes = [{
           }
       },
       {
+          path:'addVehicleType',
+          component: AddVehicletypePageComponent,
+
+      },
+
+      {
           path:'editVehicle/:id',
           component: EditVehiclePageComponent,
           resolve: {
@@ -124,12 +147,41 @@ const routes: Routes = [{
           }
       },
       {
+          path:'editLocation/:id',
+          component: EditLocationPageComponent
+
+      },
+      {
+          path:'editPrice/:id',
+          component: EditPricePageComponent,
+          resolve:{
+          vehicleType: VehicleTypeResolver
+        }
+
+      },
+      {
+          path:'editVehicleType/:id',
+          component: EditVehicletypePageComponent
+
+      },
+      {
           path:'addLocation',
           component: AddLocationPageComponent
       },
       {
+          path:'addPrice',
+          component: AddPricePageComponent,
+          resolve:{
+          vehicleType: VehicleTypeResolver
+        }
+      },
+      {
           path:'addReservation',
-          component: AddReservationPageComponent
+          component: AddReservationPageComponent,
+          resolve: {
+            location: LocationResolver,
+            vehicleType: VehicleTypeResolver
+          }
       },
       {
           path:'profile',
@@ -170,7 +222,17 @@ const routes: Routes = [{
       },
       {
           path:'priceList',
-          component: PricePageComponent
+          component: PricePageComponent,
+          resolve: {
+            price:PriceResolver
+          }
+      },
+      {
+          path:'vehicletypes',
+          component: VehicleTypePageComponent,
+          resolve:{
+            vehicleType: VehicleTypeResolver
+          }
       },
       {
           path:'invoice',

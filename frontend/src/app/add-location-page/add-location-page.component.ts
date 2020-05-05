@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 //import { ApiService } from '../api.service';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import {ApiService} from '../api.service'
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -29,7 +30,7 @@ export class AddLocationPageComponent implements OnInit {
   matcher = new MyErrorStateMatcher();
 
 
-  constructor(private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private router: Router, private formBuilder: FormBuilder,private api: ApiService) { }
 
   ngOnInit(): void {
     this.addLocationForm = this.formBuilder.group({
@@ -38,7 +39,7 @@ export class AddLocationPageComponent implements OnInit {
       city : [null, [Validators.required, Validators.pattern("^[a-zA-Z][a-zA-Z ]+$")]],
       state : [null, [Validators.required,Validators.pattern("^[a-zA-Z][a-zA-Z ]+$")]],
       zipcode : [null, [Validators.required,Validators.pattern("^[0-9]+$"),Validators.maxLength(5)]],
-      contactNumber : [null, [Validators.required, Validators.pattern("[0-9 ]{11}")]],
+      contactNumber : [null, [Validators.required, Validators.pattern("^[0-9]+$"),Validators.maxLength(10)]],
       vehicleCapacity : [null, [Validators.required,Validators.pattern("^[0-9]+$")]]
 
     });
@@ -46,18 +47,22 @@ export class AddLocationPageComponent implements OnInit {
 
   onFormSubmit() {
     this.isLoadingResults = true;
-    this.router.navigate(['/login']);
-    /*
-    this.api.addCases(this.casesForm.value)
-      .subscribe((res: any) => {
-          const id = res._id;
-          this.isLoadingResults = false;
-          this.router.navigate(['/login']);
-        }, (err: any) => {
-          console.log(err);
-          this.isLoadingResults = false;
-        });
-        */
+    //this.router.navigate(['/login']);
+
+    var formData = {}
+
+    formData['contactNumber'] = this.addLocationForm.get('contactNumber').value
+    formData['name'] = this.addLocationForm.get('name').value
+    formData['vehicleCapacity'] = this.addLocationForm.get('vehicleCapacity').value
+    formData['street'] = this.addLocationForm.get('addressLine').value
+    formData['city'] = this.addLocationForm.get('city').value
+    formData['state'] = this.addLocationForm.get('state').value
+    formData['zipcode'] = this.addLocationForm.get('zipcode').value
+
+    this.api.addLocationAPI(formData).subscribe((res:any)=>{
+      this.router.navigate(['/locations']);
+    });
+
   }
 
 }

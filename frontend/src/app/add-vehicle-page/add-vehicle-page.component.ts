@@ -94,7 +94,7 @@ export class AddVehiclePageComponent implements OnInit {
     this.addVehicleForm = this.formBuilder.group({
       make : [null, [Validators.required,Validators.pattern("^[a-zA-Z][a-zA-Z ]+$")]],
       model : [null, [Validators.required,Validators.pattern("^[A-Za-z0-9 ]+$")]],
-      year : [null, [Validators.required, Validators.pattern("^[0-9]+$"),Validators.maxLength(7)]],
+      year : [null, [Validators.required, Validators.pattern("^[0-9]+$"),Validators.maxLength(4)]],
       VIN : [null, [Validators.required,Validators.pattern("^[A-Za-z0-9]+$")]],
       licensePlate : [null, [Validators.required, Validators.pattern("^[A-Za-z0-9]+$"), Validators.maxLength(7)]],
       location : [null, Validators.required],
