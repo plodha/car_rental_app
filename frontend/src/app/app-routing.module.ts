@@ -24,6 +24,8 @@ import { PricePageComponent } from './price-page/price-page.component';
 import { InvoicePageComponent } from './invoice-page/invoice-page.component';
 import { Injectable } from '@angular/core';
 import { ApiService } from './api.service';
+import {Observable} from 'rxjs/Rx';
+import { of } from 'rxjs';
 
 import { Resolve, ActivatedRouteSnapshot } from '@angular/router';
 
@@ -50,9 +52,18 @@ export class VehicleResolver implements Resolve<any> {
   constructor(private apiService: ApiService) {}
 
   resolve() {
-    return this.apiService.getAllVehicles();
+    return (this.apiService.getAllVehicles());
   }
 }
+
+// @Injectable()
+// export class VehicleResolver implements Resolve<Observable<any>> {
+//   constructor(private apiService: ApiService) {}
+//
+//   resolve():Observable<Observable<any>> {
+//     return of(this.apiService.getAllVehicles());
+//   }
+// }
 
 @Injectable()
 export class VehicleTypeResolver implements Resolve<any> {

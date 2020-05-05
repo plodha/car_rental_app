@@ -139,15 +139,21 @@ export class EditVehiclePageComponent implements OnInit {
   onFormSubmit() {
     this.isLoadingResults = true;
     //this.router.navigate(['/login']);
+    var location = {};
+    var vehicleTypeId ={};
     var formData = {}
     formData['id'] = this.editVehicleForm.get('id').value
     formData['make'] = this.editVehicleForm.get('make').value
     formData['model'] = this.editVehicleForm.get('model').value
     formData['year'] = this.editVehicleForm.get('year').value
-    formData['vIN'] = this.editVehicleForm.get('VIN').value
+    formData['vin'] = this.editVehicleForm.get('VIN').value
     formData['licensePlate'] = this.editVehicleForm.get('licensePlate').value
-    formData['vehicleTypeId'] = this.editVehicleForm.get('vehicleType').value
-    formData['locationId'] = this.editVehicleForm.get('location').value
+    vehicleTypeId['id'] = this.editVehicleForm.get('vehicleType').value
+    formData['vehicleTypeId'] = vehicleTypeId
+    location['id'] = this.editVehicleForm.get('location').value
+
+    formData['location'] = location
+
     formData['vehicleCondition'] = this.editVehicleForm.get('vehicleCondition').value
     formData['status'] =  this.editVehicleForm.get('status').value
 
@@ -160,6 +166,7 @@ export class EditVehiclePageComponent implements OnInit {
     }, (err: any) => {
       console.log(err);
       this.isLoadingResults = false;
+        this.router.navigate(['/vehicle']);
     });
 
 

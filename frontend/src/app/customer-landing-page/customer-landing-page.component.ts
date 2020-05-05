@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-customer-landing-page',
@@ -7,9 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerLandingPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router:Router) {
+
+   }
 
   ngOnInit(): void {
+    console.log('username');
+    console.log(localStorage.username != undefined)
+    if(localStorage.username != undefined ) {
+      document.getElementById('profileName').innerHTML += localStorage.username
+    }
+    else {
+      this.router.navigate(['/login']);
+
+    }
+
+
+
+
   }
 
 }

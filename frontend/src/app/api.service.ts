@@ -6,8 +6,8 @@ import {HttpClient, HttpParams,HttpHeaders} from '@angular/common/http';
 })
 export class ApiService {
 
-  prod_api_url = "https://api.wasaequreshi.com/"
-  //api_url = "http://localhost:8020/"
+ prod_api_url = "https://api.wasaequreshi.com/"
+ api_url = "http://localhost:8020/"
 
 
   location_endpoint = "location"
@@ -83,8 +83,8 @@ public getAllLocations(){
   */
     regAPI(regFormGroup) {
       let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
-      let body = JSON.stringify(regFormGroup.value);
-      let end_point = "registration";
+      let body = JSON.stringify(regFormGroup);
+      let end_point = "register";
       return this.http.post(this.prod_api_url + end_point, body, {headers});
     }
 
@@ -201,6 +201,7 @@ public getAllLocations(){
    addLocationAPI(locationFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
     let body = JSON.stringify(locationFormGroup.value);
+    console.log(locationFormGroup)
     var params = new HttpParams()
       .set('contactNumber', locationFormGroup.contactNumber)
       .set('name', locationFormGroup.name)
@@ -306,7 +307,7 @@ public getAllLocations(){
     */
    updateCustomerAPI(customerFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
-    let body = JSON.stringify(customerFormGroup.value);
+    let body = JSON.stringify(customerFormGroup);
     let end_point = "updateCustomer";
     return this.http.put(this.prod_api_url + end_point, body, {headers});
   }
@@ -400,7 +401,12 @@ public getAllLocations(){
     return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
   }
 
-
+public getCustomerById(id){
+  let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+             'Access-Control-Allow-Origin': '*' };
+  let customer_info = "getCustomerInfo"
+  return this.http.get(this.prod_api_url + customer_info+'?userId='+id,{headers})
+}
 public getAllCustomers(){
     let headers = { 'Content-Type': 'application/json','Accept':'application/json',
                'Access-Control-Allow-Origin': '*' };
@@ -529,11 +535,12 @@ public getVehicleById(id:any){
         /updateVehicleAPI API return:
           ask subrana
     */
-   updateVehicleAPI1(id, vehicleFormGroup) {
+   updateVehicleAPI(id, vehicleFormGroup) {
      console.log('Api service ')
      console.log(id)
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
     let body = JSON.stringify(vehicleFormGroup);
+    console.log(body)
     let end_point = "vehicle/" +id
     return this.http.put(this.prod_api_url + end_point, body, {headers});
 
@@ -541,7 +548,7 @@ public getVehicleById(id:any){
 
 
   }
-updateVehicleAPI(id, vehicleFormGroup) {
+updateVehicleAPI2(id, vehicleFormGroup) {
   let headers = { 'Content-Type': 'application/json','Access-Control-Request-Method':'PUT','Accept':'application/json',"Access-Control-Allow-Methods": "GET,HEAD,POST,PUT", "Access-Control-Allow-Origin": "*"};
   let body = JSON.stringify(vehicleFormGroup);
   let end_point = "vehicle/"+id;
@@ -670,10 +677,10 @@ return this.http.put(this.prod_api_url + end_point, body, {headers});
     */
    deleteVehicle(vehicleFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
-    let body = JSON.stringify(vehicleFormGroup.value);
+
     let end_point = "vehicle/" + vehicleFormGroup.id;
 
-    return this.http.put(this.prod_api_url + end_point, {}, {headers});
+    return this.http.delete(this.prod_api_url + end_point, {headers});
   }
 
   /*
