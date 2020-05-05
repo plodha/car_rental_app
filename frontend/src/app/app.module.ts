@@ -49,6 +49,13 @@ import { CustomersPageComponent } from './customers-page/customers-page.componen
 import { PricePageComponent } from './price-page/price-page.component';
 import { InvoicePageComponent } from './invoice-page/invoice-page.component';
 import { EditVehiclePageComponent } from './edit-vehicle-page/edit-vehicle-page.component';
+import { EditLocationPageComponent } from './edit-location-page/edit-location-page.component';
+import { LogoutPageComponent } from './logout-page/logout-page.component';
+import { VehicleTypePageComponent } from './vehicle-type-page/vehicle-type-page.component';
+import { AddVehicletypePageComponent } from './add-vehicletype-page/add-vehicletype-page.component';
+import { EditVehicletypePageComponent } from './edit-vehicletype-page/edit-vehicletype-page.component';
+import { AddPricePageComponent } from './add-price-page/add-price-page.component';
+import { EditPricePageComponent } from './edit-price-page/edit-price-page.component';
 //import {FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -72,7 +79,14 @@ import { EditVehiclePageComponent } from './edit-vehicle-page/edit-vehicle-page.
     CustomersPageComponent,
     PricePageComponent,
     InvoicePageComponent,
-    EditVehiclePageComponent
+    EditVehiclePageComponent,
+    EditLocationPageComponent,
+    LogoutPageComponent,
+    VehicleTypePageComponent,
+    AddVehicletypePageComponent,
+    EditVehicletypePageComponent,
+    AddPricePageComponent,
+    EditPricePageComponent
   ],
   imports: [
     BrowserModule,

@@ -15,14 +15,16 @@
             <mat-icon> emoji_transportation</mat-icon>   Book a Vehicle
       </a>
 
-      <a mat-flat-button color="primary" [routerLink]="['/reservations']">
-            <mat-icon> airport_shuttle</mat-icon>  View Reservations
-      </a>
+      <button mat-flat-button color="primary" (click)="callReservation()">
+
+    <mat-icon> airport_shuttle</mat-icon>  View Reservations
+
+    </button>
+
 
       <a mat-flat-button color="primary" [routerLink]="['/cancel']">
               <mat-icon> sentiment_dissatisfied</mat-icon>   Cancel membership
       </a>
-
 
 
 

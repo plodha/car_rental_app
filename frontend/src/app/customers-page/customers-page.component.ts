@@ -18,6 +18,7 @@ export interface Customer {
   endDate:string;
   status:string;
   email :string;
+  userId:number;
 
 }
 
@@ -27,7 +28,7 @@ export interface Customer {
   styleUrls: ['./customers-page.component.scss']
 })
 export class CustomersPageComponent implements OnInit {
-
+  isLoadingResults = false;
   displayedColumns: string[] = ['id', 'name', 'addressLine','licenseInfo','licenseExpDate','startDate','endDate','email', 'status','star'];
   dataSource: MatTableDataSource<Customer>;
   ELEMENT_DATA: Customer[] = [];
@@ -55,6 +56,7 @@ export class CustomersPageComponent implements OnInit {
            startDate:obj.membershipStartDate,
            endDate:obj.membershipEndDate,
             email:obj.email,
+            userId : obj.userId.id,
             status : 'Active'
         }
         this.ELEMENT_DATA[i] = customer;
@@ -77,5 +79,27 @@ export class CustomersPageComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+  terminateCustomer(operation, ele){
+    console.log(ele)
 
+    if(operation == 'Delete') {
+      var formData = {}
+      console.log(ele.userId)
+      formData['userId'] = ele.userId;
+      this.isLoadingResults = false;
+      this.api.cancelMembershipAPI(formData).subscribe((res:any) => {
+        console.log(res);
+          this.isLoadingResults = false;
+
+          //this.router.navigate(['/vehicle']);
+          location.reload();
+
+        });
+
+
+      //this.router.navigate(['/editVehicle/'+ele.id]);
+    }
+
+
+  }
 }

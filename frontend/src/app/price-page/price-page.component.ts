@@ -3,7 +3,12 @@ import {MatPaginator} from '@angular/material/paginator';
 import {MatSort} from '@angular/material/sort';
 import {MatTableDataSource} from '@angular/material/table';
 import {SelectionModel} from '@angular/cdk/collections';
+import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 
+import {ActivatedRoute, Router } from '@angular/router';
+
+
+import {ApiService} from '../api.service'
 
 export interface Price {
   id:number;
@@ -11,23 +16,11 @@ export interface Price {
   vehicleSize: string;
   lateFee: string;
   hourlyFee: string;
+  hourlyRange:string;
+  vehicleTypeId: number;
 
 
 }
-const ELEMENT_DATA: Price[] = [
-  {id: 1, vehicleClass:'Compact',vehicleSize: '4',  lateFee:'$ 123.68', hourlyFee:'$ 70.00'},
-  {id: 2, vehicleClass:'Luxury',vehicleSize: '4',  lateFee:'$ 83.68', hourlyFee:'$ 90.00'},
-  {id: 3,  vehicleClass:'Van',vehicleSize: '7', lateFee:'$ 123.68', hourlyFee:'$ 110.00'},
-  {id: 4, vehicleClass:'Compact',vehicleSize: '4',  lateFee:'$ 123.68', hourlyFee:'$ 70.00'},
-  {id: 5, vehicleClass:'Luxury',vehicleSize: '4',  lateFee:'$ 83.68', hourlyFee:'$ 90.00'},
-  {id: 6,  vehicleClass:'Van',vehicleSize: '7', lateFee:'$ 123.68', hourlyFee:'$ 110.00'},
-  {id: 7, vehicleClass:'Compact',vehicleSize: '4',  lateFee:'$ 123.68', hourlyFee:'$ 70.00'},
-  {id: 8, vehicleClass:'Luxury',vehicleSize: '4',  lateFee:'$ 83.68', hourlyFee:'$ 90.00'},
-  {id: 9,  vehicleClass:'Van',vehicleSize: '7', lateFee:'$ 123.68', hourlyFee:'$ 110.00'},
-  {id: 10, vehicleClass:'Compact',vehicleSize: '4',  lateFee:'$ 123.68', hourlyFee:'$ 70.00'},
-  {id: 11, vehicleClass:'Luxury',vehicleSize: '4',  lateFee:'$ 83.68', hourlyFee:'$ 90.00'},
-  {id: 12,  vehicleClass:'Van',vehicleSize: '7', lateFee:'$ 123.68', hourlyFee:'$ 110.00'},
-];
 @Component({
   selector: 'app-price-page',
   templateUrl: './price-page.component.html',
@@ -35,14 +28,36 @@ const ELEMENT_DATA: Price[] = [
 })
 export class PricePageComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'vehicleClass', 'vehicleSize','lateFee','hourlyFee','star'];
+  displayedColumns: string[] = ['id', 'vehicleClass', 'vehicleSize','lateFee','hourlyFee','hourlyRange','star'];
   dataSource: MatTableDataSource<Price>;
-
+  ELEMENT_DATA: Price[] = [];
+  isLoadingResults = false;
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: true}) sort: MatSort;
-  constructor() {
-    this.dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+
+  constructor(private router: Router,private actr: ActivatedRoute, private formBuilder: FormBuilder,private api: ApiService) {
+    this.actr.data.subscribe((data)=>{
+      var prices = data.price;
+      var i = 0;
+      for (i = 0; i < prices.length; i++) {
+
+        var obj = prices[i]
+        var price = {
+          id: obj.id,
+          vehicleClass:obj.vehicleTypeId.vehicleClass,
+          vehicleSize: obj.vehicleTypeId.vehicleSize,
+          lateFee : obj.lateFee,
+          hourlyFee :obj.hourlyPrice,
+          hourlyRange:obj.hourlyRange,
+          vehicleTypeId : obj.vehicleTypeId.id
+
+        }
+        this.ELEMENT_DATA[i] = price;
+      }
+    });
+    this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
   }
 
@@ -58,6 +73,36 @@ export class PricePageComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+  updatePrice(operation, ele){
+    console.log('update ');
+    console.log(ele)
+    if(operation == 'Update') {
+      this.router.navigate(['/editPrice/'+ele.id]);
+    }
+    if(operation == 'Delete') {
+      var formData = {}
+      formData['priceId'] = ele.id;
+      console.log(ele.id)
+
+      this.isLoadingResults = false;
+      this.api.deletePrice(formData).subscribe((res:any) => {
+          console.log(res);
+          this.isLoadingResults = false;
+
+          //this.router.navigate(['/vehicle']);
+
+          location.reload();
+
+
+        });
+
+        location.reload();
+      //this.router.navigate(['/editVehicle/'+ele.id]);
+    }
+
+
   }
 
 }

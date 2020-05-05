@@ -83,17 +83,17 @@
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
             <mat-icon>more_vert</mat-icon>
         </button>
-              <mat-menu #menu="matMenu">
-                <button mat-menu-item>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="updateLocation('Update',element)">
 
-                  <span>Edit</span>
-                </button>
+            <span>Edit</span>
+          </button>
 
-                <button mat-menu-item>
+          <button mat-menu-item (click)="updateLocation('Delete',element)">
 
-                  <span>Delete</span>
-                </button>
-              </mat-menu>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
       </td>
     </ng-container>
 

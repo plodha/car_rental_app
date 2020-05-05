@@ -62,17 +62,7 @@ export class AddLocationPageComponent implements OnInit {
     this.api.addLocationAPI(formData).subscribe((res:any)=>{
       this.router.navigate(['/locations']);
     });
-    /*
-    this.api.addCases(this.casesForm.value)
-      .subscribe((res: any) => {
-          const id = res._id;
-          this.isLoadingResults = false;
-          this.router.navigate(['/login']);
-        }, (err: any) => {
-          console.log(err);
-          this.isLoadingResults = false;
-        });
-        */
+
   }
 
 }

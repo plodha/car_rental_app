@@ -7,8 +7,9 @@ import {ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./customer-landing-page.component.scss']
 })
 export class CustomerLandingPageComponent implements OnInit {
-
+  public userId = 0
   constructor(private router:Router) {
+    this.userId = localStorage.id
 
    }
 
@@ -23,8 +24,11 @@ export class CustomerLandingPageComponent implements OnInit {
 
     }
 
+  }
 
+  callReservation(){
 
+      this.router.navigate(['/reservations/'+localStorage.id]);
 
   }
 
