@@ -69,16 +69,6 @@ public class VehicleRegControllerTest {
 		MockitoAnnotations.initMocks(this);
 	}
 	
-	@Test
-	public void addVehicleTest() throws Exception {
-        
-        // ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
-        String results =  vehicleRegController.addVehicle(
-            "licenceplate", "model", "make", true, "vIN", 1, 1, "vehicleCondition", 1
-        );
-        Assert.assertEquals(results, null);
-    }
-
     @Test
 	public void getVehiclesTest() throws Exception {
         
