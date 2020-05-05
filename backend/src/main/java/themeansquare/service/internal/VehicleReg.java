@@ -348,9 +348,10 @@ public class VehicleReg implements IVehicleReg {
         1. get all vehicle for a location and vehicleType
         2. get all the active reservation
         3. for each vehicle of no.1, check overlapping date inside reservation list of no.2
-        logic for overlapping date checking:
-        1. newPickUpTime > oldDropOffTime or,
-        2. newDropoffTime < oldPickUpTime
+        4. if 4.1 or 4.2 date diff is positive (>0), then that vehicle is available for reservation
+        logic for non overlapping date checking:
+        4.1. newPickUpTime > oldDropOffTime or,
+        4.2. newDropoffTime < oldPickUpTime
     */
     public Iterable<Vehicle> getVehiclesAvailableForReservation (Integer locationId, Integer vehicleTypeId, String newPickUpTime, String newEstimatedDropOffTime) throws Exception {
         Iterable<Vehicle> itr = vehicleRepository.findAll();
@@ -371,10 +372,14 @@ public class VehicleReg implements IVehicleReg {
             Iterator iter_reserve = itr_reserve.iterator();
             while(iter_reserve.hasNext()) {
                 Reservation tempReservation = (Reservation) iter_reserve.next();
-
-                iter1.remove(); //ei vehicle id ta potential list theke bad
-            }
-            
+                String oldPickUpTime = tempReservation.getPickUpTime(); 
+                String oldDropOffTime = tempReservation.getActualDropOffTime();
+                Double diff_1 = this.DateDiff(newPickUpTime, oldDropOffTime); //check if: 1. newPickUpTime > oldDropOffTime
+                Double diff_2 = this.DateDiff(oldPickUpTime, newEstimatedDropOffTime); //check if: 2. newDropoffTime < oldPickUpTime
+                if (diff_1 <=0 || diff_2 <= 0) {
+                    iter1.remove(); //this vehicle is not eligible for reservation
+                }     
+            } 
         }
         return itr;
     }
@@ -411,7 +416,7 @@ public class VehicleReg implements IVehicleReg {
         }    
 
         // Get msec from each, and subtract.
-        double diff =   d2.getTime()- d1.getTime(); //estimatedDropOffTime -pickUpTime
+        double diff =   d1.getTime()- d2.getTime(); // pickUpTime - estimatedDropOffTime
         double diffSeconds = diff / 1000 % 60;  
         double diffMinutes = diff / (60 * 1000) % 60; 
         double diffHours = diff / (60 * 60 * 1000);                             
