@@ -65,8 +65,7 @@ public class RegistrationControllerTest {
 		c.setAddress(a);
 		c.setUserId(u);
 		
-		System.out.println(reg.register(c));
-		Assert.assertTrue(true);
+		String res = reg.register(c);
+		Assert.assertTrue(res.equals("{\"role\":\"Customer\",\"id\":\"0\",\"status\":\"200\",\"username\":\"pranav\"}"));
 	}
-
 }
