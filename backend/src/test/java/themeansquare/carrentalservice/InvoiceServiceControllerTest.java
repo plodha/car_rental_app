@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,10 +19,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import themeansquare.controller.CustomerController;
 import themeansquare.controller.DamageController;
+import themeansquare.controller.EmployeeController;
+import themeansquare.controller.InvoiceServiceController;
 import themeansquare.controller.RegistrationController;
 import themeansquare.model.Address;
 import themeansquare.model.Customer;
 import themeansquare.model.Damage;
+import themeansquare.model.Employee;
+import themeansquare.model.Invoice;
 import themeansquare.model.User;
 import themeansquare.model.VehicleType;
 import themeansquare.repository.AddressRepository;
@@ -32,9 +37,9 @@ import themeansquare.service.ICustomer;
 import themeansquare.service.internal.CustomerService;
 import themeansquare.service.internal.Registration;
 
-public class DamageControllerTest {
+public class InvoiceServiceControllerTest {
 	@InjectMocks
-	private CustomerController customerController;
+	private EmployeeController employeeController;
 	@InjectMocks
 	private RegistrationController regController;
 	@Mock
@@ -47,7 +52,9 @@ public class DamageControllerTest {
     private AddressRepository addressRepository;
     @Mock
     private DamageController damageController;
-    
+    @Mock
+    private InvoiceServiceController invoiceServiceController;
+
     @InjectMocks
     ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
     @InjectMocks
@@ -59,48 +66,26 @@ public class DamageControllerTest {
 	}
 	
 	@Test
-	public void getDamageForVehicleTypeTest() throws Exception {
+	public void computeInvoiceTest() throws Exception {
+        String [] test = {};
         // ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
-        ArrayList<Damage> results =  damageController.getDamageForVehicleType("1");
-        Assert.assertEquals(results.size(), 0);
-    }
-
-	@Test
-	public void addDamageTest() throws Exception {
-        // ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
-		String results =  damageController.addDamage(createDamage());
-		System.out.println(results);
-        Assert.assertEquals(results, null);
-	}
-	
-	@Test
-	public void updateDamageTest() throws Exception {
-        // ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
-		String results =  damageController.updateDamage(createDamage());
-		System.out.println(results);
-        Assert.assertEquals(results, null);
-	}
-	
-	@Test
-	public void deleteDamageTest() throws Exception {
-        // ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
-		String results =  damageController.deleteDamage("1");
-		System.out.println(results);
+        String results =  invoiceServiceController.computeInvoice("actualDropOffTime", 1, true, test);
         Assert.assertEquals(results, null);
     }
 
-    public Damage createDamage() {
-		VehicleType vt = new VehicleType();
-		vt.setVehicleClass("f");
-		vt.setVehicleSize(5);
-		
-		Damage d = new Damage();
-		d.setDamageFee(5);
-		d.setDamageType("f");
-		d.setVehicleTypeId(vt);
+    @Test
+	public void getInvoicesTest() throws Exception {
+        String [] test = {};
+        // ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
+        Iterable<Invoice>results =  invoiceServiceController.getInvoices();
+        Assert.assertEquals(results.iterator().hasNext(), false);
+    }
 
-	   return d;
-	}   
-	
-
+    @Test
+	public void getInvoiceByIdTest() throws Exception {
+        String [] test = {};
+        // ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
+        Optional<Invoice>results =  invoiceServiceController.getInvoiceById(1);
+        Assert.assertEquals(results.isPresent(), false);
+    }
 }
