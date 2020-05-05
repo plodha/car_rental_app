@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 //import { ApiService } from '../api.service';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import {ApiService} from '../api.service'
 
 
 /** Error when invalid control is dirty, touched, or submitted. */
@@ -23,7 +24,9 @@ export class LoginPageComponent implements OnInit {
   password = '';
   isLoadingResults = false;
   matcher = new MyErrorStateMatcher();
-  constructor(private router: Router, private formBuilder: FormBuilder) { }
+  constructor(private router: Router, private formBuilder: FormBuilder,private api: ApiService) {
+
+  }
 
   ngOnInit(): void {
     this.loginForm = this.formBuilder.group({
@@ -33,7 +36,45 @@ export class LoginPageComponent implements OnInit {
   }
   onFormSubmit() {
     this.isLoadingResults = true;
-    this.router.navigate(['/home']);
+  //  this.router.navigate(['/home']);
+
+
+  let username = (this.loginForm.get('username').value);
+  let password = (this.loginForm.get('password').value);
+
+
+  var data = {}
+  data['username'] = username
+  data['password'] = password
+  console.log(data)
+
+    this.api.authAPI(data).subscribe((response:any) => {
+      console.log("result")
+      console.log(response);
+      var status = response.status;
+      if(status == "200"){
+        var role = response.role;
+        console.log(role)
+
+        if(role == 'Employee') {
+           this.router.navigate(['/admin']);
+        }
+        else{
+           this.router.navigate(['/customerPage']);
+        }
+        //ole: "Customer", id: "4", status: "200", username: "jeyasri_s"
+        localStorage.setItem("username", response.username);
+        localStorage.setItem("id",response.id );
+        localStorage.setItem('role',response.role)
+
+
+
+      }
+      else {
+      alert('Invalid credentials')
+      }
+
+    })
   }
 
 }

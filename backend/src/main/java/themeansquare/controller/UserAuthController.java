@@ -19,20 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/*
-    Customer
-    *int _id;
-    String name;
-    String licenseNumber ;
-    *DateTimeFormatter registrationDate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss") ;
-    *DateTimeFormatter registrationEndDate  = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss") ;
-    *boolean membershipStatus ;
-    *boolean verified ;
-    DateTimeFormatter licenseExpDate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss") ;
-    Address address ;
-    String email;
-*/
-
 @RestController
 public class UserAuthController {
 
@@ -51,6 +37,28 @@ public class UserAuthController {
         }
      * @param user
      * @return
+     */
+    
+    /**
+        Use case:
+            This is to make sure that the user is authenticated. They need to provide the correct credentials
+        
+        Body Param Example:
+            {
+                "username" : "exampleUser",
+                "password" : "examplePassword"
+            }
+
+        Response:
+            Success:
+                response.put("status", "200");
+                response.remove("message");
+                response.put("role", getRole(user.getId()));
+                response.put("username", user.getUsername());
+                response.put("id", user.getId() + "");
+            Failure:
+                response.put("status", "400");
+                response.put("message", "Some message on why it failed");
      */
 
     @PostMapping("/auth")

@@ -14,13 +14,40 @@
   <mat-card class="example-card">
     <form [formGroup]="registerForm" (ngSubmit)="onFormSubmit()">
       <mat-form-field class="example-full-width">
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="Firstname Lastname" formControlName="name"
+        <mat-label>First Name</mat-label>
+        <input matInput placeholder="Firstname" formControlName="firstName"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!registerForm.get('name').valid && registerForm.get('name').touched">Please enter Name</span>
+          <span *ngIf="!registerForm.get('firstName').valid && registerForm.get('firstName').touched">Please enter First Name</span>
         </mat-error>
       </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Last Name</mat-label>
+        <input matInput placeholder="Lastname" formControlName="lastName"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('lastName').valid && registerForm.get('lastName').touched">Please enter Last Name</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Username</mat-label>
+        <input matInput placeholder="Username" formControlName="username"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('username').valid && registerForm.get('username').touched">Please enter Username</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Password</mat-label>
+        <input matInput placeholder="Password" type="password" formControlName="password"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!registerForm.get('password').valid && registerForm.get('password').touched">Please enter Password</span>
+        </mat-error>
+      </mat-form-field>
+
+
       <mat-form-field>
         <mat-label>Date of birth</mat-label>
         <input matInput [matDatepicker]="picker" placeholder="Date of Birth"  formControlName="dateofbirth">
@@ -62,7 +89,7 @@
         <input matInput placeholder="Zip Code" formControlName="zipcode"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!registerForm.get('zipcode').valid && registerForm.get('zipcode').touched">Please enter Zip <code></code></span>
+          <span *ngIf="!registerForm.get('zipcode').valid && registerForm.get('zipcode').touched">Please enter Zipcode</span>
         </mat-error>
       </mat-form-field>
       <mat-form-field class="example-full-width">
@@ -89,6 +116,46 @@
       <mat-datepicker #licensepicker></mat-datepicker>
       <mat-error>
         <span *ngIf="!registerForm.get('licenseExpiryDate').valid && registerForm.get('licenseExpiryDate').touched">Please enter License Expiration Date</span>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+      <mat-label>Credit card number</mat-label>
+      <input matInput placeholder="Credit card" formControlName="creditCard"
+              [errorStateMatcher]="matcher">
+      <mat-error>
+        <span *ngIf="!registerForm.get('creditCard').valid && registerForm.get('creditCard').touched">Please enter Credit card</span>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field >
+      <mat-label>Card Expiration Month</mat-label>
+      <mat-select formControlName="creditCardExpMonth">
+        <mat-option *ngFor="let month of months" [value]="month.value">
+          {{month.label}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Card Expiration Year</mat-label>
+      <mat-select formControlName="creditCardExpYear">
+        <mat-option *ngFor="let year of years" [value]="year">
+          {{year}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+
+
+
+
+    <mat-form-field class="example-full-width">
+      <mat-label>cvv</mat-label>
+      <input matInput placeholder="cvv" formControlName="cvv" maxlength="3"
+              [errorStateMatcher]="matcher">
+      <mat-error>
+        <span *ngIf="!registerForm.get('cvv').valid && registerForm.get('cvv').touched">Please enter cvv</span>
       </mat-error>
     </mat-form-field>
 

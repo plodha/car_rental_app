@@ -1,0 +1,84 @@
+<div class="example-container mat-elevation-z8">
+  <div class="container">
+    <div class='title'>
+    <h1>Car Rental System</h1>
+    </div>
+  </div>
+  <div class="example-loading-shade"
+        *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <!-- <div class="button-row">
+    <a mat-flat-button color="primary" [routerLink]="['/cases']"><mat-icon>list</mat-icon></a>
+  </div> -->
+  <mat-card class="example-card">
+    <form [formGroup]="addLocationForm" (ngSubmit)="onFormSubmit()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="name" formControlName="name" pattern="^[a-zA-Z][a-zA-Z ]+$"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addLocationForm.get('name').valid && addLocationForm.get('name').touched">Please enter Firstname Lastname</span>
+        </mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Address Line</mat-label>
+        <input matInput placeholder="Address Line" formControlName="addressLine" pattern="^(?:[A-Za-z0-9]+)(?:[A-Za-z0-9 _]*)$"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addLocationForm.get('addressLine').valid && addLocationForm.get('addressLine').touched">Please enter Address Line</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>City</mat-label>
+        <input matInput placeholder="City" formControlName="city" pattern="^[a-zA-Z][a-zA-Z ]+$"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addLocationForm.get('city').valid && addLocationForm.get('city').touched">Please enter City</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>State</mat-label>
+        <input matInput placeholder="State" formControlName="state" pattern="^[a-zA-Z][a-zA-Z ]+$"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addLocationForm.get('state').valid && addLocationForm.get('state').touched">Please enter State</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Zipcode</mat-label>
+        <input matInput placeholder="Zipcode" formControlName="zipcode" pattern="^[0-9]+$" maxlength="5"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addLocationForm.get('zipcode').valid && addLocationForm.get('zipcode').touched">Please enter Zipcode</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Contact Number</mat-label>
+        <input matInput placeholder="Contact Number" formControlName="contactNumber" pattern="^[0-9]+$" maxlength="10"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addLocationForm.get('contactNumber').valid && addLocationForm.get('contactNumber').touched">Please enter Contact number</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Vehicle Capacity</mat-label>
+        <input matInput placeholder="Vehicle Capacity" formControlName="vehicleCapacity" pattern="^[0-9]+$"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addLocationForm.get('vehicleCapacity').valid && addLocationForm.get('vehicleCapacity').touched">Please enter Vehicle capacity</span>
+        </mat-error>
+      </mat-form-field>
+
+
+
+      <div class="button-row">
+        <button type="submit" [disabled]="!addLocationForm.valid" mat-flat-button color="primary">Save</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

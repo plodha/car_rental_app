@@ -1,0 +1,68 @@
+<div class="example-container">
+  <div class="container">
+    <div class='title'>
+    <h1>Car Rental System</h1>
+    </div>
+  </div>
+  <div class="example-loading-shade"
+        *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+  <!-- <div class="button-row">
+    <a mat-flat-button color="primary" [routerLink]="['/cases']"><mat-icon>list</mat-icon></a>
+  </div> -->
+  <mat-card class="example-card">
+    <form [formGroup]="reservationForm" (ngSubmit)="onFormSubmit()">
+
+      <mat-form-field class="example-full-width">
+          <mat-label>Location</mat-label>
+            <mat-select formControlName="location" >
+              <mat-option *ngFor="let location of locations"  [value]="location.id">
+                {{location.name}}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              <span *ngIf="!reservationForm.get('location').valid && reservationForm.get('location').touched">Please select Location <code></code></span>
+            </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+          <mat-label>Vehicle Type</mat-label>
+            <mat-select formControlName="vehicleType">
+              <mat-option *ngFor="let vehicleType of vehicleTypes"  [value]="vehicleType.id">
+                {{vehicleType.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              <span *ngIf="!reservationForm.get('vehicleType').valid && reservationForm.get('vehicleType').touched">Please select Vehicle type <code></code></span>
+            </mat-error>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Pickup Date time</mat-label>
+       <input matInput [ngxMatDatetimePicker]="pickupTimePicker" placeholder="Pickup date" [formControl]="pickupDateTime">
+       <mat-datepicker-toggle matSuffix [for]="pickupTimePicker"></mat-datepicker-toggle>
+       <ngx-mat-datetime-picker [showSeconds]='false' #pickupTimePicker></ngx-mat-datetime-picker>
+     </mat-form-field>
+
+
+
+
+      <mat-form-field>
+          <mat-label>Dropoff Date time</mat-label>
+          <input matInput [ngxMatDatetimePicker]="dropoffTimePicker" placeholder="Dropoff date" [formControl]="dropoffDateTime">
+          <mat-datepicker-toggle matSuffix [for]="dropoffTimePicker"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #dropoffTimePicker></ngx-mat-datetime-picker>
+
+        <!-- <ngx-datepicker [(ngModel)]="model"></ngx-datepicker> -->
+
+      </mat-form-field>
+
+
+
+
+      <div class="button-row">
+        <button type="submit" [disabled]="!reservationForm.valid" mat-flat-button color="primary">Search Vehicles</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

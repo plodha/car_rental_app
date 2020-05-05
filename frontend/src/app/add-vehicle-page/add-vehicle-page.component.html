@@ -1,0 +1,86 @@
+<div class="example-container mat-elevation-z8">
+  <div class="container">
+    <div class='title'>
+    <h1>Car Rental System</h1>
+    </div>
+  </div>
+  <div class="example-loading-shade"
+        *ngIf="isLoadingResults">
+    <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
+  </div>
+
+  <mat-card class="example-card">
+    <form [formGroup]="addVehicleForm" (ngSubmit)="onFormSubmit()">
+      <mat-form-field class="example-full-width">
+        <mat-label>Make</mat-label>
+        <input matInput placeholder="make" formControlName="make" pattern="^[a-zA-Z][a-zA-Z ]+$"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('make').valid && addVehicleForm.get('make').touched">Please enter make of the vehicle</span>
+        </mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Model</mat-label>
+        <input matInput placeholder="Model" formControlName="model" pattern="^[A-Za-z0-9 ]+$"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('model').valid && addVehicleForm.get('model').touched">Please enter model</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Year</mat-label>
+        <input matInput placeholder="Year" formControlName="year" pattern="^[0-9]+$"  maxlength="4"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('year').valid && addVehicleForm.get('year').touched">Please enter Year</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>Vehicle Identification Number</mat-label>
+        <input matInput placeholder="VIN" formControlName="VIN" pattern="^[A-Za-z0-9]+$"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('VIN').valid && addVehicleForm.get('VIN').touched">Please enter VIN</span>
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>License Plate</mat-label>
+        <input matInput placeholder="License Plate" maxlength="7" pattern="^[A-Za-z0-9]+$" formControlName="licensePlate"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('licensePlate').valid && addVehicleForm.get('licensePlate').touched">Please enter License Plate <code></code></span>
+        </mat-error>
+      </mat-form-field>
+  <mat-form-field class="example-full-width">
+      <mat-label>Location</mat-label>
+        <mat-select formControlName="location">
+          <mat-option *ngFor="let location of locations"  [value]="location.id">
+            {{location.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('location').valid && addVehicleForm.get('location').touched">Please select Location <code></code></span>
+        </mat-error>
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+      <mat-label>Vehicle Type</mat-label>
+        <mat-select formControlName="vehicleType">
+          <mat-option *ngFor="let vehicleType of vehicleTypes"  [value]="vehicleType.id">
+            {{vehicleType.value}}
+          </mat-option>
+        </mat-select>
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('vehicleType').valid && addVehicleForm.get('vehicleType').touched">Please select Vehicle type <code></code></span>
+        </mat-error>
+  </mat-form-field>
+
+
+      <div class="button-row">
+        <button type="submit" [disabled]="!addVehicleForm.valid" mat-flat-button color="primary">Save</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

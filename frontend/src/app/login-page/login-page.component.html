@@ -20,7 +20,7 @@
       </mat-form-field>
       <mat-form-field class="example-full-width">
         <mat-label>Password</mat-label>
-        <input matInput placeholder="Password" formControlName="password"
+        <input matInput placeholder="Password" type="password" formControlName="password"
                 [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!loginForm.get('password').valid && loginForm.get('password').touched">Please enter Password</span>
@@ -29,6 +29,7 @@
       <div class="button-row">
         <button type="submit" [disabled]="!loginForm.valid" mat-flat-button color="primary">Login</button>
       </div>
+      <span style="color:red;display:none" class="error"> Invalid credentials </span>
     </form>
   </mat-card>
   </div>

@@ -72,10 +72,12 @@ public class VehicleRegController {
             @RequestParam(value = "status") Boolean status, @RequestParam(value = "vIN") String vIN,
             @RequestParam(value = "year") int year, @RequestParam(value = "vehicleTypeId") int vehicleTypeId,
             @RequestParam(value = "vehicleCondition") String vehicleCondition,
-            @RequestParam(value = "locationId") int locationId) throws Exception {
+            @RequestParam(value = "locationId") int locationId, 
+            @RequestParam(value = "currentMileage") String currentMileage, 
+            @RequestParam(value = "registrationTag") String registrationTag, 
+            @RequestParam(value = "serviceDate") String serviceDate) throws Exception {
 
-        IVehicleReg reg = new VehicleReg(licensePlate, model, make, status, vIN, year, vehicleCondition,locationId, vehicleTypeId,
-                vehicleRepository, vehicleTypeRepository, locationRepository, addressRepository);
+        IVehicleReg reg = new VehicleReg(licensePlate, model, make, status, vIN, year, vehicleCondition,locationId, vehicleTypeId,currentMileage, registrationTag, serviceDate, vehicleRepository, vehicleTypeRepository, locationRepository, addressRepository);
         String response = reg.addVehicle();
         return response;
     }
@@ -98,14 +100,14 @@ public class VehicleRegController {
     }
 
     // get available vehicle for a vehicleType Id
-    @GetMapping(value = "/vehiclebyvehicletype/{vehicleTypeId}")
+    @GetMapping(value = "/vehicleForVehicletype/{vehicleTypeId}")
     public Iterable<Vehicle> getVehicleByVehicleType(@PathVariable Integer vehicleTypeId) throws Exception {
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         return reg.getVehicleByVehicleType(vehicleTypeId);
     }
 
     // get available vehicle for a location
-    @GetMapping(value = "/vehiclebylocation/{locationId}")
+    @GetMapping(value = "/vehicleForLocation/{locationId}")
     public Iterable<Vehicle> getVehicleByLocation(@PathVariable Integer locationId) throws Exception {
         IVehicleReg reg = new VehicleReg(vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         return reg.getVehicleByLocation(locationId);
@@ -157,10 +159,13 @@ public class VehicleRegController {
         @RequestParam(value = "street") String street,
         @RequestParam(value = "city") String city, 
         @RequestParam(value = "state") String state, 
-        @RequestParam(value = "zipcode") String zipcode) throws Exception {
+        @RequestParam(value = "zipcode") String zipcode,
+        @RequestParam(value = "currentMileage") String currentMileage, 
+        @RequestParam(value = "registrationTag") String registrationTag, 
+        @RequestParam(value = "serviceDate") String serviceDate) throws Exception {
         
         IVehicleReg reg = new VehicleReg ( vehicleClass, vehicleSize , licensePlate , model,make, status, vIN,
-                                          year, vehicleCondition,contactNumber, name, vehicleCapacity, street, city, state, zipcode,
+                                          year, vehicleCondition,contactNumber, name, vehicleCapacity, street, city, state, zipcode,currentMileage, registrationTag, serviceDate,
                                           vehicleRepository, vehicleTypeRepository, locationRepository,addressRepository);
         String response = reg.addVehicleOld();
         return response;

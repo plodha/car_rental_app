@@ -23,33 +23,8 @@ public class Registration implements IRegistration {
     private CustomerRepository customerRepository;
     private AddressRepository addressRepository;
 
-    private String username;
-    private String password;
-    private String firstName;
-    private String lastName;
-    private String street;
-    private String city;
-    private String state;
-    private String zipcode;
-    private String licenseNumber;
-    private String licenseExpDate;
-    private String email;
+    public Registration(UserRepository userRepository, CustomerRepository customerRepository, AddressRepository addressRepository) {
 
-    public Registration(String username, String password, String firstName, String lastName, String street, String city,
-            String state, String zipcode, String licenseNumber, String licenseExpDate, String email,
-            UserRepository userRepository, CustomerRepository customerRepository, AddressRepository addressRepository) {
-
-        this.username = username;
-        this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.street = street;
-        this.city = city;
-        this.state = state;
-        this.zipcode = zipcode;
-        this.licenseNumber = licenseNumber;
-        this.licenseExpDate = licenseExpDate;
-        this.email = email;
         this.userRepository = userRepository;
         this.customerRepository = customerRepository;
         this.addressRepository = addressRepository;
@@ -57,38 +32,43 @@ public class Registration implements IRegistration {
     }
 
     // Create design pattern for this validation check
-    public String register() throws Exception {
+    public String register(Customer newCustomer) throws Exception {
         HashMap<String, String> response = new HashMap<>();
         response.put("message", "username is taken");
         response.put("status", "400");
 
         // Add check for user name
-        if (checkIfUserExists()) {
+        if (!checkIfUserExists(newCustomer.getUserId().getUsername())) {
             response.remove("message");
             Customer customer = new Customer();
-            Date licenseExpDateFormat = new SimpleDateFormat("MM/dd/yyyy").parse(licenseExpDate);
+            // Date licenseExpDateFormat = new SimpleDateFormat("MM/dd/yyyy").parse(licenseExpDate);
 
-            customer.setFirstName(firstName);
-            customer.setLastName(lastName);
+            customer.setFirstName(newCustomer.getFirstName());
+            customer.setLastName(newCustomer.getLastName());
             
-            customer.setLicenseNumber(licenseNumber);
-            customer.setLicenseExpDate(licenseExpDateFormat);
+            customer.setLicenseNumber(newCustomer.getLicenseNumber());
+            customer.setLicenseExpDate(newCustomer.getLicenseExpDate());
             response.put("message", "email is taken");
             // Add email check
-            if (checkIfEmailExists()) {
+            if (!checkIfEmailExists(newCustomer.getEmail())) {
                 response.remove("message");
-                customer.setEmail(email);
+                customer.setEmail(newCustomer.getEmail());
 
                 Date startMembership = getStartMembershipDate();
                 Date endMembership = getEndMembershipDate();
                 customer.setMembershipStartDate(startMembership);                
                 customer.setMembershipEndDate(endMembership);
                 
-                customer.setUserId(this.createUser());
+                customer.setUserId(this.createUser(newCustomer.getUserId().getUsername(), newCustomer.getUserId().getPassword()));
                 
-                customer.setAddress(this.createAddress());
+                customer.setAddress(this.createAddress(newCustomer.getAddress().getCity(), newCustomer.getAddress().getState(), newCustomer.getAddress().getStreet(), newCustomer.getAddress().getZipCode()));
+                
+                customer.setCreditCard(newCustomer.getCreditCard());
+                customer.setCVV(newCustomer.getCVV());
+                customer.setCreditCardExpDate(newCustomer.getCreditCardExpDate());
+
                 customerRepository.save(customer);
-                response.put("username", this.username);
+                response.put("username", newCustomer.getUserId().getUsername());
                 response.put("role", "Customer");
                 response.put("id", customer.getUserId().getId() + "");
                 response.put("status", "200");
@@ -98,22 +78,22 @@ public class Registration implements IRegistration {
         return this.convertMapToJson(response);
     }
 
-    private Address createAddress() {
+    private Address createAddress(String city, String state, String street, int zipcode) {
         Address address = new Address();
-        address.setCity(this.city);
-        address.setState(this.state);
-        address.setStreet(this.street);
-        address.setZipCode(Integer.parseInt(this.zipcode));
+        address.setCity(city);
+        address.setState(state);
+        address.setStreet(street);
+        address.setZipCode(zipcode);
         addressRepository.save(address);
 
         return address;
     }
 
-    public User createUser() {
+    public User createUser(String username, String password) {
         User newUser = new User();
 
-        newUser.setUsername(this.username);
-        newUser.setPassword(this.password);
+        newUser.setUsername(username);
+        newUser.setPassword(password);
         userRepository.save(newUser);
 
         return newUser;
@@ -128,13 +108,13 @@ public class Registration implements IRegistration {
 
     public Date getEndMembershipDate() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.YEAR, 1); 
-        Date nextYear = cal.getTime();
+        cal.add(Calendar.MONTH, 6); 
+        Date nextSixMonths = cal.getTime();
 
-        return nextYear;
+        return nextSixMonths;
     }
 
-    public boolean checkIfEmailExists() {
+    public boolean checkIfEmailExists(String email) {
 
         Iterable<Customer> itr = customerRepository.findAll();
         Iterator it = itr.iterator();
@@ -142,15 +122,15 @@ public class Registration implements IRegistration {
             Customer tempCustomer = (Customer) it.next();
             System.out.println(tempCustomer.getEmail());
             
-            if (tempCustomer.getEmail().equals(this.email)) {
-                return false;
+            if (tempCustomer.getEmail().equals(email)) {
+                return true;
             }
         }
 
-        return true;
+        return false;
     }
 
-    public boolean checkIfUserExists()  {
+    public boolean checkIfUserExists(String username)  {
         
         Iterable<User> itr = userRepository.findAll();
         
@@ -160,12 +140,12 @@ public class Registration implements IRegistration {
             User user = (User) it.next();
             System.out.println(user.getUsername());
             
-            if (user.getUsername().equals(this.username)) {
-                return false;
+            if (user.getUsername().equals(username)) {
+                return true;
             }
         }
         
-        return true;
+        return false;
     }
 
     public boolean isValidEmail() {

@@ -42,15 +42,15 @@ public class Reservation{
 	private Location Location;
 	
 	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date PickUpTime;
+	//@Temporal(TemporalType.TIMESTAMP)
+	private String PickUpTime;
 	
 	@NotNull
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date EstimateDropOffTime;
+	//@Temporal(TemporalType.TIMESTAMP)
+	private String EstimateDropOffTime;
 	
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date ActualDropOffTime;
+	//@Temporal(TemporalType.TIMESTAMP)
+	private String ActualDropOffTime;
 	
 	@NotNull
 	private double EstimatedPrice;
@@ -59,6 +59,13 @@ public class Reservation{
 	@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "Invoice", referencedColumnName = "Id")
 	private Invoice Invoice;
+	
+	@NotNull
+	private boolean status;
+
+	public boolean isStatus() {return status; }
+
+	public void setStatus(boolean status) { this.status = status; }
 
 	public int getId() { return Id; }
 
@@ -76,17 +83,17 @@ public class Reservation{
 
 	public void setLocation(Location location) { Location = location; }
 
-	public Date getPickUpTime() { return PickUpTime; }
+	public String getPickUpTime() { return PickUpTime; }
 
-	public void setPickUpTime(Date pickUpTime) { PickUpTime = pickUpTime; }
+	public void setPickUpTime(String pickUpTime) { PickUpTime = pickUpTime; }
 
-	public Date getEstimateDropOffTime() { return EstimateDropOffTime; }
+	public String getEstimateDropOffTime() { return EstimateDropOffTime; }
 
-	public void setEstimateDropOffTime(Date estimateDropOffTime) { EstimateDropOffTime = estimateDropOffTime; }
+	public void setEstimateDropOffTime(String estimateDropOffTime) { EstimateDropOffTime = estimateDropOffTime; }
 
-	public Date getActualDropOffTime() { return ActualDropOffTime; }
+	public String getActualDropOffTime() { return ActualDropOffTime; }
 
-	public void setActualDropOffTime(Date actualDropOffTime) { ActualDropOffTime = actualDropOffTime; }
+	public void setActualDropOffTime(String actualDropOffTime) { ActualDropOffTime = actualDropOffTime; }
 
 	public double getEstimatedPrice() { return EstimatedPrice; }
 

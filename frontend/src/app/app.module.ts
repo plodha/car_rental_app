@@ -28,6 +28,8 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import {MatRadioModule} from '@angular/material/radio';
+
 import {HttpClientModule} from '@angular/common/http';
 import {MatMenuModule} from '@angular/material/menu';
 import { AddVehiclePageComponent } from './add-vehicle-page/add-vehicle-page.component';
@@ -37,7 +39,23 @@ import { AddReservationPageComponent } from './add-reservation-page/add-reservat
 import { DropoffSurveyPageComponent } from './dropoff-survey-page/dropoff-survey-page.component';
 import { CancelPageComponent } from './cancel-page/cancel-page.component';
 
-
+import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
+import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { CustomerLandingPageComponent } from './customer-landing-page/customer-landing-page.component';
+import { ReservationsPageComponent } from './reservations-page/reservations-page.component';
+import { LocationsPageComponent } from './locations-page/locations-page.component';
+import { CustomersPageComponent } from './customers-page/customers-page.component';
+import { PricePageComponent } from './price-page/price-page.component';
+import { InvoicePageComponent } from './invoice-page/invoice-page.component';
+import { EditVehiclePageComponent } from './edit-vehicle-page/edit-vehicle-page.component';
+import { EditLocationPageComponent } from './edit-location-page/edit-location-page.component';
+import { LogoutPageComponent } from './logout-page/logout-page.component';
+import { VehicleTypePageComponent } from './vehicle-type-page/vehicle-type-page.component';
+import { AddVehicletypePageComponent } from './add-vehicletype-page/add-vehicletype-page.component';
+import { EditVehicletypePageComponent } from './edit-vehicletype-page/edit-vehicletype-page.component';
+import { AddPricePageComponent } from './add-price-page/add-price-page.component';
+import { EditPricePageComponent } from './edit-price-page/edit-price-page.component';
 //import {FormsModule} from '@angular/forms';
 
 @NgModule({
@@ -54,7 +72,21 @@ import { CancelPageComponent } from './cancel-page/cancel-page.component';
     ProfilePageComponent,
     AddReservationPageComponent,
     DropoffSurveyPageComponent,
-    CancelPageComponent
+    CancelPageComponent,
+    CustomerLandingPageComponent,
+    ReservationsPageComponent,
+    LocationsPageComponent,
+    CustomersPageComponent,
+    PricePageComponent,
+    InvoicePageComponent,
+    EditVehiclePageComponent,
+    EditLocationPageComponent,
+    LogoutPageComponent,
+    VehicleTypePageComponent,
+    AddVehicletypePageComponent,
+    EditVehicletypePageComponent,
+    AddPricePageComponent,
+    EditPricePageComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +111,12 @@ import { CancelPageComponent } from './cancel-page/cancel-page.component';
     MatDatepickerModule,
     MatNativeDateModule,
     HttpClientModule,
-    MatMenuModule
+    MatMenuModule,
+    NgxMaterialTimepickerModule,
+    MatRadioModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatMomentModule
 
 
   ],
