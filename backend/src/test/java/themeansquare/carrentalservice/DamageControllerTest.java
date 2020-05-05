@@ -17,9 +17,11 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import themeansquare.controller.CustomerController;
+import themeansquare.controller.DamageController;
 import themeansquare.controller.RegistrationController;
 import themeansquare.model.Address;
 import themeansquare.model.Customer;
+import themeansquare.model.Damage;
 import themeansquare.model.User;
 import themeansquare.repository.AddressRepository;
 import themeansquare.repository.CustomerRepository;
@@ -29,7 +31,7 @@ import themeansquare.service.ICustomer;
 import themeansquare.service.internal.CustomerService;
 import themeansquare.service.internal.Registration;
 
-public class CustomerControllerTest {
+public class DamageControllerTest {
 	@InjectMocks
 	private CustomerController customerController;
 	@InjectMocks
@@ -42,6 +44,9 @@ public class CustomerControllerTest {
     private CustomerRepository customerRepository;
     @Mock
     private AddressRepository addressRepository;
+    @Mock
+    private DamageController damageController;
+    
     @InjectMocks
     ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
     @InjectMocks
@@ -53,51 +58,11 @@ public class CustomerControllerTest {
 	}
 	
 	@Test
-	public void getAllCustomersTest() throws Exception {
+	public void getDamageForVehicleTypeTest() throws Exception {
         // ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
-        ArrayList<Customer> results =  customerController.getAllCustomers();
+        ArrayList<Damage> results =  damageController.getDamageForVehicleType("1");
         Assert.assertEquals(results.size(), 0);
     }
-	
-	@Test
-	public void getCustomerInfoTest() throws Exception {
-
-		regController.register(createCustomer("email", "username"));
-		Customer response = customerController.getCustomerInfo("1");
-		Assert.assertTrue(response == null);
-
-	}
-	
-	@Test
-	public void updateCustomerTest() throws Exception {
-
-		regController.register(createCustomer("email", "username"));
-		try {
-			String response = customerController.updateCustomer(createCustomer("email", "username"));
-		
-		} catch (Exception e) {
-			Assert.assertTrue(true);
-		}
-		
-		// Assert.assertTrue(response == null);
-
-	}
-
-	@Test
-	public void removeCustomerTest() throws Exception {
-
-		regController.register(createCustomer("email", "username"));
-		try {
-			String response = customerController.removeCustomer("1");
-			
-			Assert.assertEquals("{\"status\":\"200\"}", response);
-		} catch (Exception e) {
-			
-		}
-		
-		// Assert.assertTrue(response == null);
-
-	}
 
     public Customer createCustomer(String email, String username) {
         Customer c = new Customer();
