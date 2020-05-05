@@ -116,7 +116,7 @@ public class VehicleRegController {
     // get available vehicle for a vehicleType Id, location, pickuptime, actualdropOfftime
     /*
         from postman:
-        http://localhost:8080/getEstimatedPriceForVehicles?locationId=2&pickUpTime=1/15/2020 10:00&estimatedDropOffTime=1/15/2020 16:57
+        http://localhost:8080/getVehiclesAvailableForReservation?locationId=2&vehicleTypeId=1&newPickUpTime=1/15/2020 10:00&newEstimatedDropOffTime=1/17/2020 10:00
     */
     @GetMapping("/getVehiclesAvailableForReservation")
     public Iterable<Vehicle> getVehiclesAvailableForReservation(@RequestParam(value = "locationId") Integer locationId,
