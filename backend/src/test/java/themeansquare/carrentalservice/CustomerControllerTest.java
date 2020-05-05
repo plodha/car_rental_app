@@ -1,5 +1,6 @@
 package themeansquare.carrentalservice;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import org.junit.Assert;
@@ -10,42 +11,57 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import themeansquare.controller.CustomerController;
 import themeansquare.controller.RegistrationController;
 import themeansquare.model.Address;
 import themeansquare.model.Customer;
 import themeansquare.model.User;
 import themeansquare.repository.AddressRepository;
 import themeansquare.repository.CustomerRepository;
+import themeansquare.repository.EmployeeRepository;
 import themeansquare.repository.UserRepository;
+import themeansquare.service.ICustomer;
+import themeansquare.service.internal.CustomerService;
 import themeansquare.service.internal.Registration;
 
-public class RegistrationControllerTest {
+public class CustomerControllerTest {
+	@InjectMocks
+	private CustomerController customerController;
 	@InjectMocks
 	private RegistrationController regController;
-	
 	@Mock
     private UserRepository userRepository;
+    @Mock
+    private EmployeeRepository employeeRepository;
     @Mock
     private CustomerRepository customerRepository;
     @Mock
     private AddressRepository addressRepository;
-	
-	@Before
+    @InjectMocks
+    ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
+    @InjectMocks
+    Registration reg = new Registration(userRepository, customerRepository, addressRepository);
+
+    @Before
 	public void init() {
 		MockitoAnnotations.initMocks(this);
 	}
 	
 	@Test
-	public void registerTest() throws Exception {
-		
-		Registration reg = new Registration(userRepository, customerRepository, addressRepository);
-		Customer c = new Customer();
+	public void getAllCustomersTest() throws Exception {
+        // ICustomer customerService = new CustomerService(userRepository, employeeRepository, customerRepository, addressRepository);
+        ArrayList<Customer> results =  customerController.getAllCustomers();
+        Assert.assertEquals(results.size(), 0);
+    }
+    
+    public Customer createCustomer(String email, String username) {
+        Customer c = new Customer();
 		Address a = new Address();
 		User u = new User();
 		
 		
 		u.setPassword("lol");
-		u.setUsername("pranav");
+		u.setUsername(username);
 		
 		a.setCity("Fremont");
 		a.setState("CA");
@@ -54,7 +70,7 @@ public class RegistrationControllerTest {
 		
 		Date date = new Date();
 		c.setCVV("233");
-		c.setEmail("pranav.lodha@sjsu.edu");
+		c.setEmail(email);
 		c.setFirstName("Pranav");
 		c.setLastName("Lodha");
 		c.setLicenseExpDate(date);
@@ -65,9 +81,8 @@ public class RegistrationControllerTest {
 		c.setCreditCard("12378917293");
 		c.setCreditCardExpDate(date);
 		c.setAddress(a);
-		c.setUserId(u);
-		
-		String res = reg.register(c);
-		Assert.assertTrue(res.equals("{\"role\":\"Customer\",\"id\":\"0\",\"status\":\"200\",\"username\":\"pranav\"}"));
-	}
+        c.setUserId(u);
+        
+        return c;
+    }   
 }
