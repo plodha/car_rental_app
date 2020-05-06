@@ -99,11 +99,26 @@ export class AddVehiclePageComponent implements OnInit {
       licensePlate : [null, [Validators.required, Validators.pattern("^[A-Za-z0-9]+$"), Validators.maxLength(7)]],
       location : [null, Validators.required],
       vehicleType : [null,  Validators.required],
-      vehicleCapacity : []
+      vehicleCapacity : [],
+      serviceDate:[null,Validators.required],
+      currentMileage:[null,[Validators.required,Validators.pattern("^[0-9]+$")]],
+      registrationTag:[null,[Validators.required,Validators.pattern("^[A-Za-z0-9 ]+$")]]
 
     });
   }
+  getPickupDateString(value){
+    var pickuptime = value;
+    var pickupdate = new Date(pickuptime);
+    var pickupmonthstring = ''+(pickupdate.getMonth()+1);
+    var pickupdateStr = ''+pickupdate.getDate();
+    var pickupdatestring = '';
+    if(pickupdate.getDate() < 10){
+      pickupdateStr = '0'+pickupdate.getDate();
+    }
+    pickupdatestring = pickupdate.getFullYear()+'-'+pickupmonthstring+'-'+pickupdateStr
 
+    return pickupdatestring;
+  }
   onFormSubmit() {
     this.isLoadingResults = true;
     //this.router.navigate(['/login']);
@@ -117,6 +132,10 @@ export class AddVehiclePageComponent implements OnInit {
     formData['locationId'] = this.addVehicleForm.get('location').value
     formData['vehicleCondition'] = 'new'
     formData['status'] = 1
+    formData['registrationTag'] = this.addVehicleForm.get('registrationTag').value;
+    formData['currentMileage'] = this.addVehicleForm.get('currentMileage').value;
+    formData['serviceDate'] = this.getPickupDateString(this.addVehicleForm.get('serviceDate').value);
+
     this.api.addVehicleAPI(formData).subscribe((res:any) => {
       console.log(res);
         this.isLoadingResults = false;

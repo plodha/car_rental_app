@@ -16,7 +16,7 @@ export class ApiService {
   vehicleTypes_endpoint = "getAllVehicleTypes"
   damageType_endpoint = "getDamageForVehicleType"
   reservation_endpoint = 'reservation'
-  priceInfo_endpoint = "getPriceforVehicleType"
+  priceInfo_endpoint = "getPriceForVehicleType"
   all_prices = "getAllPrices"
 
 
@@ -62,6 +62,24 @@ public createVehicleType(formData){
              'Access-Control-Allow-Origin': '*' };
   let body = JSON.stringify(formData);
   return this.http.post(this.prod_api_url + end_point, body, {headers});
+}
+public queryVehicleAvailability(formData){
+  let end_point = 'getVehiclesAvailableForReservation';
+  let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+             'Access-Control-Allow-Origin': '*' };
+  let query_str = '?locationId='+formData.locationId+'&vehicleTypeId='+formData.vehicleTypeId+'&newPickUpTime='
+                  +formData.pickupDateTime+'&newEstimatedDropOffTime='+formData.dropoffDateTime
+   return this.http.get(this.prod_api_url+end_point+query_str,{headers})
+
+}
+
+public getDamageForVehicleType(id){
+  let end_point = 'getDamageForVehicleType'
+  let query_str = '?vehicleTypeId='+id
+  let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+             'Access-Control-Allow-Origin': '*' };
+  return this.http.get(this.prod_api_url+end_point+query_str,{headers})
+
 }
   /*
       POST Request
@@ -245,7 +263,8 @@ public createVehicleType(formData){
     */
    addReservationAPI(reservationFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
-    let body = JSON.stringify(reservationFormGroup.value);
+    let body = JSON.stringify(reservationFormGroup);
+    console.log(body)
     let end_point = "reservation";
     return this.http.post(this.prod_api_url + end_point, body, {headers});
   }
@@ -281,6 +300,9 @@ public createVehicleType(formData){
       .set('vehicleTypeId', vehicleFormGroup.vehicleTypeId)
       .set('vehicleCondition', vehicleFormGroup.vehicleCondition)
       .set('locationId', vehicleFormGroup.locationId)
+      .set('registrationTag', vehicleFormGroup.registrationTag)
+      .set('currentMileage', vehicleFormGroup.currentMileage)
+      .set('serviceDate', vehicleFormGroup.serviceDate)
     return this.http.post(this.prod_api_url + end_point, {}, {headers, params});
   }
 
@@ -364,17 +386,23 @@ public createVehicleType(formData){
            Ask Suburna
           Error:
            Ask Suburna
+        /computeInvoice/1,2,3?actualDropOffTime=1/15/2020 3:57 PM&reservationId=1&IsDamage=true
+
     */
    computeInvoiceAPI(computeInvoiceFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
     let body = JSON.stringify(computeInvoiceFormGroup.value);
-    let end_point = "/computeInvoice";
+    let end_point = "computeInvoice/";
     var params = new HttpParams()
       .set('actualDropOffTime', computeInvoiceFormGroup.actualDropOffTime)
       .set('reservationId', computeInvoiceFormGroup.reservationId)
       .set('IsDamage', computeInvoiceFormGroup.IsDamage)
       .set('damageId', computeInvoiceFormGroup.damageId)
-    return this.http.put(this.prod_api_url + end_point, {}, {headers, params});
+      let query_str = computeInvoiceFormGroup.damageId+"?actualDropOffTime="+computeInvoiceFormGroup.actualDropOffTime+
+                "&reservationId="+computeInvoiceFormGroup.reservationId+"&IsDamage="+computeInvoiceFormGroup.IsDamage
+    //return this.http.put(this.prod_api_url + end_point+query_str, {}, {headers, params});
+    console.log(this.prod_api_url + end_point+query_str)
+    return this.http.put(this.prod_api_url + end_point+query_str, {}, {headers});
   }
 
   /*
@@ -427,7 +455,12 @@ public getAllCustomers(){
     return this.http.get(this.prod_api_url + this.customer_endpoint,{headers})
 
 }
-
+public getInvoiceById(id){
+  let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+             'Access-Control-Allow-Origin': '*' };
+  let customer_info = "invoice"
+  return this.http.get(this.prod_api_url + customer_info+'/'+id,{headers})
+}
 public getAllVehicles(){
     let headers = { 'Content-Type': 'application/json','Accept':'application/json',
                'Access-Control-Allow-Origin': '*' };
@@ -487,6 +520,13 @@ public getVehicleTypeById(id:any){
     let location_endpoint = 'vehicleType'
     return this.http.get(this.prod_api_url + location_endpoint+'/'+id,{headers})
 
+}
+
+public getReservationByCustomerId(custId){
+  let headers = { 'Content-Type': 'application/json','Accept':'application/json',
+             'Access-Control-Allow-Origin': '*' };
+  let location_endpoint = 'reservationByCustomerId'
+  return this.http.get(this.prod_api_url + location_endpoint+'?customerId='+custId,{headers})
 }
   /*
         PUT Request

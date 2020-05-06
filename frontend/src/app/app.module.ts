@@ -29,7 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import {MatRadioModule} from '@angular/material/radio';
-
+import {MatDialogModule} from '@angular/material/dialog';
 import {HttpClientModule} from '@angular/common/http';
 import {MatMenuModule} from '@angular/material/menu';
 import { AddVehiclePageComponent } from './add-vehicle-page/add-vehicle-page.component';
@@ -116,7 +116,8 @@ import { EditPricePageComponent } from './edit-price-page/edit-price-page.compon
     MatRadioModule,
     NgxMatDatetimePickerModule,
     NgxMatTimepickerModule,
-    NgxMatMomentModule
+    NgxMatMomentModule,
+    MatDialogModule
 
 
   ],

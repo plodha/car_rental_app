@@ -28,7 +28,7 @@ export class CustomerLandingPageComponent implements OnInit {
 
   callReservation(){
 
-      this.router.navigate(['/reservations/'+localStorage.id]);
+      this.router.navigate(['/reservations/'+localStorage.customerId]);
 
   }
 

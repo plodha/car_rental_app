@@ -62,6 +62,9 @@ export class VehicleResolver implements Resolve<any> {
   }
 }
 
+
+
+
 // @Injectable()
 // export class VehicleResolver implements Resolve<Observable<any>> {
 //   constructor(private apiService: ApiService) {}
@@ -84,7 +87,7 @@ export class DamageResolver implements Resolve<any> {
   constructor(private apiService: ApiService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.apiService.getAllDamageType(route.params.id);
+    return this.apiService.getAllDamageType(route.params.vehicleTypeId);
   }
 }
 @Injectable()
@@ -92,7 +95,16 @@ export class ReservationResolver implements Resolve<any> {
   constructor(private apiService: ApiService) {}
 
   resolve(route: ActivatedRouteSnapshot) {
-    return this.apiService.getAllReservationsForUser(route.params.id);
+    return this.apiService.getReservationByCustomerId(route.params.id);
+  }
+}
+
+@Injectable()
+export class InvoiceResolver implements Resolve<any> {
+  constructor(private apiService: ApiService) {}
+
+  resolve(route: ActivatedRouteSnapshot) {
+    return this.apiService.getInvoiceById(route.params.id);
   }
 }
 /*This hsould be updated for all prices*/
@@ -188,8 +200,11 @@ const routes: Routes = [{
           component: ProfilePageComponent
       },
       {
-          path:'survey',
-          component: DropoffSurveyPageComponent
+          path:'survey/:id/:vehicleTypeId',
+          component: DropoffSurveyPageComponent,
+          resolve:{
+            damages :DamageResolver
+          }
       },
       {
           path:'cancel',
@@ -235,8 +250,11 @@ const routes: Routes = [{
           }
       },
       {
-          path:'invoice',
-          component: InvoicePageComponent
+          path:'invoice/:id',
+          component: InvoicePageComponent,
+          resolve:{
+            invoice :InvoiceResolver
+          }
       },
   { path: 'register', component: RegisterPageComponent, data: { title: 'Register' } }, //, children: Full_ROUTES },
   //{ path: '', component: ContentLayoutComponent, data: { title: 'content Views' }, children: CONTENT_ROUTES },
@@ -248,6 +266,6 @@ const routes: Routes = [{
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [LocationResolver,CustomerResolver, ReservationResolver,PriceResolver,VehicleTypeResolver,VehicleResolver, DamageResolver]
+  providers: [LocationResolver,CustomerResolver, ReservationResolver,DamageResolver,PriceResolver,InvoiceResolver,VehicleTypeResolver,VehicleResolver]
 })
 export class AppRoutingModule { }
