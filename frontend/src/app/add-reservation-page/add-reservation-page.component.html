@@ -13,7 +13,7 @@
   </div> -->
   <mat-card class="example-card">
     <form [formGroup]="reservationForm" (ngSubmit)="onFormSubmit()">
-
+      <span class="errorMessage" id="errorBlock">*Please choose dropoff time within 72 hours</span>
       <mat-form-field class="example-full-width">
           <mat-label>Location</mat-label>
             <mat-select formControlName="location" >
@@ -64,5 +64,57 @@
         <button type="submit" [disabled]="!reservationForm.valid" mat-flat-button color="primary">Search Vehicles</button>
       </div>
     </form>
+      <div class="mat-elevation-z8">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <!-- ID Column -->
+
+            <ng-container matColumnDef="id">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header width="10%"> ID </th>
+             <td mat-cell *matCellDef="let row">
+            {{row.vehicleId}}
+            </td>
+             </ng-container>
+
+             <ng-container matColumnDef="model">
+               <th mat-header-cell *matHeaderCellDef mat-sort-header> Vehicle Details </th>
+               <td mat-cell *matCellDef="let row" > <h4>{{row.model}} {{row.make}}</h4> {{row.year}}
+                 <br/>Seating capacity : {{row.vehicleSeatingCapacity}}
+                </td>
+             </ng-container>
+
+
+          <ng-container matColumnDef="estimatedPrice">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Estimated Price </th>
+            <td mat-cell *matCellDef="let row"> {{row.estimatedPrice}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="star">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Action</th>
+            <td mat-cell *matCellDef="let element">
+            <button mat-menu-item accent (click)="bookVehicle(element)">
+
+              <span>Book Vehicle</span>
+            </button>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+            <div class="dropdown-menu dropdown-primary">
+                <a class="dropdown-item" href="#">Action</a>
+                <a class="dropdown-item" href="#">Another action</a>
+              </div>
+          </tr>
+          </table>
+            <!-- <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator> -->
+          </div>
+
+
+
+
+
+
+
   </mat-card>
 </div>

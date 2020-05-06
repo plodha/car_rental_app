@@ -1,7 +1,7 @@
 <div class="example-container mat-elevation-z8">
   <div class="container">
     <div class='title'>
-    <h1>Car Rental System - Login</h1>
+    <h1>Car Rental System - Survey</h1>
     </div>
   </div>
   <div class="example-loading-shade"
@@ -9,34 +9,150 @@
     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
   </div>
   <mat-card class="example-card">
-    <label id="example-radio-group-label">Please Fill for any Damage information</label>
 
+
+    <label id="example-radio-group-label"><h3><b>Please Fill for any Damage information</b></h3></label>
+    <br/>
+    <div>
+
+   <div class="form-control">
+       <label id="example-radio-group-label">Flat tyre: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <label class="radio-inline">
+      <input type="radio" value="1" name="flatTyre" [(ngModel)]="flatTyre" >
+      Yes
+      </label> &nbsp;&nbsp;&nbsp;
+      <label class="radio-inline">
+      <input type="radio" value="0" name="flatTyre" [(ngModel)]="flatTyre" >
+      No
+      </label>
+      </div>
+     <!-- <mat-radio-group [(ngModel)]="flatTyre">
+        <mat-radio-button [value]="1">Yes</mat-radio-button>
+        <mat-radio-button [value]="0">No</mat-radio-button>
+    </mat-radio-group>  -->
+    </div><br/>
+    <div class="form-control">
+        <label id="example-radio-group-label" >Physical Damage: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+       <label class="radio-inline">
+       <input type="radio" value="1" name="physicalDamage" [(ngModel)]="physicalDamage" >
+       Yes
+       </label> &nbsp;&nbsp;&nbsp;
+       <label class="radio-inline">
+       <input type="radio" value="0" name="physicalDamage" [(ngModel)]="physicalDamage" >
+       No
+       </label>
+       </div><br/>
+
+
+       <div class="form-control">
+           <label id="example-radio-group-label">Headlight Damage:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <label class="radio-inline">
+          <input type="radio" value="1" name="headlightDamage" [(ngModel)]="headlightDamage" >
+          Yes
+          </label> &nbsp;&nbsp;&nbsp;
+          <label class="radio-inline">
+          <input type="radio" value="0" name="headlightDamage" [(ngModel)]="headlightDamage" >
+          No
+          </label>
+          </div>
+
+<br/>
+                 <div class="form-control">
+                      <label id="example-radio-group-label">Side mirror Damage: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio-inline">
+                    <input type="radio" value="1" name="sideMirrorDamage" [(ngModel)]="sideMirrorDamage" >
+                    Yes
+                    </label> &nbsp;&nbsp;&nbsp;
+                    <label class="radio-inline">
+                    <input type="radio" value="0" name="sideMirrorDamage" [(ngModel)]="sideMirrorDamage" >
+                    No
+                    </label>
+                    </div>
+<br/>
+
+                 <div class="form-control">
+                      <label id="example-radio-group-label">Glass Damage: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <label class="radio-inline">
+                    <input type="radio" value="1" name="glassDamage" [(ngModel)]="glassDamage" >
+                    Yes
+                    </label> &nbsp;&nbsp;&nbsp;
+                    <label class="radio-inline">
+                    <input type="radio" value="0" name="glassDamage" [(ngModel)]="glassDamage" >
+                    No
+                    </label>
+                    </div>
+<br/>
+   <div class="form-control">
+          <label id="example-radio-group-label" >Scratches: </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <label class="radio-inline">
+              <input type="radio" value="1" name="scratches" [(ngModel)]="scratches" >
+            Yes
+    </label> &nbsp;&nbsp;&nbsp;
+      <label class="radio-inline">
+      <input type="radio" value="0" name="scratches" [(ngModel)]="scratches" >
+        No
+    </label>
+  </div>
+  <br/>
+
+
+
+      <!-- <div>
+
+    <mat-radio-group [(ngModel)]="physicalDamage">
+        <mat-radio-button value=1>Yes</mat-radio-button>
+        <mat-radio-button value=0>No</mat-radio-button>
+    </mat-radio-group>
+    </div>
+    <div>
+ <label id="example-radio-group-label" >Headlight Damage: </label>
+    <mat-radio-group [(ngModel)]="headlightDamage">
+        <mat-radio-button value=1>Yes</mat-radio-button>
+        <mat-radio-button value=0>No</mat-radio-button>
+    </mat-radio-group>
+    </div>
+    <div>
+    <label id="example-radio-group-label">Side mirror Damage: </label>
+
+    <mat-radio-group [(ngModel)]="sideMirrorDamage">
+        <mat-radio-button value=1>Yes</mat-radio-button>
+        <mat-radio-button value=0>No</mat-radio-button>
+    </mat-radio-group>
+    </div>
+
+
+    <div>
+     <label id="example-radio-group-label" >Scratches: </label>
+    <mat-radio-group [(ngModel)]="scratches">
+        <mat-radio-button value=1>Yes</mat-radio-button>
+        <mat-radio-button value=0>No</mat-radio-button>
+    </mat-radio-group>
+</div>
+-->
+
+<!--
     <form [formGroup]="surveyForm" (ngSubmit)="onFormSubmit()">
-        <label id="example-radio-group-label">Flat tyre: </label>
-        <mat-radio-group [formControl]="flatTyre">
-            <mat-radio-button value="yes">Yes</mat-radio-button>
-            <mat-radio-button value="no">No</mat-radio-button>
-        </mat-radio-group>
+
    <div>
         <label id="example-radio-group-label" >Physical Damage: </label>
      <mat-radio-group [formControl]="physicalDamage">
-       <mat-radio-button value="yes">Yes</mat-radio-button>
-       <mat-radio-button value="no">no</mat-radio-button>
+       <mat-radio-button value="1">Yes</mat-radio-button>
+       <mat-radio-button value="0">no</mat-radio-button>
      </mat-radio-group>
 </div>
      <div>
   <label id="example-radio-group-label" >Headlight Damage: </label>
 <mat-radio-group [formControl]="headlightDamage">
-        <mat-radio-button value="yes">Yes</mat-radio-button>
-        <mat-radio-button value="no">no</mat-radio-button>
+        <mat-radio-button value="1">Yes</mat-radio-button>
+        <mat-radio-button value="0">no</mat-radio-button>
       </mat-radio-group>
 </div>
 <div>
 
 <label id="example-radio-group-label">Side mirror Damage: </label>
  <mat-radio-group  [formControl] ="sideMirrorDamage">
-         <mat-radio-button value="yes">Yes</mat-radio-button>
-         <mat-radio-button value="no">no</mat-radio-button>
+         <mat-radio-button value="1">Yes</mat-radio-button>
+         <mat-radio-button value="0">no</mat-radio-button>
        </mat-radio-group>
 
 </div>
@@ -44,8 +160,8 @@
 <div>
  <label id="example-radio-group-label" >Front or rear glass damage: </label>
  <mat-radio-group aria-label="Front or rear glass damage" [formControl] ="glassDamage">
-        <mat-radio-button value="yes">Yes</mat-radio-button>
-        <mat-radio-button value="no">no</mat-radio-button>
+        <mat-radio-button value="1">Yes</mat-radio-button>
+        <mat-radio-button value="0">no</mat-radio-button>
       </mat-radio-group>
 
 </div>
@@ -54,8 +170,8 @@
 <div>
  <label id="example-radio-group-label" >Scratches: </label>
  <mat-radio-group aria-label="Minor scratches" [formControl] ="scratches">
-           <mat-radio-button value="yes">Yes</mat-radio-button>
-           <mat-radio-button value="no">no</mat-radio-button>
+           <mat-radio-button value="1">Yes</mat-radio-button>
+           <mat-radio-button value="0">no</mat-radio-button>
          </mat-radio-group>
 </div>
 
@@ -65,6 +181,7 @@
       <div class="button-row">
         <button type="submit"  mat-flat-button color="primary">Submit</button>
       </div>
-    </form>
+    </form> -->
+      <button type="submit" (click)="onFormSubmit()" mat-flat-button color="primary">Submit</button>
   </mat-card>
   </div>
