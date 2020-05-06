@@ -46,7 +46,23 @@ services:
       - "traefik.frontend.rule=Host:app.wasaequreshi.com"
       - "traefik.enable=true"
       - "traefik.port=8030"
-
+  
+  angular-service-2:
+    depends_on:
+      - "traefik"
+    container_name: mn-app-2
+    build: ../../frontend-2/Dockerfile2
+    volumes: # Volume binding
+      - ../../frontend-2:/app-2
+    ports:
+      - '8040:8040' # Port mapping
+    networks:
+      - ms_network
+    labels:
+      - "traefik.docker.network=ms_network"
+      - "traefik.frontend.rule=Host:app.wasaequreshi.com"
+      - "traefik.enable=true"
+      - "traefik.port=8040"
   db:
     depends_on:
       - "traefik"
