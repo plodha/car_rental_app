@@ -101,6 +101,7 @@ public class InvoiceService implements IInvoice {
     /*
         Total Price = Late Fee + Damage Fee + Estimated fee
         1. compute actual -estimated time diff in hour
+        1.1 compute actual price based on hrdiff between pickup time-dropoff time
         2. compute late fee based on that 
         3. compute all type of damage fee for a vehicle type
         4. compute total price
@@ -108,40 +109,84 @@ public class InvoiceService implements IInvoice {
         6. update the vehicle table status as free
         7. update reservation with the actualdropoff time 
         8. change the status =0 for reservation table
+        9. update reservation table estimated price?
         
     */
-    public String computeInvoice(Integer reservationId, String actualDropOffTime, Boolean IsDamage,String[] damageId) throws Exception {
+    public int computeInvoice(Integer reservationId, String actualDropOffTime, Boolean IsDamage, String[] damageId)
+            throws Exception {
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
+        int invoiceId = 0;
         if (reservationRepository.existsById(reservationId)) {
             Reservation existReserve = reservationRepository.findById(reservationId).get();
             if(existReserve != null) {
                 String estimateDropOffTime = existReserve.getEstimateDropOffTime();
                 ///1 time diff in hour
-                double diffHours = DateDiff(actualDropOffTime,estimateDropOffTime);
+                System.out.println("-----------");
+                System.out.println("actualDropOffTime: " + actualDropOffTime + " estimateDropOffTime: "+ estimateDropOffTime);
+                double diffLateHours = this.DateDiff(actualDropOffTime,estimateDropOffTime); //actualDropOffTime-estimateDropOffTime
+                System.out.println("-----------");
                 Vehicle existVehicle = existReserve.getVehicle();
                 if(existVehicle != null) {
                     /// get vehicleType
                     int vehicleTypeId = existVehicle.getVehicleTypeId().getId();
 
+                    ///1.1 compute actual rental price (estimated price) for diffHours
+                    Iterable<Price> itr_price = this.getPriceListForVehicleType(vehicleTypeId); // getting two range of price for a vehicle type
+                    Iterator iter_price = itr_price.iterator();
+                    Price price_5hr = (Price) iter_price.next();
+                    Price price_10hr = (Price) iter_price.next();
+                    System.out.println("estimateDropOffTime: " + estimateDropOffTime + " PickUpTime: "+ existReserve.getPickUpTime());
+                    double diffActualHours = this.DateDiff(estimateDropOffTime, existReserve.getPickUpTime());//estimateDropOffTime-PickUpTime
+                    System.out.println("-----------");
+                    ///computing actual price
+                    double totalActualPrice = 0.0;
+                    if( diffActualHours >   Integer.parseInt(price_5hr.getHourlyRange())) {
+                        totalActualPrice = Integer.parseInt(price_5hr.getHourlyRange()) * price_5hr.getHourlyPrice() 
+                                        + (diffActualHours - Integer.parseInt(price_5hr.getHourlyRange())) * price_10hr.getHourlyPrice();
+                    }
+                    else {
+                        totalActualPrice = diffActualHours * price_5hr.getHourlyPrice() ;                  
+                    }
+                    System.out.println("-----------");
+                    System.out.println( "[" 
+                                + " vehicle: " +  existVehicle.getId()
+                                + "  vehicle Type: " + vehicleTypeId
+                                + "  5hr price: " + price_5hr.getHourlyPrice()
+                                + "  10hr price: " + price_10hr.getHourlyPrice()
+                                + "  hrDiff: " + diffActualHours
+                                + "  totalActualPrice: " +totalActualPrice
+                                +" ]");
+                    System.out.println("-----------");
+
                     ///2 get latefee and compute total late fee
                     double lateFeeHourly = 0.0;
                     double totalLateFee = 0.0;
-                    if (diffHours > 0.0) {
-                        lateFeeHourly = getLateFeeForVehicleType(vehicleTypeId);
-                        totalLateFee = diffHours * lateFeeHourly;
-                        System.out.println("lateFeeHourly "+ lateFeeHourly);
-                        System.out.println("totalLateFee "+ totalLateFee);
+                    if (diffLateHours > 0.0) {
+                        lateFeeHourly = this.getLateFeeForVehicleType(vehicleTypeId);
+                        totalLateFee = diffLateHours * lateFeeHourly;
+                        //System.out.println("lateFeeHourly "+ lateFeeHourly);
+                        //System.out.println("totalLateFee "+ totalLateFee);
                     }
+
                     ///3 compute total damage fee for a vehicleType
                     double totalDamageFee = 0.0;
                     if(IsDamage) {
-                        totalDamageFee = getTotalDamageFeeForVehicleType(vehicleTypeId,damageId);
+                        totalDamageFee = this.getTotalDamageFeeForVehicleType(vehicleTypeId,damageId);
                     }
                     
                     /// 4, 5 get invoce id and update the total latefee and total fee
                     Invoice invoice = existReserve.getInvoice();
-                    double totalPrice = invoice.getEstimatedPrice() + totalLateFee + totalDamageFee;
+                    double totalPrice = totalActualPrice + totalLateFee + totalDamageFee;
+                    invoiceId = invoice.getId();
+                    System.out.println(" totalPrice= " + totalPrice 
+                                       + " totalActualPrice= " + totalActualPrice
+                                       + " totalLateFee= " + totalLateFee 
+                                       + " totalDamageFee= " + totalDamageFee
+                                       + " invoiceId: " + invoiceId
+                                    );
+                    System.out.println("-----------");
+                    invoice.setEstimatedPrice(totalActualPrice);
                     invoice.setLateFee(totalLateFee);
                     invoice.setDamageFee(totalDamageFee);
                     invoice.setTotalPrice(totalPrice);
@@ -151,7 +196,11 @@ public class InvoiceService implements IInvoice {
                     existVehicle.setStatus(true);
                     existReserve.setVehicle(existVehicle);
                     vehicleRepository.save(existVehicle);
+
+                    ///9 update reservation table estimated price?
+                    existReserve.setEstimatedPrice(totalActualPrice);
                 }
+                
                 ///7 update reservation with the actualdropoff time
                 existReserve.setActualDropOffTime(actualDropOffTime);
                 /// 8. change the status =0 for reservation table
@@ -163,17 +212,18 @@ public class InvoiceService implements IInvoice {
         }
 
         response.put("status", "200");
-        return this.convertMapToJson(response);
+        //return this.convertMapToJson(response);
+        return invoiceId;
     }
 
     public double getTotalDamageFeeForVehicleType(int vehicleTypeId, String[] damageId) {
         double totalDamageFee = 0.0;
         Iterable<Damage> itr = damageRepository.findAll();
         Iterator iter = itr.iterator();
-        System.out.println("vehicleTypeId " + vehicleTypeId);
+       // System.out.println("vehicleTypeId " + vehicleTypeId);
         while(iter.hasNext()){
             Damage tempDamage = (Damage) iter.next();
-            System.out.println("tempPrice.getVehicleTypeId().getId() " + tempDamage.getVehicleTypeId().getId());
+            //System.out.println("tempPrice.getVehicleTypeId().getId() " + tempDamage.getVehicleTypeId().getId());
             //tempVehicle.isStatus() = false = occupied vehicle
             if((tempDamage.getVehicleTypeId().getId() == vehicleTypeId)) {
                 for (String strTemp : damageId) {
@@ -186,17 +236,33 @@ public class InvoiceService implements IInvoice {
         return totalDamageFee;
     }
 
+    //get price list for a vehicleType
+    public Iterable<Price> getPriceListForVehicleType(int vehicleTypeId)  {
+        Iterable<Price> itr = priceRepository.findAll();
+        Iterator iter = itr.iterator();
+
+        while(iter.hasNext()){
+            Price tempPrice = (Price) iter.next();
+            //tempVehicle.isStatus() = false = occupied vehicle
+            if(tempPrice.getVehicleTypeId().getId() != vehicleTypeId) {
+               // System.out.println("tempPrice.getVehicleTypeId() "+ tempPrice.getVehicleTypeId().getId());
+                iter.remove();
+            }
+        }
+        return itr;
+    }
+
     public double getHourlyPriceForVehicleType(int vehicleTypeId) {
 
         Iterable<Price> itr = priceRepository.findAll();
         Iterator iter = itr.iterator();
-        System.out.println("vehicleTypeId " + vehicleTypeId);
+        //System.out.println("vehicleTypeId " + vehicleTypeId);
         while(iter.hasNext()){
             Price tempPrice = (Price) iter.next();
-            System.out.println("tempPrice.getVehicleTypeId().getId() " + tempPrice.getVehicleTypeId().getId());
+            //System.out.println("tempPrice.getVehicleTypeId().getId() " + tempPrice.getVehicleTypeId().getId());
             //tempVehicle.isStatus() = false = occupied vehicle
             if((tempPrice.getVehicleTypeId().getId() == vehicleTypeId)) {
-                System.out.println("remove tempVehicle.getId() "+ tempPrice.getId());
+                //System.out.println("remove tempVehicle.getId() "+ tempPrice.getId());
                 return tempPrice.getHourlyPrice();
             }
         }

@@ -83,12 +83,12 @@ public class ReserveVehicleController {
                 "invoice": {
                     "id": 1
                 },
-                "pickUpTime": "1/15/2020 9:57:03 AM",
+                "pickUpTime": "1/15/2020 9:57",
                 "vehicle": {
                     "id": 1
                 },
-                "actualDropOffTime": "1/15/2020 9:57:03 AM",
-                "estimateDropOffTime": "1/15/2020 9:57:03 AM"
+                "actualDropOffTime": "1/15/2020 9:57",
+                "estimateDropOffTime": "1/15/2020 9:57"
             }
         Use case:
             This is used by the user to for reservation confirmation. After success, the reservation is confirmed.

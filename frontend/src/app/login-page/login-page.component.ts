@@ -56,6 +56,7 @@ export class LoginPageComponent implements OnInit {
         var role = response.role;
         console.log(role)
 
+
         if(role == 'Employee') {
            this.router.navigate(['/admin']);
         }
@@ -66,7 +67,10 @@ export class LoginPageComponent implements OnInit {
         localStorage.setItem("username", response.username);
         localStorage.setItem("id",response.id );
         localStorage.setItem('role',response.role)
-
+        this.api.getCustomerById(localStorage.id).subscribe((cust:any) => {
+          console.log(cust)
+          localStorage.setItem('customerId',cust.id)
+        });
 
 
       }

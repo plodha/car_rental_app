@@ -5,6 +5,7 @@ import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Valida
 import { ErrorStateMatcher } from '@angular/material/core';
 
 import {ApiService} from '../api.service'
+import * as _moment from 'moment';
 
 
 interface Month {
@@ -122,7 +123,7 @@ years:string[] = ['2020','2021','2022','2023','2024','2025','2026','2027','2028'
        zipcode : data.address.zipCode,
        email : data.email,
        licensenumber : data.licenseNumber,
-       licenseExpiryDate : new FormControl(new Date(data.licenseExpDate)),
+       licenseExpiryDate : new FormControl(data.licenseExpDate),
        addressId: data.address.id,
        userId: data.userId.id,
        creditCard : data.creditCard,
@@ -138,6 +139,13 @@ years:string[] = ['2020','2021','2022','2023','2024','2025','2026','2027','2028'
 
    });
  }
+
+getCorrectDate(value){
+  var splitted = value.split("-", 3);
+  console.log(parseInt(splitted[0]))
+  //return new FormControl(_moment([parseInt(splitted[0]), parseInt(splitted[1])-1, parseInt(splitted[0])]));
+  return new FormControl(_moment([2017, 0, 1]));
+}
 
 splitMonth(str:any){
   return parseInt(str.split("-")[1]);

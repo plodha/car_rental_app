@@ -376,7 +376,7 @@ public class VehicleReg implements IVehicleReg {
             while(iter_reserve.hasNext()) {
                 Reservation tempReservation = (Reservation) iter_reserve.next();
                 String oldPickUpTime = tempReservation.getPickUpTime(); 
-                String oldDropOffTime = tempReservation.getActualDropOffTime();  
+                String oldDropOffTime = tempReservation.getEstimateDropOffTime();  //using estimate date as actualdropOff coz vehicle is not returned yet
                 System.out.println("-------");
                 System.out.println("newPickUpTime "+newPickUpTime);
                 System.out.println("oldDropOffTime "+ oldDropOffTime);
