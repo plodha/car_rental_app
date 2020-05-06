@@ -184,6 +184,24 @@ public class ReserveVehicle implements IReservation {
         return reservationRepository.findById(id);
     }
 
+    // get reservation with a fixed customer id
+    public Iterable<Reservation> getReservationByCustomerId(Integer customerId) throws Exception {
+
+        Iterable<Reservation> itr = reservationRepository.findAll();
+        Iterator iter = itr.iterator();
+        while(iter.hasNext()){
+            Reservation tempReservation = (Reservation) iter.next();
+            //tempReservation.isStatus() = true = active reservation
+            if(!tempReservation.isStatus() || (tempReservation.getCustomer().getId() != customerId)) {
+               // System.out.println("tempPrice.getVehicleTypeId() "+ tempPrice.getVehicleTypeId().getId());
+                iter.remove();
+            }
+        }
+        
+        return itr;
+
+    }
+
     //cancel reservation
     /*
         logic for late fee: get the vehicle type

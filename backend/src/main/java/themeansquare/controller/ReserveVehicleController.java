@@ -149,6 +149,15 @@ public class ReserveVehicleController {
         return reserve.getReservationById(id);
     }
 
+    // get reservation with a fixed customer id
+    @GetMapping(value = "/reservationByCustomerId")
+    public Iterable<Reservation> getReservationByCustomerId (
+        @RequestParam(value = "customerId") Integer customerId) throws Exception {
+        IReservation reserve = new ReserveVehicle(customerRepository, locationRepository,vehicleRepository, 
+                                                  invoiceRepository,reservationRepository,priceRepository);
+        return reserve.getReservationByCustomerId(customerId);
+    }
+
    
     //Cancel a reservation
     ///frontend will send me resevation id only,isLatefee
