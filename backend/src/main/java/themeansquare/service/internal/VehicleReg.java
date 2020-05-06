@@ -38,7 +38,6 @@ public class VehicleReg implements IVehicleReg {
     private VehicleTypeRepository vehicleTypeRepository;
     private LocationRepository locationRepository;
     private AddressRepository addressRepository;
-    @Autowired
     private ReservationRepository reservationRepository;
     
     ///// arrtibutes
@@ -55,6 +54,7 @@ public class VehicleReg implements IVehicleReg {
     private String currentMileage; 
     private String registrationTag;
     private String serviceDate;
+    
 
     //int location; --foreign key to Location
     //int vehicleType; --foreign key to vehicleType
@@ -74,16 +74,17 @@ public class VehicleReg implements IVehicleReg {
     private String state;
     private String zipcode;
 
-    public VehicleReg(VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository ) {
+    public VehicleReg(VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository,ReservationRepository reservationRepository ) {
         this.vehicleRepository = vehicleRepository;
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
         this.addressRepository = addressRepository;
+        this.reservationRepository =reservationRepository;
     }
 
     public VehicleReg(  String licensePlate , String model,String make,
     Boolean status, String vIN,int year, String vehicleCondition,int locationId, int vehicleTypeId, String currentMileage, String registrationTag, String serviceDate,
-    VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
+    VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository,ReservationRepository reservationRepository) {
 
         this.licensePlate = licensePlate;
         this.model = model;
@@ -101,12 +102,13 @@ public class VehicleReg implements IVehicleReg {
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
         this.addressRepository = addressRepository;
+        this.reservationRepository = reservationRepository;
 
     }
     public VehicleReg( String vehicleClass, int vehicleSize , String licensePlate , String model,String make,
                        Boolean status, String vIN,int year, String vehicleCondition, int contactNumber, String name, int vehicleCapacity,
                        String street, String city,String state, String zipcode, String currentMileage, String registrationTag, String serviceDate,
-                       VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository) {
+                       VehicleRepository vehicleRepository,VehicleTypeRepository vehicleTypeRepository, LocationRepository locationRepository, AddressRepository addressRepository,ReservationRepository reservationRepository) {
 
         this.vehicleClass = vehicleClass;
         this.vehicleSize = vehicleSize;
@@ -131,7 +133,7 @@ public class VehicleReg implements IVehicleReg {
         this.vehicleTypeRepository = vehicleTypeRepository;
         this.locationRepository = locationRepository;
         this.addressRepository = addressRepository;
-
+        this.reservationRepository = reservationRepository;
     }
 
    
@@ -343,6 +345,7 @@ public class VehicleReg implements IVehicleReg {
         }
         return itr;
     }
+
     // get available vehicle for a vehicleType Id, location, pickuptime, actualdropOfftime
     /*
         1. get all vehicle for a location and vehicleType
@@ -375,8 +378,8 @@ public class VehicleReg implements IVehicleReg {
                 String oldPickUpTime = tempReservation.getPickUpTime(); 
                 String oldDropOffTime = tempReservation.getActualDropOffTime();
                 Double diff_1 = this.DateDiff(newPickUpTime, oldDropOffTime); //check if: 1. newPickUpTime > oldDropOffTime
-                Double diff_2 = this.DateDiff(oldPickUpTime, newEstimatedDropOffTime); //check if: 2. newDropoffTime < oldPickUpTime
-                if (diff_1 <=0 || diff_2 <= 0) {
+                Double diff_2 = this.DateDiff(oldPickUpTime, newEstimatedDropOffTime); //check if: 2. oldPickUpTime > newDropoffTime  
+                if (diff_1 <=0 && diff_2 <= 0) {
                     iter1.remove(); //this vehicle is not eligible for reservation
                 }     
             } 
@@ -392,7 +395,7 @@ public class VehicleReg implements IVehicleReg {
         while(iter.hasNext()){
             Reservation tempReservation= (Reservation) iter.next();
             if(!tempReservation.isStatus()) {
-               // System.out.println("tempPrice.getVehicleTypeId() "+ tempPrice.getVehicleTypeId().getId());
+               System.out.println("tempReservation.getId() "+ tempReservation.getId());
                 iter.remove();
             }
         }
