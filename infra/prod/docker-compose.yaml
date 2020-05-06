@@ -51,7 +51,9 @@ services:
     depends_on:
       - "traefik"
     container_name: mn-app-2
-    build: ../../frontend-2/Dockerfile2
+    build: 
+      context: ../../frontend-2
+      dockerfile: Dockerfile2
     volumes: # Volume binding
       - ../../frontend-2:/app-2
     ports:
