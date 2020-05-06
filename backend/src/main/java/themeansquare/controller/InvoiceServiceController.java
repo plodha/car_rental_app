@@ -64,15 +64,15 @@ public class InvoiceServiceController {
       http://localhost:8080/computeInvoice/1?actualDropOffTime=1/15/2020 4:57&reservationId=1&IsDamage=true
      */
      @PutMapping("/computeInvoice/{damageId}")
-     public String computeInvoice (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
+     public int computeInvoice (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
              @RequestParam(value = "reservationId") Integer reservationId,
              @RequestParam(value = "IsDamage") Boolean IsDamage,
              @PathVariable(value = "damageId") String[] damageId) throws Exception {
  
              IInvoice invoice = new InvoiceService  ( customerRepository, locationRepository,vehicleRepository, 
                                                       invoiceRepository,reservationRepository,priceRepository,damageRepository);
-             String response = invoice.computeInvoice(reservationId, actualDropOffTime, IsDamage,damageId);  
-             return response;  
+             int invoiceId = invoice.computeInvoice(reservationId, actualDropOffTime, IsDamage,damageId);  
+             return invoiceId;  
      }
 
      // get all invoice

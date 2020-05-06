@@ -112,9 +112,11 @@ public class InvoiceService implements IInvoice {
         9. update reservation table estimated price?
         
     */
-    public String computeInvoice(Integer reservationId, String actualDropOffTime, Boolean IsDamage,String[] damageId) throws Exception {
+    public int computeInvoice(Integer reservationId, String actualDropOffTime, Boolean IsDamage, String[] damageId)
+            throws Exception {
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
+        int invoiceId = 0;
         if (reservationRepository.existsById(reservationId)) {
             Reservation existReserve = reservationRepository.findById(reservationId).get();
             if(existReserve != null) {
@@ -176,10 +178,12 @@ public class InvoiceService implements IInvoice {
                     /// 4, 5 get invoce id and update the total latefee and total fee
                     Invoice invoice = existReserve.getInvoice();
                     double totalPrice = totalActualPrice + totalLateFee + totalDamageFee;
+                    invoiceId = invoice.getId();
                     System.out.println(" totalPrice= " + totalPrice 
                                        + " totalActualPrice= " + totalActualPrice
                                        + " totalLateFee= " + totalLateFee 
                                        + " totalDamageFee= " + totalDamageFee
+                                       + " invoiceId: " + invoiceId
                                     );
                     System.out.println("-----------");
                     invoice.setEstimatedPrice(totalActualPrice);
@@ -208,7 +212,8 @@ public class InvoiceService implements IInvoice {
         }
 
         response.put("status", "200");
-        return this.convertMapToJson(response);
+        //return this.convertMapToJson(response);
+        return invoiceId;
     }
 
     public double getTotalDamageFeeForVehicleType(int vehicleTypeId, String[] damageId) {
