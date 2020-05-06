@@ -58,7 +58,10 @@ public class InvoiceServiceController {
      //reservation id, damage id[], IsDamage, actualdropofftime, front end will send date format =1/15/2020 10:57
      //late fee = estimated -actual > 1hour 
      /*from postman:
-        http://localhost:8080/computeInvoice/1?actualDropOffTime=1/15/2020 3:57 PM&reservationId=1&IsDamage=true
+      for single damage id: 
+        http://localhost:8080/computeInvoice/1?actualDropOffTime=1/15/2020 4:57&reservationId=1&IsDamage=true
+      for multiple damage id:
+      http://localhost:8080/computeInvoice/1?actualDropOffTime=1/15/2020 4:57&reservationId=1&IsDamage=true
      */
      @PutMapping("/computeInvoice/{damageId}")
      public String computeInvoice (@RequestParam(value = "actualDropOffTime") String actualDropOffTime,
