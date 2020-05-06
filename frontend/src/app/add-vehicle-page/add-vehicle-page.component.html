@@ -54,6 +54,48 @@
           <span *ngIf="!addVehicleForm.get('licensePlate').valid && addVehicleForm.get('licensePlate').touched">Please enter License Plate <code></code></span>
         </mat-error>
       </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Service Date</mat-label>
+        <input matInput [matDatepicker]="picker" placeholder="Service Date"  formControlName="serviceDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('serviceDate').valid && addVehicleForm.get('serviceDate').touched">Please enter service date</span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Current Mileage</mat-label>
+        <input matInput placeholder="Current Milege" maxlength="7" pattern="^[0-9]+$" formControlName="currentMileage"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('currentMileage').valid && addVehicleForm.get('currentMileage').touched">Please enter Current Mileage <code></code></span>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Registration Tag</mat-label>
+        <input matInput placeholder="Registration Tag" maxlength="7" pattern="^[A-Za-z0-9]+$" formControlName="registrationTag"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('registrationTag').valid && addVehicleForm.get('registrationTag').touched">Please enter Registration Tag <code></code></span>
+        </mat-error>
+      </mat-form-field>
+
+
+
+      <mat-form-field class="example-full-width">
+        <mat-label>License Plate</mat-label>
+        <input matInput placeholder="License Plate" maxlength="7" pattern="^[A-Za-z0-9]+$" formControlName="licensePlate"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!addVehicleForm.get('licensePlate').valid && addVehicleForm.get('licensePlate').touched">Please enter License Plate <code></code></span>
+        </mat-error>
+      </mat-form-field>
+
+
   <mat-form-field class="example-full-width">
       <mat-label>Location</mat-label>
         <mat-select formControlName="location">

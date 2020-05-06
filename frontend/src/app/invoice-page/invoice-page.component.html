@@ -14,7 +14,7 @@
 
 <div class="page-content">
 
-  <table mat-table [dataSource]="transactions" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Item Column -->
     <ng-container matColumnDef="feeCategory">
       <th mat-header-cell *matHeaderCellDef> Fee Category </th>
@@ -33,7 +33,9 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
   </table>
-
+  <div class="button-row">
+    <button type="submit" (click)="showDialog()"  mat-flat-button color="primary">Pay now</button>
+  </div>
   </div>
   </mat-card>
 
