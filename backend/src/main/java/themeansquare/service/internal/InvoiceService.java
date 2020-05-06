@@ -130,8 +130,7 @@ public class InvoiceService implements IInvoice {
                     int vehicleTypeId = existVehicle.getVehicleTypeId().getId();
 
                     ///1.1 compute actual rental price (estimated price) for diffHours
-                    // getting two range of price for a vehicle type
-                    Iterable<Price> itr_price = this.getPriceListForVehicleType(vehicleTypeId);
+                    Iterable<Price> itr_price = this.getPriceListForVehicleType(vehicleTypeId); // getting two range of price for a vehicle type
                     Iterator iter_price = itr_price.iterator();
                     Price price_5hr = (Price) iter_price.next();
                     Price price_10hr = (Price) iter_price.next();
