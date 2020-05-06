@@ -107,7 +107,8 @@ public class ReserveVehicle implements IReservation {
         response.put("status", "400");
 
         Reservation reservation = new Reservation();
-        reservation.setActualDropOffTime(newReservation.getActualDropOffTime());
+        //for first time actualDropOff time is empty, when vehicle is return, will update actualDropOff time
+        reservation.setActualDropOffTime("");
         reservation.setEstimateDropOffTime(newReservation.getEstimateDropOffTime());
         reservation.setEstimatedPrice(newReservation.getEstimatedPrice());
         reservation.setPickUpTime(newReservation.getPickUpTime());
@@ -146,13 +147,15 @@ public class ReserveVehicle implements IReservation {
         return invoice;
     }
 
+    //can be used for front end
     public String addReservationOld() throws Exception {
 
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "400");
 
         Reservation reservation = new Reservation();
-        reservation.setActualDropOffTime(this.actualDropOffTime);
+        //for first time actualDropOff time is empty
+        reservation.setActualDropOffTime("");
         reservation.setEstimateDropOffTime(this.estimateDropOffTime);
         reservation.setEstimatedPrice(estimatedPrice);
         reservation.setPickUpTime(this.pickUpTime);
