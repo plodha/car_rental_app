@@ -376,9 +376,17 @@ public class VehicleReg implements IVehicleReg {
             while(iter_reserve.hasNext()) {
                 Reservation tempReservation = (Reservation) iter_reserve.next();
                 String oldPickUpTime = tempReservation.getPickUpTime(); 
-                String oldDropOffTime = tempReservation.getActualDropOffTime();
+                String oldDropOffTime = tempReservation.getActualDropOffTime();  
+                System.out.println("-------");
+                System.out.println("newPickUpTime "+newPickUpTime);
+                System.out.println("oldDropOffTime "+ oldDropOffTime);
                 Double diff_1 = this.DateDiff(newPickUpTime, oldDropOffTime); //check if: 1. newPickUpTime > oldDropOffTime
-                Double diff_2 = this.DateDiff(oldPickUpTime, newEstimatedDropOffTime); //check if: 2. oldPickUpTime > newDropoffTime  
+                System.out.println("-------");
+                System.out.println("oldPickUpTime "+oldPickUpTime);
+                System.out.println("newEstimatedDropOffTime "+ newEstimatedDropOffTime);
+                Double diff_2 = this.DateDiff(oldPickUpTime, newEstimatedDropOffTime); //check if: 2. oldPickUpTime > newDropoffTime
+                System.out.println("-------");
+
                 if (diff_1 <=0 && diff_2 <= 0) {
                     //another check for iter1
                     iter1.remove(); //this vehicle is not eligible for reservation
@@ -424,7 +432,7 @@ public class VehicleReg implements IVehicleReg {
         double diffSeconds = diff / 1000 % 60;  
         double diffMinutes = diff / (60 * 1000) % 60; 
         double diffHours = diff / (60 * 60 * 1000);                             
-        System.out.println("Time in hours: " + diffHours + " hours.");
+        System.out.println("Time diff in hours: " + diffHours + " hrs.");
 
         return Math.ceil(diffHours);
     }
