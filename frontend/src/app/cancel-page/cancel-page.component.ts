@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 //import { ApiService } from '../api.service';
 import { FormControl, FormGroupDirective, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
+import {ApiService} from '../api.service'
 
 @Component({
   selector: 'app-cancel-page',
@@ -11,12 +12,35 @@ import { ErrorStateMatcher } from '@angular/material/core';
 })
 export class CancelPageComponent implements OnInit {
   isLoadingResults = false;
-  constructor(private router: Router, private formBuilder: FormBuilder) { }
+  public endDate = "";
+  constructor(private router: Router, private formBuilder: FormBuilder, private api: ApiService) { }
 
   ngOnInit(): void {
+    var OBJ = this;
+    this.api.getCustomerById(localStorage.id).subscribe((cust:any) => {
+      console.log(cust)
+      console.log(cust.membershipEndDate)
+      var memEndDate = cust.membershipEndDate
+      var splitted = memEndDate.split("-", 3);
+      OBJ.endDate = splitted[1]+ "/"+splitted[2]+"/"+splitted[0]
+    });
+
+
   }
-  cancel():void {
-    this.router.navigate(['/login']);
+  cancel(operation):void {
+
+    if(operation == 'Cancel') {
+      var formData = {}
+      formData['userId'] = localStorage.id;
+      this.api.cancelMembershipAPI(formData).subscribe((res:any) => {
+        console.log(res);
+
+          //this.router.navigate(['/vehicle']);
+          this.router.navigate(['/login'])
+
+        });
+    }
+
   }
 
 }
