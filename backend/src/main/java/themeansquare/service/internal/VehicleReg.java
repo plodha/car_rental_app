@@ -380,6 +380,7 @@ public class VehicleReg implements IVehicleReg {
                 Double diff_1 = this.DateDiff(newPickUpTime, oldDropOffTime); //check if: 1. newPickUpTime > oldDropOffTime
                 Double diff_2 = this.DateDiff(oldPickUpTime, newEstimatedDropOffTime); //check if: 2. oldPickUpTime > newDropoffTime  
                 if (diff_1 <=0 && diff_2 <= 0) {
+                    //another check for iter1
                     iter1.remove(); //this vehicle is not eligible for reservation
                 }     
             } 

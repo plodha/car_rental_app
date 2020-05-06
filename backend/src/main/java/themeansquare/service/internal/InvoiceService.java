@@ -107,6 +107,7 @@ public class InvoiceService implements IInvoice {
         5. update invoice damage fee
         6. update the vehicle table status as free
         7. update reservation with the actualdropoff time 
+        8. change the status =0 for reservation table
         
     */
     public String computeInvoice(Integer reservationId, String actualDropOffTime, Boolean IsDamage,String[] damageId) throws Exception {
@@ -153,6 +154,8 @@ public class InvoiceService implements IInvoice {
                 }
                 ///7 update reservation with the actualdropoff time
                 existReserve.setActualDropOffTime(actualDropOffTime);
+                /// 8. change the status =0 for reservation table
+                existReserve.setStatus(false);
                 reservationRepository.save(existReserve);
                 response.put("status", "200");
             }
