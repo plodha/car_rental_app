@@ -221,7 +221,9 @@ public class ReserveVehicle implements IReservation {
         logic for late fee: get the vehicle type
                get the late fee for that vehicle type
                then update invoice table for latefee and total fee
+               update EstimatedFee =0 in reservation table **
                vehicle status = true = free for reservation
+               update reservation status =  0 =cancel
     */
     public String cancelReservation(Integer reservationId, Boolean isLatefee) throws Exception {
 
@@ -254,8 +256,7 @@ public class ReserveVehicle implements IReservation {
                     }
                 }
                 else {
-                    ///reservation status = 1 -active ; 0 =cancel
-                    existReserve.setStatus(false);
+                    
                     Vehicle existVehicle = existReserve.getVehicle();
                     if(existVehicle != null) {
                         ///vehicle status = true = free for reservation
@@ -264,6 +265,9 @@ public class ReserveVehicle implements IReservation {
                         vehicleRepository.save(existVehicle);
                     }
                 }
+                
+                ///update EstimatedFee =0 in reservation table
+                existReserve.setEstimatedPrice(0.0);
                 reservationRepository.save(existReserve);
                 response.put("status", "200");
             }
