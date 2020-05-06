@@ -129,7 +129,7 @@ public class ReserveVehicle implements IReservation {
         int vehicleId = vehicle.getId();
         if (vehicleRepository.existsById(vehicleId)) {
             vehicle.setStatus(false);
-            vehicleRepository.save(vehicle);
+            //vehicleRepository.save(vehicle);
         }
         //Vehicle existVehicle = vehicleRepository.findById(id).get();
         return vehicle;
