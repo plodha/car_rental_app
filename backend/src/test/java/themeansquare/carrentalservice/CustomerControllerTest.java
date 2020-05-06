@@ -118,13 +118,13 @@ public class CustomerControllerTest {
 		c.setEmail(email);
 		c.setFirstName("Pranav");
 		c.setLastName("Lodha");
-		c.setLicenseExpDate(date);
+		c.setLicenseExpDate("2020-10-10");
 		c.setLicenseNumber("ABCDEFG");
-		c.setLicenseExpDate(date);
-		c.setMembershipEndDate(date);
-		c.setMembershipStartDate(date);
+		c.setLicenseExpDate("2020-10-10");
+		c.setMembershipEndDate("2020-10-10");
+		c.setMembershipStartDate("2020-10-10");
 		c.setCreditCard("12378917293");
-		c.setCreditCardExpDate(date);
+		c.setCreditCardExpDate("2020-10-10");
 		c.setAddress(a);
         c.setUserId(u);
         

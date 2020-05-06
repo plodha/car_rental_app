@@ -149,7 +149,7 @@ public class VehicleTypeService implements IVehicleType {
         
         this.damageRepository.deleteAll(dsIter);
         
-        VehicleReg vr = new VehicleReg(vehicleRepository, vehicleTypeRepository, null, null);
+        VehicleReg vr = new VehicleReg(vehicleRepository, vehicleTypeRepository, null, null, null);
         Iterable<Vehicle> vitr = vr.getVehicleByVehicleType(Integer.parseInt(vehicleTypeId));
         this.vehicleRepository.deleteAll(vitr);
         
