@@ -369,9 +369,9 @@ public class VehicleReg implements IVehicleReg {
         }
 
         Iterable<Reservation> itr_reserve = this.getActiveReservationList();
-        Iterator iter1 = itr.iterator();
-        while(iter1.hasNext()){ 
-            Vehicle tempVehicle = (Vehicle) iter1.next();
+        Iterator iter_vehicle = itr.iterator();
+        while(iter_vehicle.hasNext()){ 
+            Vehicle tempVehicle = (Vehicle) iter_vehicle.next();
             Iterator iter_reserve = itr_reserve.iterator();
             while(iter_reserve.hasNext()) {
                 Reservation tempReservation = (Reservation) iter_reserve.next();
@@ -388,8 +388,9 @@ public class VehicleReg implements IVehicleReg {
                 System.out.println("-------");
 
                 if (diff_1 <=0 && diff_2 <= 0) {
-                    //another check for iter1
-                    iter1.remove(); //this vehicle is not eligible for reservation
+                    //another check for iter_vehicle
+                    iter_vehicle.remove(); //this vehicle is not eligible for reservation
+                    break;
                 }     
             } 
         }
