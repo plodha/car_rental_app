@@ -36,7 +36,7 @@ export class CancelPageComponent implements OnInit {
         console.log(res);
 
           //this.router.navigate(['/vehicle']);
-          this.router.navigate(['/login'])
+          this.router.navigate(['/customerPage'])
 
         });
     }
