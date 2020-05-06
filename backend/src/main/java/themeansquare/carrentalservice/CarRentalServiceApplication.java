@@ -19,15 +19,15 @@ public class CarRentalServiceApplication {
 	}
 
 	///comment the below block for local development
-	// @Bean
-	// public WebMvcConfigurer corsConfigurer() {
-	// 		return new WebMvcConfigurer() {
-	// 				@Override
-	// 				public void addCorsMappings(CorsRegistry registry) {
-	// 						registry.addMapping("/**").allowedOrigins("*");
-	// 				}
-	// 		};
-	// }
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+			return new WebMvcConfigurer() {
+					@Override
+					public void addCorsMappings(CorsRegistry registry) {
+							registry.addMapping("/**").allowedOrigins("*").allowedMethods("PUT", "DELETE", "GET", "POST");
+					}
+			};
+	}
 }
 
 

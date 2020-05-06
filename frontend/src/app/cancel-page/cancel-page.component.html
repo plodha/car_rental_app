@@ -18,12 +18,12 @@
 
   <h2>Warning! </h2>
 
-  Your current membership is active till 09/20/2020. Your cancellation will not refund your registration fee.
+  Your current membership is active till {{endDate}}. Your cancellation will not refund your registration fee.
   Would you like to continue?
 
   </div>
   <div class="button-row">
-    <a mat-flat-button color="primary" [routerLink]="['/home']"> Proceed to cancellation</a>
+    <a mat-flat-button color="primary" (click)="cancel('Cancel')"> Proceed to cancellation</a>
   </div>
 
   </mat-card>
