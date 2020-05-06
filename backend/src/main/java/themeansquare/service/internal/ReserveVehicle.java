@@ -245,6 +245,7 @@ public class ReserveVehicle implements IReservation {
 
                         ///3 get invoce id and update latefee and total fee
                         Invoice invoice = existReserve.getInvoice();
+                        invoice.setEstimatedPrice(0.0);
                         invoice.setLateFee(lateFee);
                         invoice.setTotalPrice(lateFee);
                         invoiceRepository.save(invoice);
@@ -259,13 +260,18 @@ public class ReserveVehicle implements IReservation {
                     
                     Vehicle existVehicle = existReserve.getVehicle();
                     if(existVehicle != null) {
+                         ///3 get invoce id and update estimated price =0
+                         Invoice invoice = existReserve.getInvoice();
+                         invoice.setEstimatedPrice(0.0);
+
                         ///vehicle status = true = free for reservation
                         existVehicle.setStatus(true);
                         existReserve.setVehicle(existVehicle);
                         vehicleRepository.save(existVehicle);
                     }
                 }
-                
+                ///reservation status =  0 =cancel
+                existReserve.setStatus(false);
                 ///update EstimatedFee =0 in reservation table
                 existReserve.setEstimatedPrice(0.0);
                 reservationRepository.save(existReserve);
