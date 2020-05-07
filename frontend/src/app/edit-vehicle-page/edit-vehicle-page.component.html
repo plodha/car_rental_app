@@ -46,6 +46,39 @@
           <span *ngIf="!editVehicleForm.get('VIN').valid && editVehicleForm.get('VIN').touched">Please enter VIN</span>
         </mat-error>
       </mat-form-field>
+
+            <mat-form-field>
+              <mat-label>Service Date</mat-label>
+              <input matInput [matDatepicker]="servicepicker" placeholder="Service Date"  formControlName="serviceDate">
+              <mat-datepicker-toggle matSuffix [for]="servicepicker"></mat-datepicker-toggle>
+              <mat-datepicker #servicepicker></mat-datepicker>
+
+              <mat-error>
+                <span *ngIf="!editVehicleForm.get('serviceDate').valid && editVehicleForm.get('serviceDate').touched">Please enter service date</span>
+              </mat-error>
+            </mat-form-field>
+
+    
+
+            <mat-form-field class="example-full-width">
+              <mat-label>Current Mileage</mat-label>
+              <input matInput placeholder="Current Milege" maxlength="7" pattern="^[0-9]+$" formControlName="currentMileage"
+                      [errorStateMatcher]="matcher">
+              <mat-error>
+                <span *ngIf="!editVehicleForm.get('currentMileage').valid && editVehicleForm.get('currentMileage').touched">Please enter Current Mileage <code></code></span>
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+              <mat-label>Registration Tag</mat-label>
+              <input matInput placeholder="Registration Tag" maxlength="7" pattern="^[A-Za-z0-9]+$" formControlName="registrationTag"
+                      [errorStateMatcher]="matcher">
+              <mat-error>
+                <span *ngIf="!editVehicleForm.get('registrationTag').valid && editVehicleForm.get('registrationTag').touched">Please enter Registration Tag <code></code></span>
+              </mat-error>
+            </mat-form-field>
+
+
       <mat-form-field class="example-full-width">
         <mat-label>License Plate</mat-label>
         <input matInput placeholder="License Plate" maxlength="7" pattern="^[A-Za-z0-9]+$" formControlName="licensePlate"
