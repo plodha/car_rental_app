@@ -181,12 +181,12 @@ export class EditVehiclePageComponent implements OnInit {
     console.log(id)
     this.api.updateVehicleAPI(id,formData).subscribe((res:any) => {
       console.log(res);
-    //     this.isLoadingResults = false;
-    //     this.router.navigate(['/vehicle']);
-    // }, (err: any) => {
-    //   console.log(err);
-    //   this.isLoadingResults = false;
-    //     this.router.navigate(['/vehicle']);
+        this.isLoadingResults = false;
+        this.router.navigate(['/vehicle']);
+    }, (err: any) => {
+      console.log(err);
+      this.isLoadingResults = false;
+        this.router.navigate(['/vehicle']);
     });
 
 
