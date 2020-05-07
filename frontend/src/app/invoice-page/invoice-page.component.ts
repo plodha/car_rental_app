@@ -49,7 +49,7 @@ export class InvoicePageComponent implements OnInit {
 
  showDialog()
 {
-  alert("Payment charged to your credit card.Thank you for your payment.")
+  //alert("Payment charged to your credit card.Thank you for your payment.")
   this.router.navigate(['/reservations/'+localStorage.customerId]);
 
 }

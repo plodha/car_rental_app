@@ -46,14 +46,7 @@
           <span *ngIf="!addVehicleForm.get('VIN').valid && addVehicleForm.get('VIN').touched">Please enter VIN</span>
         </mat-error>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <mat-label>License Plate</mat-label>
-        <input matInput placeholder="License Plate" maxlength="7" pattern="^[A-Za-z0-9]+$" formControlName="licensePlate"
-                [errorStateMatcher]="matcher">
-        <mat-error>
-          <span *ngIf="!addVehicleForm.get('licensePlate').valid && addVehicleForm.get('licensePlate').touched">Please enter License Plate <code></code></span>
-        </mat-error>
-      </mat-form-field>
+    
 
       <mat-form-field>
         <mat-label>Service Date</mat-label>

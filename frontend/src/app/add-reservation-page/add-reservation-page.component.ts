@@ -148,7 +148,8 @@ export class AddReservationPageComponent implements OnInit {
 
     this.api.getPriceInfo( this.reservationForm.get('vehicleType').value).subscribe((priceInfo:any)=>{
         console.log(priceInfo)
-        if(priceInfo.length > 1){
+        console.log(priceInfo.length)
+        if(priceInfo.length > 0){
           OBJ.estimatedPrice = priceInfo[0].hourlyPrice
 
     console.log('OBJ.estimatedPrice');
@@ -277,12 +278,15 @@ bookVehicle(ele){
   formData['pickUpTime'] = this.getPickupDateString(this.reservationForm.get('pickupDateTime').value)
   formData['actualDropOffTime'] =this.getPickupDateString(this.reservationForm.get('dropoffDateTime').value)
   formData['estimateDropOffTime'] = this.getPickupDateString(this.reservationForm.get('dropoffDateTime').value)
-  console.log(localStorage.id)
-  this.api.getCustomerById(localStorage.id).subscribe((cust:any) => {
-    console.log(cust)
-      console.log(cust.id)
+  console.log(localStorage.id);
+
+  console.log(localStorage.username != undefined)
+  if(localStorage.customerId != undefined ) {
+    //document.getElementById('profileName').innerHTML += localStorage.username
+
+
       var customer = {}
-      customer['id'] = cust.id
+      customer['id'] = localStorage.customerId;
       formData['customer'] = customer;
       formData['invoice'] = invoice;
       formData['location'] = location;
@@ -293,10 +297,16 @@ bookVehicle(ele){
       this.api.addReservationAPI(formData).subscribe((res:any) =>{
           console.log(res)
           if(res.status == "200") {
-              alert("success")
+              alert("Reservation booked Successfully ! Thank you for your business")
+                this.router.navigate(['/reservations/'+localStorage.customerId]);
           }
       });
-  });
+
+}
+else {
+  this.router.navigate(['/login']);
+
+}
 
 
 

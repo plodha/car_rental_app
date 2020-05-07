@@ -215,6 +215,10 @@ const routes: Routes = [{
           component: CustomerLandingPageComponent
       },
       {
+          path:'logout',
+          component: LogoutPageComponent
+      },
+      {
           path:'locations',
           component: LocationsPageComponent,
           resolve: {

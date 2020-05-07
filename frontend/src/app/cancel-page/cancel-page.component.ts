@@ -36,7 +36,8 @@ export class CancelPageComponent implements OnInit {
         console.log(res);
 
           //this.router.navigate(['/vehicle']);
-          this.router.navigate(['/customerPage'])
+          alert('Your membership has been cancelled')
+          this.router.navigate(['/login'])
 
         });
     }
