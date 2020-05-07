@@ -48,7 +48,7 @@ export class RegisterPageComponent implements OnInit {
 
   months: Month[] = [
    {value: 1, label: 'Jan'},{value: 2, label: 'Feb'},
-   {value: 3, label: 'Feb'},{value: 4, label: 'Apr'},
+   {value: 3, label: 'Mar'},{value: 4, label: 'Apr'},
    {value: 5, label: 'May'},{value: 6, label: 'Jun'},
    {value: 7, label: 'Jul'},{value: 8, label: 'Aug'},
    {value: 9, label: 'Sep'},{value: 10, label: 'Oct'},
@@ -121,6 +121,7 @@ years:string[] = ['2020','2021','2022','2023','2024','2025','2026','2027','2028'
   this.api.regAPI(formData).subscribe((res:any)=>{
     this.isLoadingResults = false;
     if (res.status == "200") {
+      alert('Registration is successful ! Your membership fee of $100 is detected from your credit card. Your registration is active for 6 months')
       this.router.navigate(['/customerPage']);
     }
     if(res.status == "400"){

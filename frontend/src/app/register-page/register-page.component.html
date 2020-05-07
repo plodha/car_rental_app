@@ -152,7 +152,7 @@
 
     <mat-form-field class="example-full-width">
       <mat-label>cvv</mat-label>
-      <input matInput placeholder="cvv" formControlName="cvv" maxlength="3"
+      <input matInput placeholder="cvv" formControlName="cvv" maxlength="3" type="password"
               [errorStateMatcher]="matcher">
       <mat-error>
         <span *ngIf="!registerForm.get('cvv').valid && registerForm.get('cvv').touched">Please enter cvv</span>
