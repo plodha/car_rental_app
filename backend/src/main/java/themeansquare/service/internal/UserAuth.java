@@ -41,38 +41,18 @@ public class UserAuth implements IUser {
     }
 
     public String getRole(int id) {
-
-        HashMap<String, String> response = new HashMap<>();
-        response.put("status", "400");
-        response.put("message", "User does not exist");
         
-        Iterable<Employee> empaItr = employeeRepository.findAll();
+        CustomerRoleHandler crh = new CustomerRoleHandler();
+        EmployeeRoleHandler erh = new EmployeeRoleHandler();
+        NoRoleHandler nrh = new NoRoleHandler();
 
-        Iterator empIt = empaItr.iterator();
+        crh.setRepo(customerRepository);
+        erh.setRepo(employeeRepository);
         
-        while (empIt.hasNext()) {
-            Employee employee = (Employee) empIt.next();
-            System.out.println(employee.getId());
-            System.out.println(id);
-            if (employee.getUserId().getId() == id) {
-                return "Employee";
-            }
-        }
+        crh.setSuccessor(erh);
+        erh.setSuccessor(nrh);
 
-        Iterable<Customer> custItr = customerRepository.findAll();
-
-        Iterator custIt = custItr.iterator();
-        
-        while (custIt.hasNext()) {
-            Customer customer = (Customer) custIt.next();
-            System.out.println(customer.getId());
-            System.out.println(id);
-            if (customer.getUserId().getId() == id) {
-                return "Customer";
-            }
-        }
-
-        return "No role :(";
+        return crh.handle(id);
 
     }
 
