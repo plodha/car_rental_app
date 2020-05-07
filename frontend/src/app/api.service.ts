@@ -73,6 +73,7 @@ public queryVehicleAvailability(formData){
 
 }
 
+
 public getDamageForVehicleType(id){
   let end_point = 'getDamageForVehicleType'
   let query_str = '?vehicleTypeId='+id
@@ -569,7 +570,7 @@ public getReservationByCustomerId(custId){
     */
    updatePriceAPI(priceFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
-    let body = JSON.stringify(priceFormGroup.value);
+    let body = JSON.stringify(priceFormGroup);
     let end_point = "updatePrice"
     return this.http.put(this.prod_api_url + end_point, body, {headers});
   }
@@ -654,8 +655,9 @@ return this.http.put(this.prod_api_url + end_point, body, {headers});
     */
    updateVehicleTypeAPI(vehicleTypeFormGroup) {
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
-    let body = JSON.stringify(vehicleTypeFormGroup.value);
+    let body = JSON.stringify(vehicleTypeFormGroup);
     let end_point = "updateVehicleType"
+
     return this.http.put(this.prod_api_url + end_point, body, {headers});
   }
 

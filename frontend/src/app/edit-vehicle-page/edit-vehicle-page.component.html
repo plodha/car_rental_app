@@ -1,7 +1,7 @@
 <div class="example-container mat-elevation-z8">
   <div class="container">
     <div class='title'>
-    <h1>Car Rental System</h1>
+    <h1>Car Rental System - Edit Vehicle</h1>
     </div>
   </div>
   <div class="example-loading-shade"
@@ -93,7 +93,9 @@
 
 
       <div class="button-row">
-        <button type="submit" [disabled]="!editVehicleForm.valid" mat-flat-button color="primary">Save</button>
+        <button type="submit" [disabled]="!editVehicleForm.valid" mat-flat-button color="primary">Save</button> &nbsp;&nbsp;&nbsp;
+        <button type="submit" (click)="closeWindow()" mat-flat-button color="primary">cancel</button>
+
       </div>
     </form>
   </mat-card>

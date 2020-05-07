@@ -56,6 +56,7 @@ export class AddReservationPageComponent implements OnInit {
   dataSource: MatTableDataSource<Vehicle>;
   isLoadingResults = false;
   estimatedPrice = 0;
+  errorMessage = '';
 
   public pickupDateTime = new FormControl(new Date());
   public dropoffDateTime = new FormControl(new Date());
@@ -111,6 +112,14 @@ export class AddReservationPageComponent implements OnInit {
       }
 
   ngOnInit(): void {
+    console.log(localStorage.username != undefined)
+if(localStorage.username != undefined ) {
+  document.getElementById('profileName').innerHTML += localStorage.username
+}
+else {
+  this.router.navigate(['/login']);
+
+}
       this.reservationForm = this.formBuilder.group({
 
         // pickupDateTime: [null, Validators.required],
@@ -130,9 +139,15 @@ export class AddReservationPageComponent implements OnInit {
       //this.date = new Date(2021,9,4,5,6,7);
 
   }
+  closeWindow(){
+    this.router.navigate(['/customerPage']);
+
+  }
 
   onFormSubmit() {
     this.isLoadingResults = true;
+    this.ELEMENT_DATA = [];
+    this.dataSource = new MatTableDataSource(this.ELEMENT_DATA);
 
     if(this.validateFor72Hours()){
       document.getElementById('errorBlock').style.display ='none';
@@ -190,6 +205,7 @@ export class AddReservationPageComponent implements OnInit {
     else{
       this.isLoadingResults = false;
       document.getElementById('errorBlock').style.display ='block';
+      document.getElementById('errorBlock').innerHTML = this.errorMessage;
     }
     //this.router.navigate(['/login']);
   }
@@ -233,6 +249,7 @@ computeDiffHours(){
 
 }
 
+
   validateFor72Hours() {
     console.log(this.pickupDateTime.value);
     //Sun May 03 2020 17:56:13 GMT-0700 (Pacific Daylight Time)
@@ -252,13 +269,28 @@ computeDiffHours(){
   //  this.reservationForm.setValue({ pickupdatestring:pickupdatestring,dropoffdatestring:dropoffdatestring});
   //  this.reservationForm.set('dropoffdatestring').value = dropoffdatestring;
 
+
+
+
+
     var milliseconds = 72*60*60*1000;
+    var onehour = 1*60*60*1000;
     var a = new Date(dropoffdatestring)
     var b = new Date(pickupdatestring)
     let diff:any = +new Date(dropoffdatestring) -  +new Date(pickupdatestring);
     console.log(diff)
     console.log(diff > milliseconds)
+    if(diff < onehour){
+      this.errorMessage = '*Please choose minimum one hour time range'
+      return false;
+    }
+
     if (diff > milliseconds) {
+      this.errorMessage = '*Please choose dropoff time within 72 hours'
+      return false;
+    }
+    if(a < new Date() || b < new Date()){
+      this.errorMessage = '*Please choose some future date'
       return false;
     }
     return true;

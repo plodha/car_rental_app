@@ -123,7 +123,7 @@ years:string[] = ['2020','2021','2022','2023','2024','2025','2026','2027','2028'
        zipcode : data.address.zipCode,
        email : data.email,
        licensenumber : data.licenseNumber,
-       licenseExpiryDate : new FormControl(data.licenseExpDate),
+       licenseExpiryDate : new FormControl(new Date(data.licenseExpDate+' 09:00')),
        addressId: data.address.id,
        userId: data.userId.id,
        creditCard : data.creditCard,

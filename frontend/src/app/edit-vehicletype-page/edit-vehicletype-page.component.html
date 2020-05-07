@@ -16,7 +16,7 @@
 
       <mat-form-field class="example-full-width">
         <mat-label>Vehicle Class</mat-label>
-        <input matInput placeholder="make" formControlName="vehicleClass" pattern="^[a-zA-Z][a-zA-Z ]+$"
+        <input matInput placeholder="Vehicle Class" formControlName="vehicleClass" pattern="^[a-zA-Z][a-zA-Z ]+$"
                 [errorStateMatcher]="matcher">
         <mat-error>
           <span *ngIf="!editVehicleTypeForm.get('vehicleClass').valid && editVehicleTypeForm.get('vehicleClass').touched">Please enter vehicle class name</span>

@@ -66,3 +66,9 @@
   margin-top: 50px;
   margin-left:50px;
 }
+.example-loading-shade{
+  position:fixed;
+  left:50%;
+  top:50%;
+  z-index:1000;
+}

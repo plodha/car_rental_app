@@ -29,7 +29,7 @@ export interface Customer {
 })
 export class CustomersPageComponent implements OnInit {
   isLoadingResults = false;
-  displayedColumns: string[] = ['id', 'name', 'addressLine','licenseInfo','licenseExpDate','startDate','endDate','email', 'status','star'];
+  displayedColumns: string[] = ['id', 'name', 'addressLine','licenseInfo','licenseExpDate','startDate','endDate','email','star'];
   dataSource: MatTableDataSource<Customer>;
   ELEMENT_DATA: Customer[] = [];
 
@@ -69,6 +69,14 @@ export class CustomersPageComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    console.log(localStorage.username != undefined)
+if(localStorage.username != undefined ) {
+  document.getElementById('profileName').innerHTML += localStorage.username
+}
+else {
+  this.router.navigate(['/login']);
+
+}
   }
 
   applyFilter(event: Event) {

@@ -1,9 +1,13 @@
 <div class="example-container">
   <div class="container">
-    <div class='title'>
-    <h1>Car Rental System</h1>
-    </div>
-  </div>
+     <div class='title'>
+
+   <span>  <h1>Car Rental System
+ <a style="color:white;font-size:16px" [routerLink]="['/profile']">
+     <span id="profileName" style="font-size:16px;">&nbsp;<i class="material-icons" style="padding-left:70%"> account_circle</i> </span></a>&nbsp;&nbsp;
+       <a style="color:white;font-size:16px" [routerLink]="['/logout']"> Logout</a></h1></span>
+     </div>
+   </div>
   <div class="example-loading-shade"
         *ngIf="isLoadingResults">
     <mat-spinner *ngIf="isLoadingResults"></mat-spinner>
@@ -13,7 +17,7 @@
   </div> -->
   <mat-card class="example-card">
     <form [formGroup]="reservationForm" (ngSubmit)="onFormSubmit()">
-      <span class="errorMessage" id="errorBlock">*Please choose dropoff time within 72 hours</span>
+      <span class="errorMessage" id="errorBlock"></span>
       <mat-form-field class="example-full-width">
           <mat-label>Location</mat-label>
             <mat-select formControlName="location" >
@@ -62,6 +66,9 @@
 
       <div class="button-row">
         <button type="submit" [disabled]="!reservationForm.valid" mat-flat-button color="primary">Search Vehicles</button>
+&nbsp;&nbsp;&nbsp;
+        <button type="submit" (click)="closeWindow()" mat-flat-button color="primary">cancel</button>
+
       </div>
     </form>
       <div class="mat-elevation-z8">

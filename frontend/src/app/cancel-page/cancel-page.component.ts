@@ -24,6 +24,14 @@ export class CancelPageComponent implements OnInit {
       var splitted = memEndDate.split("-", 3);
       OBJ.endDate = splitted[1]+ "/"+splitted[2]+"/"+splitted[0]
     });
+    console.log(localStorage.username != undefined)
+  if(localStorage.username != undefined ) {
+    document.getElementById('profileName').innerHTML += localStorage.username
+  }
+  else {
+    this.router.navigate(['/login']);
+
+  }
 
 
   }
@@ -42,6 +50,10 @@ export class CancelPageComponent implements OnInit {
         });
     }
 
+  }
+
+  closeWindow():void {
+  this.router.navigate(['/customerPage'])
   }
 
 }
