@@ -21,7 +21,7 @@ export interface Reservation {
    locationName:string;
     vehicleId:number;
     invoiceId : number;
-    action: boolean;
+    action: string;
     vehicleMake :string;
     vehicleModel:string;
     vehicleTypeId:number;
@@ -71,7 +71,7 @@ export class ReservationsPageComponent implements OnInit {
             locationName:obj.location.name,
              vehicleId:obj.vehicle.id,
              invoiceId : obj.invoice.id,
-             action:OBJ.findAction(obj.pickUpTime,obj.status),
+             action:OBJ.findAction(obj.pickUpTime,obj.estimateDropOffTime,obj.status),
              vehicleModel:obj.vehicle.model,
              vehicleMake:obj.vehicle.make,
              vehicleTypeId:obj.vehicle.vehicleTypeId.id
@@ -94,16 +94,34 @@ export class ReservationsPageComponent implements OnInit {
   }
 
 
-findAction(value,status) {
+findAction(value,value2,status): string {
   var date = new Date(value)
-  if(new Date() < date && status == 1){
-    return true;
+    var dropoffdate = new Date(value2)
+
+    var action = '0'
+    console.log(new Date())
+    console.log(new Date() < date)
+    console.log(dropoffdate)
+    console.log(new Date() > dropoffdate)
+  if(new Date() < date && status){
+    action = '1'; //cancel
 
   }
-  if(new Date() > date && status == 1){
-    return false;
+  if(new Date() > date && new Date() < dropoffdate && status){
+  action = '2'; //dropoff
 
   }
+  if(new Date() > date && new Date() > dropoffdate && status){
+    action =  '3'; //invoice
+
+  }
+  if(!status){
+    action =  '4'; //invoice
+
+  }
+
+  return action
+
 }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -114,11 +132,38 @@ findAction(value,status) {
     }
   }
 viewInvoice(ele) {
-  this.router.navigate(['/invoice/'+ele.id]);
+  this.router.navigate(['/invoice/'+ele.invoiceId]);
 }
 
 initiateDropoff(ele) {
   this.router.navigate(['/survey/'+ele.id+'/'+ele.vehicleTypeId]);
 }
+initiateCancel(ele) {
+  var formData = {}
+  formData['reservationId'] = ele.id;
+  var Onehr = 1000*60*60; // in milliseconds
+  console.log(ele.pickUpTime)
+  var d:any = new Date()
+  var pickupDate:any = new Date(ele.pickUpTime);
+  var diff:any =  d - pickupDate;
+  console.log(diff)
+  if (Math.abs(diff) > Onehr ){
+    formData['isLatefee'] = false
 
+  }
+  else {
+    formData['isLatefee'] = true
+  }
+  console.log(formData)
+  this.api.cancelReservationAPI(formData).subscribe((res:any) => {
+    console.log(res);
+    if(res.status == "200" ){
+        alert("Reservation cancelled Successfully !")
+        location.reload();
+    }
+  });
+  //this.router.navigate(['/survey/'+ele.id+'/'+ele.vehicleTypeId]);
+
+
+}
 }

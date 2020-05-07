@@ -585,6 +585,7 @@ public getReservationByCustomerId(custId){
     let headers = { 'Content-Type': 'application/json','Accept':'application/json', "Access-Control-Allow-Origin": "*"};
     let body = JSON.stringify(reservationFormGroup.value);
     let end_point = "/reservationCancel/" + reservationFormGroup.reservationId + "/" + reservationFormGroup.isLatefee
+    console.log(end_point)
     return this.http.put(this.prod_api_url + end_point, body, {headers});
   }
 

@@ -9,7 +9,7 @@
       <a style="color:white;font-size:16px" [routerLink]="['/logout']"> Logout</a></h1></span>
     </div>
   </div>
-  <div class="breadcrumb"> <a style="font-size:16px" [routerLink]="['/home']"> Home</a> >> Reservations</div>
+  <div class="breadcrumb"> <a style="font-size:16px" [routerLink]="['/customerPage']"> Home</a> >> Reservations</div>
 
   <div class="example-content-page">
 <h2> Reservations</h2>
@@ -80,15 +80,28 @@
       <th mat-header-cell *matHeaderCellDef mat-sort-header> Status</th>
 
             <td mat-cell *matCellDef="let row" >
-              <div *ngIf="row.action">
-                  <button mat-menu-item (click)="initiateDropoff(row)">  <span>Dropoff</span>
+              <div *ngIf="row.action === '1'">
+                  <button mat-menu-item (click)="initiateCancel(row)">  <span>Cancel</span>
                   </button>
               </div>
-              <div *ngIf="!row.action">
+              <div *ngIf="row.action === '2'">
+                <button mat-menu-item (click)="initiateDropoff(row)">
+
+                  <span>Dropoff</span>
+                </button>
+              </div>
+              <div *ngIf="row.action === '3'">
                 <button mat-menu-item (click)="viewInvoice(row)">
 
                   <span>View invoice</span>
                 </button>
+              </div>
+
+              <div *ngIf="row.action === '4'">
+
+
+                  <span>Cancelled</span>
+
               </div>
             </td>
     </ng-container>

@@ -123,6 +123,7 @@ export class DropoffSurveyPageComponent implements OnInit {
     var formData = {}
     if(queryString == ''){
       formData['IsDamage'] = false
+      queryString = '0'
     }
     else{
       formData['IsDamage'] = true
@@ -138,10 +139,9 @@ export class DropoffSurveyPageComponent implements OnInit {
       this.api.computeInvoiceAPI(formData).subscribe((res:any) => {
           OBJ.isLoadingResults = false;
           console.log(res)
-          if(res.status == '200'){
-            alert("Thank you for your business! Please view the final invoice in reservations ")
-              this.router.navigate(['/reservations/'+localStorage.customerId]);
-          }
+            //alert("Thank you for your business! Please view the final invoice in reservations ")
+            this.router.navigate(['/invoice/'+res]);
+
       })
 
     });

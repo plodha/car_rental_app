@@ -33,8 +33,12 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
   </table>
+  <br/>
+<div>
+<h2>  *Payment charged to your credit card. Thank you for your business. </h2></div>
+
   <div class="button-row">
-    <button type="submit" (click)="showDialog()"  mat-flat-button color="primary">Pay now</button>
+    <button type="submit" (click)="showDialog()"  mat-flat-button color="primary">Close</button>
   </div>
   </div>
   </mat-card>
