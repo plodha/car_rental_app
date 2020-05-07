@@ -10,6 +10,17 @@ services:
       - 443:443
     networks:
       - ms_network
+    expose:
+      # traefik dashboard port
+      - 8080
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:traefik.wasaequreshi.com"
+      # get md5 from htpasswd or http://www.htaccesstools.com/htpasswd-generator/
+      # and then double all $ to $$ to avoid docker-compose
+      - "traefik.frontend.auth.basic=username:$$apr1$$p4wa0lks$$g0iOxa380TsTqo0rS6eyX1"
+      - "traefik.port=8080"
+      - "traefik.docker.network=ms_network"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik_letsencrypt/traefik.toml:/traefik.toml

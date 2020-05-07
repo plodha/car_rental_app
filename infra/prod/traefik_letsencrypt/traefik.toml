@@ -2,6 +2,9 @@ debug = false
 logLevel = "ERROR"
 defaultEntryPoints = ["https","http"]
 
+[api]
+  dashboard = true
+
 [serversTransport]
   maxIdleConnsPerHost = -1
 
