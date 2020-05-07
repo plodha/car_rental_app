@@ -167,13 +167,18 @@ const routes: Routes = [{
           path:'editPrice/:id',
           component: EditPricePageComponent,
           resolve:{
-          vehicleType: VehicleTypeResolver
+          vehicleType: VehicleTypeResolver,
+          price:PriceResolver
         }
 
       },
       {
           path:'editVehicleType/:id',
-          component: EditVehicletypePageComponent
+          component: EditVehicletypePageComponent,
+          resolve: {
+
+            vehicleType: VehicleTypeResolver
+          }
 
       },
       {

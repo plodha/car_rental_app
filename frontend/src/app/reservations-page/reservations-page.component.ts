@@ -91,6 +91,14 @@ export class ReservationsPageComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+    console.log(localStorage.username != undefined)
+  if(localStorage.username != undefined ) {
+    document.getElementById('profileName').innerHTML += localStorage.username
+  }
+  else {
+    this.router.navigate(['/login']);
+
+  }
   }
 
 

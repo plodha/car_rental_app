@@ -13,67 +13,49 @@
   </div> -->
   <mat-card class="example-card">
     <form [formGroup]="editPriceForm" (ngSubmit)="onFormSubmit()">
+
+
       <mat-form-field class="example-full-width">
-        <mat-label>Name</mat-label>
-        <input matInput placeholder="name" formControlName="name" pattern="^[a-zA-Z][a-zA-Z ]+$"
+          <mat-label>Vehicle Type</mat-label>
+            <mat-select formControlName="vehicleType">
+              <mat-option *ngFor="let vehicleType of vehicleTypes"  [value]="vehicleType.id">
+                {{vehicleType.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error>
+              <span *ngIf="!editPriceForm.get('vehicleType').valid && editPriceForm.get('vehicleType').touched">Please select Vehicle type <code></code></span>
+            </mat-error>
+      </mat-form-field>
+
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Late Fee</mat-label>
+        <input matInput placeholder="lateFee" formControlName="lateFee" pattern="^[0-9]+(\\.[0-9]{2})?$" maxlength="5"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!editPriceForm.get('name').valid && editPriceForm.get('name').touched">Please enter Firstname Lastname</span>
+          <span *ngIf="!editPriceForm.get('lateFee').valid && editPriceForm.get('lateFee').touched">Please enter lateFee</span>
         </mat-error>
       </mat-form-field>
 
 
-
       <mat-form-field class="example-full-width">
-        <mat-label>Address Line</mat-label>
-        <input matInput placeholder="Address Line" formControlName="addressLine" pattern="^(?:[A-Za-z0-9]+)(?:[A-Za-z0-9 _]*)$"
+        <mat-label>Hourly Price</mat-label>
+        <input matInput placeholder="hourlyPrice" formControlName="hourlyPrice" pattern="^[0-9]+(\\.[0-9]{2})?$" maxlength="5"
                 [errorStateMatcher]="matcher">
         <mat-error>
-          <span *ngIf="!editPriceForm.get('addressLine').valid && editPriceForm.get('addressLine').touched">Please enter Address Line</span>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <mat-label>City</mat-label>
-        <input matInput placeholder="City" formControlName="city" pattern="^[a-zA-Z][a-zA-Z ]+$"
-                [errorStateMatcher]="matcher">
-        <mat-error>
-          <span *ngIf="!editPriceForm.get('city').valid && editPriceForm.get('city').touched">Please enter City</span>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <mat-label>State</mat-label>
-        <input matInput placeholder="State" formControlName="state" pattern="^[a-zA-Z][a-zA-Z ]+$"
-                [errorStateMatcher]="matcher">
-        <mat-error>
-          <span *ngIf="!editPriceForm.get('state').valid && editPriceForm.get('state').touched">Please enter State</span>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <mat-label>Zipcode</mat-label>
-        <input matInput placeholder="Zipcode" formControlName="zipcode" pattern="^[0-9]+$" maxlength="5"
-                [errorStateMatcher]="matcher">
-        <mat-error>
-          <span *ngIf="!editPriceForm.get('zipcode').valid && editPriceForm.get('zipcode').touched">Please enter Zipcode</span>
+          <span *ngIf="!editPriceForm.get('hourlyPrice').valid && editPriceForm.get('hourlyPrice').touched">Please enter hourlyPrice</span>
         </mat-error>
       </mat-form-field>
 
-      <mat-form-field class="example-full-width">
-        <mat-label>Contact Number</mat-label>
-        <input matInput placeholder="Contact Number" formControlName="contactNumber" pattern="^[0-9]+$" maxlength="10"
-                [errorStateMatcher]="matcher">
-        <mat-error>
-          <span *ngIf="!editPriceForm.get('contactNumber').valid && editPriceForm.get('contactNumber').touched">Please enter Contact number</span>
-        </mat-error>
-      </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <mat-label>Vehicle Capacity</mat-label>
-        <input matInput placeholder="Vehicle Capacity" formControlName="vehicleCapacity" pattern="^[0-9]+$"
-                [errorStateMatcher]="matcher">
-        <mat-error>
-          <span *ngIf="!editPriceForm.get('vehicleCapacity').valid && editPriceForm.get('vehicleCapacity').touched">Please enter Vehicle capacity</span>
-        </mat-error>
-      </mat-form-field>
 
+      <mat-form-field class="example-full-width">
+        <mat-label>Maximum Hourly Range</mat-label>
+        <input matInput placeholder="hourlyRange" formControlName="hourlyRange" pattern="^[0-9]+$" maxlength="5"
+                [errorStateMatcher]="matcher">
+        <mat-error>
+          <span *ngIf="!editPriceForm.get('hourlyRange').valid && editPriceForm.get('hourlyRange').touched">Please enter hourly Range</span>
+        </mat-error>
+      </mat-form-field>
 
 
       <div class="button-row">

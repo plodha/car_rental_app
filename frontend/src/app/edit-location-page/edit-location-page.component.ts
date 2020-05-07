@@ -92,4 +92,8 @@ export class EditLocationPageComponent implements OnInit {
      });
    });
  }
+
+ closeWindow(){
+     this.router.navigate(['/locations']);
+ }
 }

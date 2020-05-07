@@ -51,7 +51,8 @@ export class EditPricePageComponent implements OnInit {
        }
 
   ngOnInit(): void {
-    this.getPriceById(this.actr.snapshot.params.id);
+
+    var priceId = this.actr.snapshot.params.id
     this.editPriceForm = this.formBuilder.group({
       id:[null,Validators.required],
       vehicleType:[null,Validators.required],
@@ -59,6 +60,25 @@ export class EditPricePageComponent implements OnInit {
       hourlyPrice:[null,[Validators.required, Validators.pattern("^[0-9]+(\\.[0-9]{2})?$"),Validators.maxLength(5)]],
       hourlyRange:[null,[Validators.required, Validators.pattern("^[0-9]+$"),Validators.maxLength(5)]]
     });
+
+    this.actr.data.subscribe((data)=>{
+      var prices = data.price;
+      var i = 0;
+      for (i = 0; i < prices.length; i++) {
+        var obj = prices[i];
+        if(obj.id == priceId){
+          this.editPriceForm.setValue({
+            id : obj.id,
+            hourlyPrice : obj.hourlyPrice,
+            hourlyRange : obj.hourlyRange,
+            lateFee: obj.lateFee,
+            vehicleType: obj.vehicleTypeId.id
+          });
+        }
+      }
+      });
+
+
   }
 
   onFormSubmit() {
@@ -66,7 +86,7 @@ export class EditPricePageComponent implements OnInit {
     //this.router.navigate(['/login']);
 
     var formData = {}
-
+    formData['id'] = this.editPriceForm.get('id').value
     formData['hourlyRange'] = this.editPriceForm.get('hourlyRange').value
     formData['hourlyPrice'] = parseFloat(this.editPriceForm.get('hourlyPrice').value)
     formData['lateFee'] = parseFloat(this.editPriceForm.get('lateFee').value)
@@ -75,7 +95,7 @@ export class EditPricePageComponent implements OnInit {
     formData['vehicleTypeId'] = vehicleType
 
 
-    this.api.addPriceAPI(formData).subscribe((res:any)=>{
+    this.api.updatePriceAPI(formData).subscribe((res:any)=>{
       this.router.navigate(['/priceList']);
     });
 

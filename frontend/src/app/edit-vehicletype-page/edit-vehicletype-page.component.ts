@@ -29,25 +29,48 @@ export class EditVehicletypePageComponent implements OnInit {
       private api: ApiService) { }
 
   ngOnInit(): void {
-    this.getVehicleTypeById(this.actr.snapshot.params.id);
-        this.editVehicleTypeForm = this.formBuilder.group({
-          id:[null,Validators.required],
-          vehicleClass:[null,[Validators.required, Validators.pattern("^[a-zA-Z][a-zA-Z ]+$")]],
-          vehicleSize:[null,[Validators.required, Validators.pattern("^[0-9]+$"),Validators.maxLength(2)]]
-        });
+    var vehicleTypeId = this.actr.snapshot.params.id;
+    //  this.getVehicleTypeById(this.actr.snapshot.params.id);
+          this.editVehicleTypeForm = this.formBuilder.group({
+            id:[null,Validators.required],
+            vehicleClass:[null,[Validators.required, Validators.pattern("^[a-zA-Z][a-zA-Z ]+$")]],
+            vehicleSize:[null,[Validators.required, Validators.pattern("^[0-9]+$"),Validators.maxLength(2)]]
+          });
+    this.actr.data.subscribe((data)=>{
+      var vehicleTypes = data.vehicleType
+      var i = 0;
+      for (i = 0; i < vehicleTypes.length; i++) {
+
+        var obj = vehicleTypes[i]
+        if(obj.id == vehicleTypeId){
+          this.editVehicleTypeForm.setValue({
+            id : obj.id,
+            vehicleClass : obj.vehicleClass,
+            vehicleSize : obj.vehicleSize,
+
+          });
+        }
+
+      }
+    });
+
+
+
+
       }
       onFormSubmit() {
         this.isLoadingResults = true;
         //this.router.navigate(['/login']);
 
         var formData = {}
+        formData['id'] = this.editVehicleTypeForm.get('id').value;
 
         formData['vehicleClass'] = this.editVehicleTypeForm.get('vehicleClass').value
         formData['vehicleSize'] = parseInt(this.editVehicleTypeForm.get('vehicleSize').value)
 
 
 
-        this.api.createVehicleType(formData).subscribe((res:any)=>{
+        this.api.updateVehicleTypeAPI(formData).subscribe((res:any)=>{
           this.router.navigate(['/vehicletypes']);
         });
 

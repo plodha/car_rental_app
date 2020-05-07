@@ -120,7 +120,14 @@ years:string[] = ['2020','2021','2022','2023','2024','2025','2026','2027','2028'
 
   this.api.regAPI(formData).subscribe((res:any)=>{
     this.isLoadingResults = false;
-     this.router.navigate(['/customerPage']);
+    if (res.status == "200") {
+      this.router.navigate(['/customerPage']);
+    }
+    if(res.status == "400"){
+      document.getElementById('errorBlock').innerHTML = res.message;
+  }
+
+    //
   });
     /*
     this.api.addCases(this.casesForm.value)

@@ -54,6 +54,15 @@ export class VehicleTypePageComponent implements OnInit {
   ngOnInit(): void {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
+
+    console.log(localStorage.username != undefined)
+    if(localStorage.username != undefined ) {
+      document.getElementById('profileName').innerHTML += localStorage.username
+    }
+    else {
+      this.router.navigate(['/login']);
+
+    }
   }
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
@@ -68,7 +77,7 @@ export class VehicleTypePageComponent implements OnInit {
     console.log('update ');
     console.log(ele)
     if(operation == 'Update') {
-      this.router.navigate(['/editVehicleType/'+ele.id]);
+      this.router.navigate(['/editVehicleType/'+ele.id],{state:{data:ele}});
     }
     if(operation == 'Delete') {
       var formData = {}

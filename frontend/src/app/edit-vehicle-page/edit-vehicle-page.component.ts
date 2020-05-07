@@ -171,4 +171,7 @@ export class EditVehiclePageComponent implements OnInit {
 
 
   }
+  closeWindow(){
+      this.router.navigate(['/vehicle']);
+  }
 }

@@ -77,7 +77,9 @@
 
 
       <div class="button-row">
-        <button type="submit" [disabled]="!editLocationForm.valid" mat-flat-button color="primary">Save</button>
+        <button type="submit" [disabled]="!editLocationForm.valid" mat-flat-button color="primary">Save</button> &nbsp;&nbsp;&nbsp;
+        <button type="submit" (click)="closeWindow()" mat-flat-button color="primary">cancel</button>
+
       </div>
     </form>
   </mat-card>
