@@ -5,6 +5,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 
 import {ActivatedRoute, Router } from '@angular/router';
 import {ApiService} from '../api.service'
+import * as _moment from 'moment';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -15,7 +16,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 interface Location {
   name: string;
-  id: string;
+  id: number;
+  address:number;
 }
 
 interface VehicleType {
@@ -44,6 +46,9 @@ export class EditVehiclePageComponent implements OnInit {
   vehicleCondition = '';
   _id = ''
   status = ''
+  serviceDate='';
+  currentMileage='';
+  registrationTag = '';
 
 
   isLoadingResults = false;
@@ -63,7 +68,8 @@ export class EditVehiclePageComponent implements OnInit {
 
             var location = {
               id: obj.id,
-              name: obj.name
+              name: obj.name,
+              address: obj.address.id
             }
             this.locations[i] = location;
           }
@@ -94,10 +100,10 @@ export class EditVehiclePageComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.getVehicleById(this.actr.snapshot.params.id);
 
     this.editVehicleForm = this.formBuilder.group({
       id :[null,Validators.required],
+        address_id :[null,Validators.required],
       make : [null, [Validators.required,Validators.pattern("^[a-zA-Z][a-zA-Z ]+$")]],
       model : [null, [Validators.required,Validators.pattern("^[A-Za-z0-9 ]+$")]],
       year : [null, [Validators.required, Validators.pattern("^[0-9]+$"),Validators.maxLength(7)]],
@@ -106,9 +112,13 @@ export class EditVehiclePageComponent implements OnInit {
       location : [null, Validators.required],
       vehicleType : [null,  Validators.required],
       vehicleCondition:[null, [Validators.required,Validators.pattern("^[a-zA-Z][a-zA-Z ]+$")]],
-      status:[null, Validators.required]
+      status:[null, Validators.required],
+      serviceDate:[null,Validators.required],
+      currentMileage:[null,[Validators.required,Validators.pattern("^[0-9]+$")]],
+      registrationTag:[null,[Validators.required,Validators.pattern("^[A-Za-z0-9 ]+$")]]
     });
 
+    this.getVehicleById(this.actr.snapshot.params.id);
 
 
 
@@ -118,8 +128,10 @@ export class EditVehiclePageComponent implements OnInit {
    this.api.getVehicleById(id).subscribe((data: any) => {
 
      console.log(data)
+     console.log(data.serviceDate)
      this.editVehicleForm.setValue({
        id:data.id,
+       address_id:data.location.address.id,
        make: data.make,
        model: data.model,
        year: data.year,
@@ -129,6 +141,9 @@ export class EditVehiclePageComponent implements OnInit {
        location: data.location.id,
        vehicleCondition: data.vehicleCondition,
        status: data.status,
+       serviceDate : new FormControl(new Date(data.serviceDate+ ' 09:00')),//data.serviceDate,
+       currentMileage : data.currentMileage,
+       registrationTag : data.registrationTag
 
 
 
@@ -142,6 +157,7 @@ export class EditVehiclePageComponent implements OnInit {
     var location = {};
     var vehicleTypeId ={};
     var formData = {}
+    var address = {};
     formData['id'] = this.editVehicleForm.get('id').value
     formData['make'] = this.editVehicleForm.get('make').value
     formData['model'] = this.editVehicleForm.get('model').value
@@ -151,25 +167,54 @@ export class EditVehiclePageComponent implements OnInit {
     vehicleTypeId['id'] = this.editVehicleForm.get('vehicleType').value
     formData['vehicleTypeId'] = vehicleTypeId
     location['id'] = this.editVehicleForm.get('location').value
-
+    address['id'] = this.getAddressId(this.editVehicleForm.get('location').value)
+    location['address'] = address;
     formData['location'] = location
-
     formData['vehicleCondition'] = this.editVehicleForm.get('vehicleCondition').value
     formData['status'] =  this.editVehicleForm.get('status').value
+
+    formData['registrationTag'] = this.editVehicleForm.get('registrationTag').value;
+    formData['currentMileage'] = this.editVehicleForm.get('currentMileage').value;
+    formData['serviceDate'] = this.getPickupDateString(this.editVehicleForm.get('serviceDate').value);
 
     var id = this.editVehicleForm.get('id').value;
     console.log(id)
     this.api.updateVehicleAPI(id,formData).subscribe((res:any) => {
       console.log(res);
-        this.isLoadingResults = false;
-        this.router.navigate(['/vehicle']);
-    }, (err: any) => {
-      console.log(err);
-      this.isLoadingResults = false;
-        this.router.navigate(['/vehicle']);
+    //     this.isLoadingResults = false;
+    //     this.router.navigate(['/vehicle']);
+    // }, (err: any) => {
+    //   console.log(err);
+    //   this.isLoadingResults = false;
+    //     this.router.navigate(['/vehicle']);
     });
 
 
+  }
+  getAddressId(locationId) {
+    console.log(locationId)
+    var i =0;
+    for(i=0;i<this.locations.length;i++){
+      var loc = this.locations[i];
+      if(loc.id == locationId){
+        console.log(loc.address)
+        return loc.address;
+      }
+    }
+  }
+
+  getPickupDateString(value){
+    var pickuptime = value;
+    var pickupdate = new Date(pickuptime);
+    var pickupmonthstring = ''+(pickupdate.getMonth()+1);
+    var pickupdateStr = ''+pickupdate.getDate();
+    var pickupdatestring = '';
+    if(pickupdate.getDate() < 10){
+      pickupdateStr = '0'+pickupdate.getDate();
+    }
+    pickupdatestring = pickupdate.getFullYear()+'-'+pickupmonthstring+'-'+pickupdateStr
+
+    return pickupdatestring;
   }
   closeWindow(){
       this.router.navigate(['/vehicle']);
